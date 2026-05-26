@@ -179,16 +179,45 @@ if (searchResults) {
 }
 
 
-document.querySelectorAll('.mobile-menu-toggle').forEach((button) => {
-  button.addEventListener('click', () => {
-    const nav = button.closest('.nav');
-    const links = nav ? nav.querySelector('.nav-links') : null;
-    if (!links) return;
+function closeMobileMenu() {
+  document.querySelectorAll('.nav-links.open').forEach(function(links) {
+    links.classList.remove('open');
+    links.classList.remove('mobile-open');
+  });
+  document.querySelectorAll('.mobile-menu-toggle').forEach(function(btn) {
+    btn.setAttribute('aria-expanded', 'false');
+    btn.textContent = 'Menu';
+  });
+}
 
-    const isOpen = links.classList.toggle('open');
+document.querySelectorAll('.mobile-menu-toggle').forEach(function(button) {
+  button.addEventListener('click', function() {
+    var nav = button.closest('.nav');
+    var links = nav ? nav.querySelector('.nav-links') : null;
+    if (!links) return;
+    var isOpen = links.classList.toggle('open');
+    links.classList.toggle('mobile-open', isOpen);
     button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     button.textContent = isOpen ? 'Close' : 'Menu';
   });
+});
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav')) {
+    closeMobileMenu();
+  }
+});
+
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    closeMobileMenu();
+  });
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeMobileMenu();
+  }
 });
 
 document.querySelectorAll('.nav-links a').forEach((link) => {
@@ -751,6 +780,9 @@ function cimFinalCloseMenus() {
     const toggle = dropdown.querySelector('.dropdown-toggle');
     if (toggle) toggle.setAttribute('aria-expanded', 'false');
   });
+  if (window.innerWidth <= 768) {
+    closeMobileMenu();
+  }
 }
 
 function cimFinalInitNav() {
@@ -787,19 +819,7 @@ function cimFinalInitNav() {
     cimFinalCloseMenus();
   }, true);
 
-  const mobileToggle = document.querySelector('.mobile-menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
-  if (mobileToggle && navLinks) {
-    mobileToggle.addEventListener('click', function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      navLinks.classList.toggle('mobile-open');
-      const isOpen = navLinks.classList.contains('mobile-open');
-      mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      return false;
-    }, true);
-  }
+
 }
 
 function cimFinalInitSearchForms() {
