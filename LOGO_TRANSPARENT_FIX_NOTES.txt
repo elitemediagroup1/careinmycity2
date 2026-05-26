@@ -1,0 +1,33 @@
+CAREINMYCITY TRANSPARENT LOGO FIX
+
+Issue:
+The visible white box behind the logo was not CSS decoration. It was the baked white background inside the PNG itself.
+
+Fix:
+- Converted near-white background pixels in the logo asset to transparency.
+- Preserved anti-aliased edges by softening near-white pixels instead of hard chopping all of them.
+- Wrote the transparent result over all common site logo asset filenames.
+- Kept no-vector / no-backplate CSS.
+
+QA:
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_logo_no_vector.zip",
+  "logoAssetPatched": "assets/careinmycity-logo-web.png",
+  "logoDimensions": {
+    "width": 796,
+    "height": 350
+  },
+  "transparentPixelsCreated": 210407,
+  "softenedEdgePixels": 3677,
+  "targetsWritten": [
+    "assets/careinmycity-logo-web.png",
+    "assets/careinmycity-logo.png",
+    "assets/careinmycity-logo-full.png",
+    "assets/careinmycity-full-logo.png",
+    "assets/logo.png"
+  ],
+  "vectorRemoved": true,
+  "whiteBoxAssetBackgroundRemoved": true,
+  "status": "PASS"
+}

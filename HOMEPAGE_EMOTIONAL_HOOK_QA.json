@@ -1,0 +1,9 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_state_personality_copy_pass.zip",
+  "homepageUpdated": true,
+  "sectionAdded": "emotional-intent-section",
+  "insertedAfter": "hero",
+  "hookCopy": "You\u2019re probably here because something changed. Maybe it was a fall. Maybe Mom forgot the stove. Maybe Dad is still saying he\u2019s fine, but everyone knows he isn\u2019t.",
+  "homepageIndexable": true
+}

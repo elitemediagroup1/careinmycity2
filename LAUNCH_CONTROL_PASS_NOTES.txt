@@ -1,0 +1,42 @@
+CAREINMYCITY LAUNCH CONTROL PASS
+
+Completed the six launch-control items:
+
+1. Homepage experience
+- Added “Three calmer ways to begin” launch rail.
+- Homepage now routes users into Home Care, Memory Care, or Final Expense guides.
+- Homepage remains indexable.
+
+2. /services/final-expense/
+- Added “Planning without pressure” section.
+- Confirmed page is indexable.
+- Confirmed Consumer Support Help appears on the page.
+
+3. Search result behavior
+- Improved search/results copy.
+- Added fallback renderer behavior to avoid dead-end zero-result experience.
+- Search page remains noindex.
+
+4. CSH placement
+- Rewrote Consumer Support Help placement to feel helpful, not sales-y.
+- It now says “Want help organizing a final expense question?”
+- CSH is clearly not presented as a government resource, insurance carrier, medical provider, or law firm.
+
+5. DID replacement plan
+- Added DID_REPLACEMENT_PLAN.json.
+- Added DID_REPLACEMENT_PLAN_FOR_MATT.txt.
+- Current DID placeholder occurrences: 411.
+
+6. Home Care + Memory Care guides
+- Confirmed Home Care and Memory Care are indexable.
+- Added safe trust-guide notes to both pages.
+- Public sitemap remains homepage + six Care Resource guide pages.
+
+Public sitemap URLs:
+/
+/services/home-care/
+/services/memory-care/
+/services/assisted-living/
+/services/respite-care/
+/services/elder-law/
+/services/final-expense/

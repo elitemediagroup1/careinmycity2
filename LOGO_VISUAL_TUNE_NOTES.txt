@@ -1,0 +1,35 @@
+CAREINMYCITY LOGO VISUAL TUNE
+
+Goal:
+- Put the soft vector/backplate treatment behind the logo.
+- Make the logo slightly larger in the nav.
+- Prevent cropping or squeezing.
+- Preserve indexing, robots, and sitemap setup.
+
+Changes:
+- Added a subtle white/blue/green vector-style backplate behind header/footer logos.
+- Logo now sits above the backplate with z-index control.
+- Header logo max-height increased to 66px desktop.
+- Header logo max-width increased to 292px desktop.
+- Mobile max-width/max-height kept safe.
+- Nav min-height relaxed so the logo can breathe.
+- Added fallback image-logo class support.
+
+Indexing:
+- robots.txt untouched except preserved from source package.
+- sitemap.xml untouched except preserved from source package.
+
+QA:
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_sitewide_logo_fixed.zip",
+  "cssVisualTuneAdded": true,
+  "logoBackplateBehindLogo": true,
+  "headerLogoMaxHeight": "66px desktop / 54px tablet / 48px small mobile",
+  "headerLogoMaxWidth": "292px desktop / min(72vw, 248px) tablet / 218px small mobile",
+  "navMinHeight": "88px desktop / 78px mobile",
+  "htmlFilesWithImageLogoClassAdded": 3261,
+  "robotsUnchangedHasSitemap": true,
+  "publicSitemapUrlCount": 8,
+  "status": "PASS"
+}

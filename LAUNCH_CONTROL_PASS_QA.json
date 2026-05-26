@@ -1,0 +1,37 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_search_results_fallback_fixed.zip",
+  "homepage": {
+    "hasEmotionalHook": true,
+    "hasLaunchRail": true,
+    "indexable": true
+  },
+  "finalExpenseGuide": {
+    "exists": true,
+    "indexable": true,
+    "hasCSH": true,
+    "hasLivePlanningNote": true
+  },
+  "search": {
+    "exists": true,
+    "noindex": true,
+    "hasFallbackRenderer": true,
+    "hasDeadEndHider": true
+  },
+  "cshPlacement": {
+    "friendlyCopyApplied": 401,
+    "placeholderDIDOccurrences": 411
+  },
+  "didPlan": {
+    "jsonExists": true,
+    "txtExists": true,
+    "placeholderOccurrenceCount": 411
+  },
+  "safeTrustGuides": {
+    "homeCareIndexable": true,
+    "memoryCareIndexable": true,
+    "homeCareHasTrustNote": true,
+    "memoryCareHasTrustNote": true
+  },
+  "publicSitemapUrlCount": 7
+}

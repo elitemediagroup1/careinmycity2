@@ -1,0 +1,12 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_csh_final_expense_live_ready.zip",
+  "searchPageExists": true,
+  "searchPageHasFallbackContainer": true,
+  "siteJsHasFallbackRenderer": true,
+  "fallbackDataFile": "/assets/data/search_fallback_resources.json",
+  "finalExpenseFallbackHasCSH": true,
+  "placeholderDidStillPresent": true,
+  "searchPageNoindex": true,
+  "expectedBehavior": "Searches like /search/?state=florida&location=delray-beach&careType=final-expense-support now render CSH + public fallback resources instead of dead-ending at zero results."
+}

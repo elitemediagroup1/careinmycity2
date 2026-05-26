@@ -1,0 +1,18 @@
+CITY_LAYER_ROLLOUT_NOTES
+
+Added:
+- City pages under /state/city/ for the main cities listed on every state page
+- Updated state page city cards to point to actual city pages
+- Preserved existing custom pages, including /florida/boca-raton/
+- Added city-page SEO metadata, FAQ schema, resource sections, category cards, search form, and local context
+- Tightened the homepage guidance box so it reads like visitor-facing copy, not an internal template note
+- Updated sitemap with city URLs
+
+City page URL pattern:
+- /florida/boca-raton/
+- /new-york/staten-island/
+- /new-jersey/hoboken/
+- /texas/houston/
+
+Next recommended layer:
+- city + service pages, for example /florida/boca-raton/home-care/

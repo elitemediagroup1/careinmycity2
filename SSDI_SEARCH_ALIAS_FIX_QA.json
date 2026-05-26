@@ -1,0 +1,22 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_ssdi_support_lane.zip",
+  "ssdiGuideExists": true,
+  "ssdiGuideIndexable": true,
+  "ssdiGuideHasCSH": true,
+  "searchPageHasFallbackContainer": true,
+  "siteJsHasSsdiAliasFix": true,
+  "siteJsHandlesSsdiAttorneys": true,
+  "homepageLinksSsdiGuide": true,
+  "sitemapIncludesSsdi": true,
+  "publicSitemapUrlCount": 8,
+  "placeholderSsdiDidOccurrences": 414,
+  "expectedSearchesNowHandled": [
+    "?careType=Ssdi%20Attorneys",
+    "?careType=ssdi-attorneys",
+    "?category=SSDI%20Attorney",
+    "?service=Social%20Security%20Disability%20Attorney",
+    "?careType=disability-benefits"
+  ],
+  "status": "PASS"
+}

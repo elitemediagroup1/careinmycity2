@@ -1,0 +1,18 @@
+STATE PERSONALITY COPY PASS
+
+Updated 50 state pages.
+
+Changed:
+- Added state nickname/personality to state page copy.
+- Replaced repetitive state hub copy with unique state-specific openers.
+- Made state pages feel more editorial and less generated.
+- Preserved city routing and indexing protection.
+
+Examples:
+- Hey there, Empire State.
+- Hey there, Sunshine State families.
+- Hey there, Garden State families.
+- Hello, Lone Star families.
+
+Goal:
+State pages should feel like real hub pages with local/state identity, while still gently pushing users to city-level resources.

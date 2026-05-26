@@ -1,0 +1,26 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_homepage_emotional_hook.zip",
+  "change": "Care Resources section unblocked for indexing",
+  "homepageIndexable": true,
+  "careResourcePagesIndexable": [
+    "/services/assisted-living/",
+    "/services/elder-law/",
+    "/services/final-expense/",
+    "/services/home-care/",
+    "/services/memory-care/",
+    "/services/respite-care/"
+  ],
+  "careResourcePageCount": 6,
+  "publicSitemapUrls": 7,
+  "stateCityAndLocalIntentPagesStillBlocked": 2853,
+  "robotsTxt": "User-agent: *\nDisallow:\nSitemap: https://careinmycity.com/sitemap.xml\n",
+  "publicSitemap": "sitemap.xml",
+  "internalQaSitemap": "sitemap_all_internal_qa.xml",
+  "notes": [
+    "Only homepage and /services/ Care Resource guide pages are indexable.",
+    "State pages, city pages, and city + service pages remain noindex/nofollow.",
+    "sitemap.xml now includes only public/indexable URLs.",
+    "Full pre-existing sitemap was preserved as sitemap_all_internal_qa.xml when present."
+  ]
+}

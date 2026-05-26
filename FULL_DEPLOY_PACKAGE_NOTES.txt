@@ -1,0 +1,35 @@
+CAREINMYCITY FULL DEPLOY PACKAGE
+
+This zip is packaged as a complete static site.
+
+Open folder:
+careinmycity_site/
+
+Expected structure:
+careinmycity_site/
+  index.html
+  assets/
+    styles.css
+    site.js
+    careinmycity-logo-web.png
+    careinmycity-logo-footer.png
+  services/
+    home-care/
+    memory-care/
+    assisted-living/
+    respite-care/
+    elder-law/
+    final-expense/
+    ssdi/
+  search/
+  state folders and city folders
+
+QA:
+- HTML pages found: 3261
+- Asset files found: 14
+- Public sitemap URL count: 8
+- Robots has sitemap directive: True
+- Missing expected directories: []
+- Missing expected files: []
+
+If Claude says assets are missing, confirm he is opening the folder named careinmycity_site inside the zip, not an intermediate folder.

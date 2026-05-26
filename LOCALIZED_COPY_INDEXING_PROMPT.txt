@@ -1,0 +1,74 @@
+CAREINMYCITY LOCALIZED COPY + INDEXING DIRECTIVE
+
+Use this prompt when generating or reviewing localized city + service page copy.
+
+INPUTS:
+[STATE]
+[CITY]
+[SERVICE CATEGORY]
+
+TASK:
+Write compassionate, plain-English, family-facing copy for the specific city + service page. Never make the page transactional. Acknowledge the emotional weight of the search before presenting options.
+
+COMPLIANCE HARD RULES:
+- Never give medical, legal, financial, or insurance advice.
+- Never recommend a specific provider by name.
+- Never make guarantees about outcomes, costs, eligibility, or availability.
+- Never imply CareInMyCity is a provider, law firm, insurer, or government agency.
+- Flag low-confidence local accuracy with: [REVIEW NEEDED]
+
+COPY BLOCKS TO PRODUCE:
+1. Local context intro
+   2-3 sentences explaining what makes this city/region relevant to this care category.
+
+2. What families in [CITY] typically encounter when searching for [SERVICE]
+
+3. Three locally-relevant questions families should ask
+
+4. One local resource or context note
+   Add [REVIEW NEEDED] if not verified.
+
+5. CTA line
+   Pointing to the find care form.
+
+INDEXING BLOCK:
+Add this meta tag to the page head until monetization is confirmed ready for that page:
+<meta name="robots" content="noindex, nofollow">
+
+INDEX STATUS:
+BLOCKED — remove noindex tag only when provider slots are filled and copy has passed human review.
+
+SITEMAP DIRECTIVE:
+The live robots.txt should currently read exactly:
+User-agent: *
+Disallow:
+
+Do not include a Sitemap: line.
+
+When ready to publish, update robots.txt to:
+User-agent: *
+Disallow:
+Sitemap: https://careinmycity.com/sitemap.xml
+
+SITEMAP STATUS:
+SUPPRESSED — add Sitemap directive to robots.txt only when first batch of pages passes review and provider slots are confirmed.
+
+HOMEPAGE PROTECTION:
+The homepage may remain indexable.
+Do not add noindex to homepage.
+Confirm the homepage contains no links to protected interior pages until those pages are ready.
+If links exist, flag them with [LINK AUDIT NEEDED].
+
+OUTPUT FOOTER:
+CONFIDENCE: High / Medium / Low
+INDEX STATUS: BLOCKED
+SITEMAP STATUS: SUPPRESSED
+REVIEW REQUIRED: Yes / No — with reason if Yes
+
+HUMAN REVIEW REQUIRED IF:
+- Confidence is Low
+- Any block could be read as professional advice
+- City population is under 50,000 or population is unverified
+- Service category is SSDI, elder law, or final expense
+- Any [REVIEW NEEDED] tag appears
+- Any [LINK AUDIT NEEDED] tag appears

@@ -1,0 +1,58 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_ssdi_search_alias_fixed.zip",
+  "uploadedLogo": "6480b64f-64ca-4a59-bdb0-a3706fc36954.png",
+  "uploadedDimensions": {
+    "width": 1672,
+    "height": 941
+  },
+  "webLogoDimensions": {
+    "width": 900,
+    "height": 506
+  },
+  "canonicalLogoAssetsWritten": [
+    "careinmycity-logo.png",
+    "careinmycity-logo-full.png",
+    "careinmycity-full-logo.png",
+    "logo.png",
+    "careinmycity-logo-web.png"
+  ],
+  "canonicalAssetsExist": {
+    "careinmycity-logo.png": true,
+    "careinmycity-logo-full.png": true,
+    "careinmycity-full-logo.png": true,
+    "logo.png": true,
+    "careinmycity-logo-web.png": true
+  },
+  "htmlFilesUpdated": 3261,
+  "jsonFilesUpdated": 0,
+  "cssUpdated": true,
+  "sampleHtmlFilesUpdated": [
+    "index.html",
+    "florida/index.html",
+    "search/index.html",
+    "about/index.html",
+    "alabama/index.html",
+    "alaska/index.html",
+    "arizona/index.html",
+    "arkansas/index.html",
+    "california/index.html",
+    "colorado/index.html",
+    "connecticut/index.html",
+    "delaware/index.html",
+    "georgia/index.html",
+    "hawaii/index.html",
+    "idaho/index.html",
+    "illinois/index.html",
+    "indiana/index.html",
+    "iowa/index.html",
+    "kansas/index.html",
+    "kentucky/index.html",
+    "louisiana/index.html",
+    "maine/index.html",
+    "maryland/index.html",
+    "massachusetts/index.html",
+    "michigan/index.html"
+  ],
+  "status": "PASS"
+}

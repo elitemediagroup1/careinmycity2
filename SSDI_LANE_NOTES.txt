@@ -1,0 +1,30 @@
+SSDI SUPPORT LANE UPDATE
+
+Mirrored the Final Expense monetization/support pattern for SSDI.
+
+Added:
+- New indexable guide page: /services/ssdi/
+- Consumer Support Help owned listing on SSDI guide page.
+- Public SSDI resources:
+  - Social Security Disability Benefits
+  - BenefitsCheckUp
+  - Legal Services Corporation
+- Protected local SSDI pages for every existing city folder.
+- SSDI search fallback behavior.
+- SSDI DID placeholder and config:
+  REPLACE_WITH_SSDI_DID
+- Updated DID replacement plan for Matt.
+- Added SSDI to public sitemap.
+- Added SSDI to nav dropdowns where possible.
+
+QA:
+- SSDI guide exists: True
+- SSDI guide indexable: True
+- Local SSDI pages created: 400
+- SSDI CSH pages detected: 401
+- SSDI DID placeholder occurrences: 411
+- Public sitemap URL count: 8
+
+Important:
+- Replace REPLACE_WITH_SSDI_DID before live SSDI call routing.
+- Local SSDI pages remain noindex/nofollow until reviewed and monetization/routing is ready.

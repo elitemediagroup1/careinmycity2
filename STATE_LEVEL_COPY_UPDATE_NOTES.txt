@@ -1,0 +1,21 @@
+STATE LEVEL COPY UPDATE
+
+Updated 50 state pages.
+
+Goal:
+- Make state-level pages speak to the state itself.
+- Position each state page as a state care hub, not the final local answer.
+- Encourage users to choose a city for more specific resources.
+- Keep the family-facing tone compassionate and plain-English.
+- Preserve indexing protection.
+
+Added to each state page:
+- State hub section
+- State/region context
+- City-level resource routing card
+- City links with City, ST labels
+- Copy explaining why care decisions vary by city/region
+
+Indexing:
+- Interior pages remain noindex, nofollow.
+- robots.txt sitemap directive remains suppressed.

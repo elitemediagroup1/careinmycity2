@@ -1,0 +1,1657 @@
+{
+  "date": "2026-05-25",
+  "currentPlaceholder": "REPLACE_WITH_FINAL_EXPENSE_DID",
+  "filesLikelyContainingPlaceholder": [
+    {
+      "file": "PUBLIC_LISTINGS_AND_OWNED_CSH_NOTES.txt",
+      "occurrences": 1
+    },
+    {
+      "file": "CSH_FINAL_EXPENSE_LIVE_NOTES.txt",
+      "occurrences": 1
+    },
+    {
+      "file": "SEARCH_RESULTS_FALLBACK_NOTES.txt",
+      "occurrences": 1
+    },
+    {
+      "file": "assets/site.js",
+      "occurrences": 3
+    },
+    {
+      "file": "services/final-expense/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/evanston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/green-river/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/sheridan/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/rock-springs/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/gillette/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/laramie/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/casper/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wyoming/cheyenne/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/eau-claire/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/waukesha/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/appleton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/racine/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/kenosha/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/green-bay/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/madison/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "wisconsin/milwaukee/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/fairmont/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/martinsburg/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/weirton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/wheeling/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/parkersburg/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/morgantown/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/huntington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "west-virginia/charleston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/renton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/everett/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/kent/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/bellevue/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/vancouver/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/tacoma/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/spokane/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "washington/seattle/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/newport-news/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/roanoke/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/alexandria/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/arlington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/richmond/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/chesapeake/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/norfolk/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "virginia/virginia-beach/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/montpelier/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/milton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/brattleboro/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/bennington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/essex-junction/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/rutland/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/south-burlington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "vermont/burlington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/st-george/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/ogden/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/sandy/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/orem/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/west-jordan/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/provo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/west-valley-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "utah/salt-lake-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/corpus-christi/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/arlington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/el-paso/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/fort-worth/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/austin/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/dallas/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/san-antonio/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "texas/houston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/johnson-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/franklin/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/murfreesboro/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/clarksville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/chattanooga/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/knoxville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/memphis/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "tennessee/nashville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/pierre/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/yankton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/mitchell/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/watertown/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/brookings/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/aberdeen/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/rapid-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-dakota/sioux-falls/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/summerville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/mount-pleasant/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/rock-hill/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/spartanburg/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/myrtle-beach/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/greenville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/columbia/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "south-carolina/charleston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/coventry/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/newport/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/woonsocket/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/east-providence/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/pawtucket/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/cranston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/warwick/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "rhode-island/providence/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/lancaster/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/bethlehem/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/scranton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/reading/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/erie/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/allentown/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/pittsburgh/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "pennsylvania/philadelphia/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/medford/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/beaverton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/bend/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/hillsboro/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/gresham/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/salem/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/eugene/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oregon/portland/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/midwest-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/moore/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/lawton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/edmond/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/broken-arrow/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/norman/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/tulsa/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "oklahoma/oklahoma-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/canton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/parma/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/dayton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/akron/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/toledo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/cincinnati/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/cleveland/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "ohio/columbus/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/mandan/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/dickinson/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/williston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/west-fargo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/minot/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/grand-forks/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/bismarck/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-dakota/fargo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/wilmington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/cary/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/fayetteville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/winston-salem/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/durham/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/greensboro/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/raleigh/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "north-carolina/charlotte/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/buffalo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/yonkers/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/long-island/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/bronx/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/queens/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/brooklyn/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/staten-island/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-york/new-york-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/hobbs/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/clovis/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/farmington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/roswell/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/santa-fe/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/rio-rancho/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/las-cruces/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-mexico/albuquerque/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/trenton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/toms-river/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/edison/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/elizabeth/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/paterson/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/hoboken/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/jersey-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-jersey/newark/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/portsmouth/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/salem/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/rochester/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/dover/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/derry/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/concord/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/nashua/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "new-hampshire/manchester/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/mesquite/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/elko/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/carson-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/sparks/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/north-las-vegas/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/reno/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/henderson/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nevada/las-vegas/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/norfolk/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/hastings/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/fremont/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/kearney/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/grand-island/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/bellevue/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/lincoln/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "nebraska/omaha/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/havre/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/kalispell/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/helena/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/butte/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/bozeman/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/great-falls/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/missoula/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "montana/billings/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/st-joseph/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/o-fallon/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/lee-s-summit/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/independence/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/columbia/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/springfield/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/st-louis/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "missouri/kansas-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/olive-branch/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/meridian/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/tupelo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/hattiesburg/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/biloxi/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/southaven/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/gulfport/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "mississippi/jackson/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/woodbury/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/plymouth/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/brooklyn-park/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/bloomington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/duluth/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/rochester/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/saint-paul/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "minnesota/minneapolis/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/dearborn/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/flint/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/lansing/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/ann-arbor/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/sterling-heights/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/warren/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/grand-rapids/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "michigan/detroit/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/fall-river/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/newton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/quincy/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/lowell/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/cambridge/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/springfield/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/worcester/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "massachusetts/boston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/gaithersburg/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/frederick/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/annapolis/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/rockville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/bethesda/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/silver-spring/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/columbia/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maryland/baltimore/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/brunswick/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/auburn/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/biddeford/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/south-portland/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/augusta/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/lewiston/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/bangor/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "maine/portland/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/monroe/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/bossier-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/kenner/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/lake-charles/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/lafayette/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/shreveport/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/baton-rouge/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "louisiana/new-orleans/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/florence/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/georgetown/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/richmond/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/covington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/owensboro/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/bowling-green/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/lexington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kentucky/louisville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/manhattan/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/shawnee/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/lawrence/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/topeka/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/olathe/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/kansas-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/overland-park/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "kansas/wichita/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/west-des-moines/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/ames/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/waterloo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/iowa-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/sioux-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/davenport/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/cedar-rapids/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "iowa/des-moines/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/hammond/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/bloomington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/fishers/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/carmel/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/south-bend/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/evansville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/fort-wayne/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "indiana/indianapolis/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/peoria/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/elgin/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/springfield/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/rockford/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/joliet/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/naperville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/aurora/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "illinois/chicago/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/twin-falls/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/coeur-d-alene/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/pocatello/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/caldwell/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/idaho-falls/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/nampa/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/meridian/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "idaho/boise/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/kahului/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/waipahu/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/pearl-city/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/kaneohe/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/kapolei/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/kailua/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/hilo/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "hawaii/honolulu/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/roswell/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/sandy-springs/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/athens/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/macon/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/columbus/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/augusta/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/savannah/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "georgia/atlanta/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/lewes/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/seaford/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/milford/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/smyrna/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/middletown/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/newark/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/dover/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "delaware/wilmington/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/greenwich/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/danbury/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/norwalk/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/waterbury/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/hartford/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/stamford/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/new-haven/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "connecticut/bridgeport/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/boulder/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/arvada/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/thornton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/lakewood/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/fort-collins/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/aurora/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/colorado-springs/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "colorado/denver/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/oakland/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/long-beach/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/sacramento/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/fresno/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/san-francisco/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/san-jose/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/san-diego/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "california/los-angeles/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/bentonville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/rogers/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/conway/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/jonesboro/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/springdale/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/fort-smith/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/fayetteville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arkansas/little-rock/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/peoria/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/tempe/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/glendale/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/scottsdale/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/chandler/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/mesa/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/tucson/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "arizona/phoenix/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/kodiak/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/kenai/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/ketchikan/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/sitka/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/wasilla/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/juneau/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/fairbanks/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alaska/anchorage/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/auburn/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/dothan/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/hoover/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/tuscaloosa/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/huntsville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/mobile/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/montgomery/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "alabama/birmingham/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/jacksonville/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/tampa/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/orlando/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/miami/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/west-palm-beach/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/fort-lauderdale/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/delray-beach/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "florida/boca-raton/final-expense-support/index.html",
+      "occurrences": 1
+    },
+    {
+      "file": "assets/data/owned_listings_config.json",
+      "occurrences": 3
+    },
+    {
+      "file": "assets/data/search_fallback_resources.json",
+      "occurrences": 1
+    }
+  ],
+  "recommendedReplacementSteps": [
+    "Confirm the live Final Expense DID/call tracking number.",
+    "Replace every REPLACE_WITH_FINAL_EXPENSE_DID in HTML and JavaScript with the live phone number.",
+    "Use tel:+1XXXXXXXXXX format for href values.",
+    "Use human-readable format like (XXX) XXX-XXXX for visible button text if desired.",
+    "Update /assets/data/owned_listings_config.json with finalExpenseDid and finalExpenseTelHref.",
+    "QA /services/final-expense/ and /search/?careType=final-expense-support before launch.",
+    "Place a test call and confirm routing/disposition tracking.",
+    "Only then consider opening any local Final Expense pages.",
+    "Confirm the live SSDI DID/call tracking number.",
+    "Replace every REPLACE_WITH_SSDI_DID in HTML and JavaScript with the live SSDI phone number.",
+    "QA /services/ssdi/ and /search/?careType=ssdi before launch.",
+    "Place a test SSDI call and confirm routing/disposition tracking."
+  ],
+  "fallbackIfDidNotReady": "Change CSH buttons from tel:REPLACE_WITH_FINAL_EXPENSE_DID to #lead-capture and label the button 'Use the Find Care Form'.",
+  "trackingRecommendations": [
+    "Use one DID for the Care Resource guide and separate DIDs per local batch when local pages unlock.",
+    "Add UTM/source labels for careinmycity, final-expense, guide-page, search-fallback, and local-page.",
+    "Log call source, page path, city, state, careType, timestamp, and session ID when possible."
+  ],
+  "placeholderOccurrenceCount": 411,
+  "ssdiPlaceholder": "REPLACE_WITH_SSDI_DID",
+  "ssdiFallbackIfDidNotReady": "Change SSDI CSH buttons from tel:REPLACE_WITH_SSDI_DID to #lead-capture and label the button 'Use the Find Care Form'."
+}

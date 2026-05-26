@@ -1,0 +1,23 @@
+CAREINMYCITY SITEWIDE LOGO FIX
+
+Issue:
+The site was using a cropped/busted logo asset that showed only part of the CareInMyCity wordmark.
+
+Fix:
+- Added the uploaded full CareInMyCity logo to the assets folder.
+- Saved it under the common/canonical filenames most pages are likely to reference.
+- Added a web-optimized version: assets/careinmycity-logo-web.png.
+- Updated HTML and JSON logo references where found.
+- Added CSS guardrails so logo images use object-fit: contain and do not crop.
+
+Source package:
+careinmycity_ssdi_search_alias_fixed.zip
+
+Logo dimensions:
+- Uploaded: 1672 x 941
+- Web: 900 x 506
+
+QA:
+- HTML files updated: 3261
+- JSON files updated: 0
+- CSS updated: True

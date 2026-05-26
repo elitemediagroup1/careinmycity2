@@ -1,0 +1,22 @@
+HOMEPAGE EMOTIONAL HOOK UPDATE
+
+Added the homepage emotional-intent section using the approved line:
+
+“You’re probably here because something changed. Maybe it was a fall. Maybe Mom forgot the stove. Maybe Dad is still saying he’s fine, but everyone knows he isn’t.”
+
+Placement:
+- Inserted immediately after the hero section.
+- Designed as a visitor-facing emotional frame before the site moves into care options, map, and resource navigation.
+
+Purpose:
+- Give the homepage a human reason to exist.
+- Acknowledge the emotional trigger behind care searches.
+- Keep tone compassionate, direct, and family-facing.
+- Avoid medical/legal/financial/insurance advice.
+- Avoid provider recommendations or guarantees.
+
+Source package:
+- careinmycity_state_personality_copy_pass.zip
+
+Homepage remains indexable:
+- True

@@ -1,0 +1,18 @@
+CARE RESOURCE CONTEXTUAL LINKS UPDATE
+
+What changed:
+- Added contextual links from localized city + service pages to their relevant unlocked Care Resource guides.
+- Added Care Resource guide strips to city overview pages.
+- Added Care Resource guide strips to state pages.
+- Kept state, city, and local intent pages protected with noindex/nofollow.
+- Kept Care Resource guide pages indexable.
+- Kept public sitemap limited to homepage + Care Resource guides.
+
+Counts:
+- City + service pages linked to Care Resource guides: 2400
+- City overview pages with guide strip: 406
+- State pages with guide strip: 50
+- Public sitemap URL count: 7
+
+Purpose:
+The Care Resource guides are now the public, indexable explainer layer. Localized pages can reference them as helpful education without opening the local directory pages for indexing yet.

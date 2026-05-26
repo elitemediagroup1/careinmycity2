@@ -1,0 +1,17 @@
+SAFE_REBUILD_NOTES
+
+This package was rebuilt from the last stable CareInMyCity version, not from the broken 50-state package.
+
+Fixed approach:
+- Preserved the stable homepage, Carl, footer, resources, styles, and core structure
+- Added all 50 state pages safely as standalone pages
+- Added /states/ national coverage index
+- Added homepage coverage map without rewriting the whole homepage
+- Added safe dropdown population via JS
+- Added state search forms
+- Added guide resources for all states
+- Updated sitemap and robots
+
+Known direction:
+- This is a safe national state-level foundation.
+- Next step should be top city pages, not another global rewrite.

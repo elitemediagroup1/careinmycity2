@@ -1,0 +1,15 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_logo_transparent_fixed.zip",
+  "sourceColorLogo": "assets/careinmycity-logo-web.png",
+  "footerLogoCreated": "assets/careinmycity-logo-footer.png",
+  "footerLogoDimensions": {
+    "width": 796,
+    "height": 350
+  },
+  "htmlFilesUpdated": 3261,
+  "footerLogoReferencesDetected": 3261,
+  "footerDesktopMaxWidth": "220px",
+  "footerMobileMaxWidth": "180px",
+  "status": "PASS"
+}

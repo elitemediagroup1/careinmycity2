@@ -1,0 +1,35 @@
+SEO/AEO TIGHTENING PASS
+
+Completed:
+- Re-applied canonical tags across all HTML pages.
+- Re-applied Open Graph tags across all HTML pages.
+- Re-applied Twitter card tags across all HTML pages.
+- Added Organization schema across all pages.
+- Added WebSite schema across all pages.
+- Added BreadcrumbList schema across all pages.
+- Added FAQPage schema across all pages.
+- Added ItemList schema for state, city, and states index pages.
+- Updated city H1s and key section headers to include City, ST.
+- Refreshed sitemap.xml.
+- Refreshed robots.txt.
+- Added QA report: SEO_AEO_TIGHTENING_QA.json.
+
+QA summary:
+- HTML pages: 460
+- Sitemap URLs: 460
+- Canonical tags: 460
+- OG title tags: 460
+- Twitter card tags: 460
+- JSON-LD blocks: 2291
+- State pages detected: 50
+- City pages detected: 400
+- City H1 state checks: 400
+- City H1 missing state count: 0
+
+Next monetization/sticky layer:
+- Provider listing profiles
+- Featured placement slots
+- Carl lead capture flows
+- Saved resources
+- Email/text follow-up
+- Buyer routing by care category and geo

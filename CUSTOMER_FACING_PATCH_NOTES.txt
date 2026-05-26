@@ -1,0 +1,14 @@
+CUSTOMER_FACING_PATCH_NOTES
+
+Fixed:
+- Removed internal-facing “High-intent local page” headline from city + service pages.
+- Replaced it with customer-facing copy: “Start with what your family needs most.”
+- Restored homepage from the stronger prior homepage version where available.
+- Ensured homepage has a state coverage map/navigation section.
+- Preserved monetization pages, provider slots, lead capture schema, and city + service page structure.
+
+QA:
+- HTML pages: 2860
+- Sitemap URLs: 2860
+- High-intent label remaining: 0
+- Homepage has coverage map: True

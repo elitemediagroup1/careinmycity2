@@ -1,0 +1,24 @@
+CAREINMYCITY LOGO NO-VECTOR FIX
+
+Issue:
+The decorative vector/backplate/glow behind the logo was still visible.
+
+Fix:
+- Removed prior logo visual tune CSS blocks.
+- Disabled header/nav/footer logo ::before and ::after pseudo-elements.
+- Removed background/glow/shadow from logo wrappers.
+- Kept only clean logo sizing and object-fit containment.
+- Preserved robots, sitemap, and indexing.
+
+QA:
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_final_logo_fixed.zip",
+  "removedVectorBackplate": true,
+  "logoBeforePseudoDisabled": true,
+  "cleanLogoDisplayBlock": true,
+  "htmlFilesTouched": 0,
+  "robotsHasSitemap": true,
+  "publicSitemapUrlCount": 8,
+  "status": "PASS"
+}

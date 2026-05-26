@@ -1,0 +1,13 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_sitewide_logo_fixed.zip",
+  "cssVisualTuneAdded": true,
+  "logoBackplateBehindLogo": true,
+  "headerLogoMaxHeight": "66px desktop / 54px tablet / 48px small mobile",
+  "headerLogoMaxWidth": "292px desktop / min(72vw, 248px) tablet / 218px small mobile",
+  "navMinHeight": "88px desktop / 78px mobile",
+  "htmlFilesWithImageLogoClassAdded": 3261,
+  "robotsUnchangedHasSitemap": true,
+  "publicSitemapUrlCount": 8,
+  "status": "PASS"
+}

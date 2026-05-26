@@ -1,0 +1,26 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_logo_visual_tuned.zip",
+  "selectedLogoSource": "/mnt/data/careinmycity_true_logo_fix_work/careinmycity_site/assets/careinmycity-logo-web.png",
+  "selectedLogoName": "careinmycity-logo-web.png",
+  "selectedLogoDimensions": {
+    "width": 900,
+    "height": 506,
+    "aspect": 1.7786561264822134
+  },
+  "trimmedDimensions": {
+    "width": 796,
+    "height": 350,
+    "aspect": 2.2742857142857145
+  },
+  "webLogoDimensions": {
+    "width": 796,
+    "height": 350,
+    "aspect": 2.2742857142857145
+  },
+  "htmlFilesUpdated": 0,
+  "cssFinalLogoFix": true,
+  "robotsHasSitemap": true,
+  "publicSitemapUrlCount": 8,
+  "status": "PASS"
+}

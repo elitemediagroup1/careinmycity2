@@ -1,0 +1,21 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_logo_no_vector.zip",
+  "logoAssetPatched": "assets/careinmycity-logo-web.png",
+  "logoDimensions": {
+    "width": 796,
+    "height": 350
+  },
+  "transparentPixelsCreated": 210407,
+  "softenedEdgePixels": 3677,
+  "targetsWritten": [
+    "assets/careinmycity-logo-web.png",
+    "assets/careinmycity-logo.png",
+    "assets/careinmycity-logo-full.png",
+    "assets/careinmycity-full-logo.png",
+    "assets/logo.png"
+  ],
+  "vectorRemoved": true,
+  "whiteBoxAssetBackgroundRemoved": true,
+  "status": "PASS"
+}

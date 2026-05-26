@@ -1,0 +1,23 @@
+CSH FINAL EXPENSE LIVE PAGE PASS
+
+Goal:
+Ensure Consumer Support Help appears on every Final Expense page that is live/indexable, and remains present on protected Final Expense pages before future batch unlocks.
+
+Results:
+- Total Final Expense pages detected: 401
+- Live/indexable Final Expense pages: 1
+- Protected Final Expense pages: 400
+- CSH listings added this pass: 0
+- Live Final Expense pages missing CSH: 0
+- All Final Expense pages missing CSH: 0
+- Placeholder DID occurrences: 401
+
+Live/indexable Final Expense pages:
+- /services/final-expense/
+
+Important:
+- The live/indexable Final Expense guide page has CSH.
+- Protected local Final Expense pages also have CSH and remain noindex/nofollow.
+- Replace REPLACE_WITH_FINAL_EXPENSE_DID before enabling call routing.
+- Config file updated:
+  /assets/data/owned_listings_config.json

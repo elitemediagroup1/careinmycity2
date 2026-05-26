@@ -1,0 +1,42 @@
+CAREINMYCITY MONETIZATION/STICKY BUILD
+
+Built:
+- City + service intent pages for every city and care category.
+- URL pattern:
+  /florida/boca-raton/home-care/
+  /new-york/staten-island/memory-care/
+  /new-jersey/hoboken/elder-law/
+  /texas/houston/final-expense-support/
+
+Created:
+- 2400 city + service pages.
+- 2400 provider placement slot records.
+- Provider slot data file: /assets/data/provider_slots.json
+- Lead capture schema file: /assets/data/lead_capture_schema.json
+
+Added to city + service pages:
+- Explainer content
+- Questions to ask
+- Local provider/resource placement cards
+- Featured placement available card
+- Verified profile slot
+- Sponsored resource slot
+- Care request / lead capture form
+- FAQ schema
+- Breadcrumb schema
+- ItemList schema
+
+Added to city pages:
+- Monetization preview section explaining where provider profiles and featured placements live.
+- Category cards now point to city + service pages instead of generic search pages.
+
+Lead capture:
+- Prototype forms store payloads in browser localStorage under careinmycity_leads.
+- Payloads are also logged to console.
+- Production routing can connect to HubSpot, Airtable, Google Sheets, Twilio, or buyer-specific ping/post.
+
+QA:
+- HTML pages: 2860
+- Sitemap URLs: 2860
+- City + service pages created: 2400
+- Provider slots: 2400

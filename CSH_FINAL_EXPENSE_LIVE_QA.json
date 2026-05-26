@@ -1,0 +1,21 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_public_listings_owned_csh.zip",
+  "totalFinalExpensePagesDetected": 401,
+  "liveIndexableFinalExpensePages": [
+    "/services/final-expense/"
+  ],
+  "liveIndexableFinalExpensePageCount": 1,
+  "protectedFinalExpensePageCount": 400,
+  "cshListingsAddedThisPass": [],
+  "pagesMissingCSHAll": [],
+  "pagesMissingCSHLiveOnly": [],
+  "placeholderDidOccurrences": 401,
+  "serviceFinalExpenseStatus": {
+    "url": "/services/final-expense/",
+    "indexable": true,
+    "hasCSH": true,
+    "hasPlaceholderDid": true
+  },
+  "status": "PASS"
+}

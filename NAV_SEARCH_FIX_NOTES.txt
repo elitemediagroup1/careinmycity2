@@ -1,0 +1,11 @@
+NAV_SEARCH_FIX_NOTES
+
+Fixed:
+- Rebuilt header markup across all HTML pages.
+- Added final capture-phase nav handler to prevent old handlers from closing dropdowns immediately.
+- States dropdown now populates all 50 states by region.
+- Added mobile menu open state.
+- Patched state, city, and homepage map search forms.
+- No SEO/AEO schema changes were removed.
+
+This package is based on careinmycity_seo_aeo_tightened.zip.

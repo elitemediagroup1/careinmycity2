@@ -1,0 +1,45 @@
+DID REPLACEMENT PLAN FOR MATT
+
+Current placeholder:
+REPLACE_WITH_FINAL_EXPENSE_DID
+
+Occurrences found:
+411
+
+Before live call routing:
+1. Confirm the live Final Expense DID.
+2. Replace every REPLACE_WITH_FINAL_EXPENSE_DID in HTML/JS/JSON.
+3. Use tel:+1XXXXXXXXXX format for href values.
+4. Update /assets/data/owned_listings_config.json.
+5. QA:
+   - /services/final-expense/
+   - /search/?careType=final-expense-support
+   - /search/?state=florida&location=delray-beach&careType=final-expense-support
+6. Place a test call.
+7. Confirm routing and tracking.
+
+If DID is not ready:
+- Replace call buttons with #lead-capture.
+- Button text should become: Use the Find Care Form.
+
+
+SSDI DID ADDITION
+
+Current SSDI placeholder:
+REPLACE_WITH_SSDI_DID
+
+Before live SSDI routing:
+1. Confirm the live SSDI DID.
+2. Replace every REPLACE_WITH_SSDI_DID in HTML/JS/JSON.
+3. Use tel:+1XXXXXXXXXX format for href values.
+4. Update /assets/data/owned_listings_config.json.
+5. QA:
+   - /services/ssdi/
+   - /search/?careType=ssdi
+   - /search/?state=florida&location=boca-raton&careType=ssdi
+6. Place a test SSDI call.
+7. Confirm routing and tracking.
+
+If SSDI DID is not ready:
+- Replace call buttons with #lead-capture.
+- Button text should become: Use the Find Care Form.

@@ -1,0 +1,13 @@
+LOCALIZED COPY BATCH 1 VISITOR-FACING CLEANUP
+
+Fixed:
+- Removed public-facing indexing/review blocks from the localized copy section.
+- Removed visible [REVIEW NEEDED] tags from family-facing content.
+- Kept review/index status in HTML comments and manifest files.
+- Preserved noindex, nofollow protection on updated interior pages.
+- Kept robots.txt sitemap suppression.
+
+Pages cleaned: 84
+
+Why:
+The prior version followed the prompt too literally and exposed internal QA/indexing language on the page. This version keeps the family-facing content clean while preserving review controls for the team.

@@ -1,0 +1,32 @@
+INDEXING + REVIEW PROTECTION PASS
+
+Applied per latest directive.
+
+What changed:
+- Homepage remains indexable.
+- Added <meta name="robots" content="noindex, nofollow"> to every interior HTML page.
+- robots.txt now reads exactly:
+User-agent: *
+Disallow:
+
+- Removed live Sitemap directive from robots.txt.
+- sitemap.xml remains in the package for internal QA but is not referenced by robots.txt.
+- Added INDEXING_REVIEW_MANIFEST.json with review/index status for every HTML page.
+- Added INDEXING_PROTECTION_REPORT.json with homepage link audit and protection status.
+- Added LOCALIZED_COPY_INDEXING_PROMPT.txt for future city + service localized copy generation.
+
+Status:
+CONFIDENCE: High for technical noindex/robots implementation.
+INDEX STATUS: BLOCKED for all interior pages.
+SITEMAP STATUS: SUPPRESSED.
+REVIEW REQUIRED: Yes — interior pages are intentionally blocked until provider slots are filled, localized copy is reviewed, and compliance-sensitive categories are approved.
+
+Homepage link audit:
+- Interior links detected: 63
+- [LINK AUDIT NEEDED]: Yes
+- Reason: Homepage contains internal links to protected interior pages. This is acceptable for dev preview, but should be reviewed before public indexing or hidden until the first page batch is ready.
+
+Technical counts:
+- Total HTML pages: 2860
+- Interior pages noindexed: 2859
+- Sitemap URLs still in file for QA: 2860

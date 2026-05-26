@@ -1,0 +1,14 @@
+CITY_LAYER_PATCH_NOTES
+
+Fixed:
+- Replaced old dropdown markup across the full site.
+- Added final dropdown JS patch so States of Coverage populates all states and opens reliably.
+- Updated city page visible headings to include City, State abbreviation.
+  Example: Helpful Great Falls, MT care resources.
+- Made state-page city pills clickable links to actual city pages.
+- Re-confirmed state-page city cards point to /state/city/ pages.
+- Updated sitemap.
+
+Reason:
+- City-only headings can duplicate across states and are weaker for search.
+- Decorative city pills looked clickable but were not. They now link.

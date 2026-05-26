@@ -1,0 +1,50 @@
+CAREINMYCITY FINAL LOGO FIX
+
+Issue:
+The displayed logo still showed the cropped/busted "care" mark. The asset itself was wrong, not just the CSS.
+
+Fix:
+- Selected the widest/fullest available logo asset.
+- Trimmed excess whitespace.
+- Re-saved the corrected logo over all canonical logo filenames.
+- Replaced careinmycity-logo-web.png with the corrected full-width asset.
+- Tightened the soft backplate so it sits behind the logo without creating a giant empty header.
+- Increased nav logo max-width to 390px desktop and max-height to 72px.
+- Kept mobile safe sizing.
+- Preserved robots/sitemap/indexing.
+
+Selected source:
+/mnt/data/careinmycity_true_logo_fix_work/careinmycity_site/assets/careinmycity-logo-web.png
+
+Dimensions:
+- selected source: 900 x 506
+- trimmed: 796 x 350
+- web: 796 x 350
+
+QA:
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_logo_visual_tuned.zip",
+  "selectedLogoSource": "/mnt/data/careinmycity_true_logo_fix_work/careinmycity_site/assets/careinmycity-logo-web.png",
+  "selectedLogoName": "careinmycity-logo-web.png",
+  "selectedLogoDimensions": {
+    "width": 900,
+    "height": 506,
+    "aspect": 1.7786561264822134
+  },
+  "trimmedDimensions": {
+    "width": 796,
+    "height": 350,
+    "aspect": 2.2742857142857145
+  },
+  "webLogoDimensions": {
+    "width": 796,
+    "height": 350,
+    "aspect": 2.2742857142857145
+  },
+  "htmlFilesUpdated": 0,
+  "cssFinalLogoFix": true,
+  "robotsHasSitemap": true,
+  "publicSitemapUrlCount": 8,
+  "status": "PASS"
+}

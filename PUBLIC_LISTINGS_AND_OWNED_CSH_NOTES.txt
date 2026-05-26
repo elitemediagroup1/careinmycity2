@@ -1,0 +1,32 @@
+PUBLIC LISTINGS + OWNED CONSUMER SUPPORT HELP UPDATE
+
+What changed:
+- Added helpful public/resource listings to city + service pages.
+- Added helpful public/resource listings to unlocked Care Resource guide pages.
+- Added compact resource-starting-point section to city overview pages.
+- Added owned Consumer Support Help listing above public listings on Final Expense Support pages.
+
+Important:
+- Consumer Support Help final expense CTA currently uses placeholder DID:
+  REPLACE_WITH_FINAL_EXPENSE_DID
+- Matt should update:
+  /assets/data/owned_listings_config.json
+  and/or replace the placeholder in HTML before launch.
+- If no DID is live yet, change the CTA to #lead-capture.
+
+Counts:
+- City + service pages with listings: 2400
+- Care Resource guide pages with listings: 6
+- City overview pages with mini resource section: 406
+- Final Expense pages with Consumer Support Help owned listing: 401
+- Placeholder DID occurrences: 401
+
+Indexing:
+- Homepage + Care Resource guide pages remain indexable.
+- State/city/local intent pages remain noindex/nofollow.
+- Public sitemap remains limited to homepage + Care Resource guides.
+
+Compliance:
+- Public resources are labeled as public/nonprofit/federal/community resources.
+- Owned Consumer Support Help is not presented as a government resource or professional advisor.
+- Copy avoids medical, legal, financial, or insurance advice.

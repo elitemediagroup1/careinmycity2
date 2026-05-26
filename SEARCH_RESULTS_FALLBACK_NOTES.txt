@@ -1,0 +1,22 @@
+SEARCH RESULTS FALLBACK PATCH
+
+Issue:
+The search/results page was still reading only the old resource/provider records, so searches like:
+- Final Expense Support in Delray Beach
+could show “0 resources found” even though the site now has Consumer Support Help and public resource listings.
+
+Fix:
+- Added /assets/data/search_fallback_resources.json.
+- Patched /search/index.html with a fallback results container.
+- Patched /assets/site.js with a fallback renderer.
+- If no provider records exist, search now shows:
+  - relevant Care Resource guide link
+  - Consumer Support Help first for Final Expense Support
+  - public/educational resource cards underneath
+- Search page remains noindex/nofollow.
+- Local pages remain protected.
+- Public sitemap remains homepage + unlocked Care Resource guides only.
+
+Important:
+- Consumer Support Help call CTA still uses REPLACE_WITH_FINAL_EXPENSE_DID.
+- Replace that placeholder before live call routing.

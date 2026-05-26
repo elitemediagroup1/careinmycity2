@@ -1,0 +1,36 @@
+LOCALIZED COPY BATCH 1
+
+Applied the localized copy prompt to the first priority monetization/review batch.
+
+Markets:
+- Florida: Boca Raton, Delray Beach, Fort Lauderdale, West Palm Beach, Miami, Tampa, Orlando, Jacksonville
+- New York: Staten Island, Brooklyn, Queens, New York City, Long Island
+- New Jersey: Hoboken, Jersey City, Newark, Edison
+- Texas: Houston, Dallas, Austin, San Antonio
+
+Categories:
+- Home Care
+- Memory Care
+- Elder Law & Benefits
+- Final Expense Support
+
+Pages updated: 84
+Missing pages: 0
+
+Each updated page now includes clearly labeled blocks:
+- Local context intro
+- What families in the city typically encounter
+- Three locally relevant questions
+- Local resource/context note
+- CTA line pointing to the find care form
+- Confidence / Index Status / Sitemap Status / Review Required
+
+Compliance and indexing:
+- All updated pages remain noindex, nofollow.
+- INDEX STATUS: BLOCKED.
+- SITEMAP STATUS: SUPPRESSED.
+- REVIEW REQUIRED: Yes.
+- Reason: local context uses [REVIEW NEEDED], city population is not verified, and elder law/final expense are compliance-sensitive.
+
+See:
+- LOCALIZED_COPY_BATCH_1_MANIFEST.json

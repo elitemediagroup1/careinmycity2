@@ -1,0 +1,29 @@
+CARE RESOURCES UNBLOCK PASS
+
+What changed:
+- Homepage remains indexable.
+- Care Resource guide pages under /services/ are now indexable.
+- Removed noindex/nofollow from /services/ pages.
+- Kept state, city, and city + service intent pages protected with noindex/nofollow.
+- Restored Sitemap directive in robots.txt.
+- Public sitemap.xml now includes only homepage + Care Resource guide pages.
+- Full original sitemap was preserved as sitemap_all_internal_qa.xml for QA/reference.
+
+Care Resource pages unblocked:
+- /services/assisted-living/
+- /services/elder-law/
+- /services/final-expense/
+- /services/home-care/
+- /services/memory-care/
+- /services/respite-care/
+
+Current status:
+- Homepage indexable: True
+- Care Resource pages indexable: 6
+- Public sitemap URLs: 7
+- Protected interior pages still blocked: 2853
+
+robots.txt now reads:
+User-agent: *
+Disallow:
+Sitemap: https://careinmycity.com/sitemap.xml

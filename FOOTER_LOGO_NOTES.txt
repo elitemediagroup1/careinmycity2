@@ -1,0 +1,29 @@
+CAREINMYCITY FOOTER LOGO UPDATE
+
+Goal:
+Create a footer-specific white logo that reads clearly on the dark navy footer and use it only in the footer.
+
+Changes:
+- Created /assets/careinmycity-logo-footer.png from the current transparent full-color logo.
+- Recolored visible pixels to white while preserving transparency/anti-aliasing.
+- Updated footer logo references sitewide to use the footer-specific asset.
+- Added footer-only sizing rules:
+  - desktop max-width: 220px
+  - mobile max-width: 180px
+
+QA:
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_logo_transparent_fixed.zip",
+  "sourceColorLogo": "assets/careinmycity-logo-web.png",
+  "footerLogoCreated": "assets/careinmycity-logo-footer.png",
+  "footerLogoDimensions": {
+    "width": 796,
+    "height": 350
+  },
+  "htmlFilesUpdated": 3261,
+  "footerLogoReferencesDetected": 3261,
+  "footerDesktopMaxWidth": "220px",
+  "footerMobileMaxWidth": "180px",
+  "status": "PASS"
+}

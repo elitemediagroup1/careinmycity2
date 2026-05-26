@@ -1,0 +1,35 @@
+{
+  "date": "2026-05-25",
+  "sourcePackage": "careinmycity_care_resources_unblocked.zip",
+  "cityServicePagesLinkedToCareGuides": 2400,
+  "cityOverviewPagesWithGuideStrip": 406,
+  "statePagesWithGuideStrip": 50,
+  "careResourcesRemainIndexable": [
+    {
+      "url": "/services/home-care/",
+      "hasNoindex": false
+    },
+    {
+      "url": "/services/memory-care/",
+      "hasNoindex": false
+    },
+    {
+      "url": "/services/assisted-living/",
+      "hasNoindex": false
+    },
+    {
+      "url": "/services/respite-care/",
+      "hasNoindex": false
+    },
+    {
+      "url": "/services/elder-law/",
+      "hasNoindex": false
+    },
+    {
+      "url": "/services/final-expense/",
+      "hasNoindex": false
+    }
+  ],
+  "protectedLocalPagesStillNoindexSampleMissing": [],
+  "publicSitemapUrlCount": 7
+}

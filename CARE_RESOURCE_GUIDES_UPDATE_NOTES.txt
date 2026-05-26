@@ -1,0 +1,24 @@
+CARE_RESOURCE_GUIDES_UPDATE
+
+Changed:
+- Renamed nav concept from Services to Care Resources.
+- Rewrote dropdown copy to explain each resource category in plain English.
+- Rebuilt each guide page as a FAQ/explainer resource, not a service sales page.
+- Added sections:
+  - What is it?
+  - When do families usually look for it?
+  - What can it include?
+  - Questions to ask before choosing an option
+  - What should families be careful about?
+  - Related resources
+  - Find local resources
+- Added FAQ schema for each resource guide.
+- Updated sitemap.
+
+Resource guide pages:
+- /services/home-care/
+- /services/memory-care/
+- /services/assisted-living/
+- /services/respite-care/
+- /services/elder-law/
+- /services/final-expense/
