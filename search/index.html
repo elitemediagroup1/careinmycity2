@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Care Resources | CareInMyCity</title>
+  <meta name="description" content="Search local care resources, care categories, city pages, and family support options on CareInMyCity." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://careinmycity.com/search/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CareInMyCity" />
+  <meta property="og:title" content="Search Care Resources | CareInMyCity" />
+  <meta property="og:description" content="Search local care resources, care categories, city pages, and family support options on CareInMyCity." />
+  <meta property="og:url" content="https://careinmycity.com/search/" />
+  <meta property="og:image" content="https://careinmycity.com/assets/careinmycity-logo-web.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Search Care Resources | CareInMyCity" />
+  <meta name="twitter:description" content="Search local care resources, care categories, city pages, and family support options on CareInMyCity." />
+  <meta name="twitter:image" content="https://careinmycity.com/assets/careinmycity-logo-web.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+
+
+  <header>
+    <div class="container nav">
+      <a href="../index.html" class="logo image-logo" aria-label="CareInMyCity home">
+        <img class="logo-img" src="../assets/careinmycity-logo-web.png" alt="CareInMyCity" />
+      </a>
+      <div class="nav-right">
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="../index.html">Home</a>
+          <a href="../about/index.html">About Us</a>
+
+          <div class="nav-dropdown">
+            <button class="dropdown-toggle" type="button" aria-expanded="false">States of Coverage</button>
+            <div class="dropdown-menu" data-states-menu>
+              <div class="dropdown-label">All States</div>
+              <a href="../states/index.html"><strong>View All States</strong><span>National coverage index</span></a>
+            </div>
+          </div>
+
+          <div class="nav-dropdown">
+            <button class="dropdown-toggle" type="button" aria-expanded="false">Care Resources</button>
+            <div class="dropdown-menu">
+              <a href="../services/home-care/index.html"><strong>Home Care</strong><span>Understand in-home support and daily help.</span></a>
+              <a href="../services/memory-care/index.html"><strong>Memory Care</strong><span>Dementia, wandering, safety, and supervision.</span></a>
+              <a href="../services/assisted-living/index.html"><strong>Assisted Living</strong><span>Communities, care levels, costs, and questions.</span></a>
+              <a href="../services/respite-care/index.html"><strong>Respite Care</strong><span>Backup care and short-term caregiver relief.</span></a>
+              <a href="../services/elder-law/index.html"><strong>Elder Law & Benefits</strong><span>Planning documents, SSDI, Medicaid, and family decisions.</span></a>
+              <a href="../services/final-expense/index.html"><strong>Final Expense Support</strong><span>End-of-life costs, coverage, and preparation.</span></a>
+            </div>
+          </div>
+        </nav>
+        <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
+        <a href="../search/index.html" class="nav-cta">Find Care</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="search-hero">
+      <div class="container search-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Resource search</div>
+          <h1>Search care resources and family support options.</h1>
+          <p class="hero-copy">Use the filters below to explore guide cards, local resource placeholders, and care-related starting points. This is the first version of the CareInMyCity resource engine.</p>
+        </div>
+        <aside class="search-card">
+          <h2>Refine your search.</h2>
+          <form class="quick-search" id="resourceFilterForm">
+            <div>
+              <label for="filterState">State</label>
+              <select id="filterState" name="state">
+                <option value="">All states</option>
+                <option value="florida">Florida</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterLocation">City</label>
+              <select id="filterLocation" name="location">
+                <option value="">All cities</option>
+                <option value="boca-raton">Boca Raton</option>
+                <option value="delray-beach">Delray Beach</option>
+                <option value="deerfield-beach">Deerfield Beach</option>
+                <option value="boynton-beach">Boynton Beach</option>
+                <option value="west-palm-beach">West Palm Beach</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterCareType">Care category</label>
+              <select id="filterCareType" name="careType">
+                <option value="">All categories</option>
+                <option value="home-care">Home care</option>
+                <option value="memory-care">Memory care</option>
+                <option value="assisted-living">Assisted living</option>
+                <option value="respite-care">Respite care</option>
+                <option value="elder-law">Elder law</option>
+                <option value="ssdi-attorneys">SSDI attorneys</option>
+                <option value="final-expense-support">Final expense support</option>
+                <option value="caregiver-support">Caregiver support</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary">Update Results</button>
+            <p class="form-note">CareInMyCity is not a medical provider, law firm, insurance carrier, or government agency.</p>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <section class="resource-engine-section" id="search-results">
+      <div class="container">
+        <div class="section-heading fade-up">
+          <div class="label">Directory results</div>
+          <h2>Matching resources and starting points.</h2>
+          <p>Explore matching care guides, public resources, and support starting points based on your selected state, city, and care category.</p>
+        </div>
+        <div class="resource-results-meta" data-resource-meta></div>
+        <div class="resource-results-grid" data-resource-results></div>
+      </div>
+    </section>
+  
+        <div id="searchFallbackResults" class="search-fallback-results" hidden></div>
+
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <a href="../index.html" class="logo footer-logo image-logo" aria-label="CareInMyCity home">
+        <img class="logo-img" src="../assets/careinmycity-logo-footer.png" alt="CareInMyCity" />
+      </a>
+      <div class="footer-links">
+        <a href="../florida/index.html">Florida</a>
+        <a href="#">New York</a>
+        <a href="#">New Jersey</a>
+        <a href="../search/index.html">Search</a>
+      </div>
+      <div>© 2026 CareInMyCity. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="../assets/site.js"></script>
+
+  <div class="carl-floating" aria-live="polite">
+    <button class="carl-launcher" type="button" aria-label="Ask Carl, your Care Companion">
+      <span class="carl-avatar" aria-hidden="true"></span>
+      <span class="carl-launcher-label">Ask Carl</span>
+    </button>
+  </div>
+
+  <aside class="carl-panel" id="carlPanel" aria-label="Carl, your Care Companion">
+    <div class="carl-panel-header">
+      <div class="carl-title">
+        <span class="carl-avatar" aria-hidden="true"></span>
+        <div>
+          <strong>Carl, your Care Companion</strong>
+          <span>Here to help you find a starting point</span>
+        </div>
+      </div>
+      <button class="carl-close" type="button" aria-label="Close Carl">&times;</button>
+    </div>
+
+    <div class="carl-messages" id="carlMessages">
+      <div class="carl-message carl">
+        Hi, I’m Carl. Tell me what’s going on, and I’ll help you find a good starting point. I can’t give medical, legal, financial, or insurance advice, but I can help you organize the next step.
+      </div>
+      <div class="carl-options" aria-label="Common care situations">
+        <button class="carl-chip" type="button" data-carl-need="home-care">They want to stay at home</button>
+        <button class="carl-chip" type="button" data-carl-need="memory-care">Memory or safety concerns</button>
+        <button class="carl-chip" type="button" data-carl-need="elder-law">Legal or benefits help</button>
+        <button class="carl-chip" type="button" data-carl-need="final-expense-support">Planning ahead financially</button>
+      </div>
+    </div>
+
+    <form class="carl-form" id="carlForm">
+      <div class="carl-input-row">
+        <input id="carlInput" type="text" placeholder="City, ZIP, or what changed recently..." aria-label="Tell Carl what changed recently" />
+        <button type="submit">Send</button>
+      </div>
+      <p class="carl-disclaimer">Carl provides general navigation help only. For medical, legal, financial, or insurance advice, speak with a qualified professional.</p>
+    </form>
+  </aside>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "CareInMyCity",
+  "url": "https://careinmycity.com/",
+  "logo": "https://careinmycity.com/assets/careinmycity-logo.png",
+  "description": "CareInMyCity helps families find care-related resources, local care categories, and helpful questions before making care decisions."
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "CareInMyCity",
+  "url": "https://careinmycity.com/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://careinmycity.com/search/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://careinmycity.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Search",
+      "item": "https://careinmycity.com/search/"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What can CareInMyCity help with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CareInMyCity helps families find care-related starting points, understand categories, and prepare better questions before contacting providers or professionals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is CareInMyCity a medical provider, law firm, insurance carrier, or government agency?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. CareInMyCity provides general informational guidance and is not a substitute for professional advice."
+      }
+    }
+  ]
+}
+  </script>
+</body>
+</html>
