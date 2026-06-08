@@ -2623,3 +2623,26 @@ footer .logo.image-logo img {
   }
 }
 /* End footer-specific white logo */
+
+
+/* Carl Care Support Toolkit — header + footer logo sizing */
+.brand img {
+  width: 200px;
+  max-width: 100%;
+  max-height: 60px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+img.footer-logo {
+  width: 190px;
+  max-width: 100%;
+  max-height: 56px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
