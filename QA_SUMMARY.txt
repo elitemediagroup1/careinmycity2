@@ -1,0 +1,13 @@
+CareInMyCity Next 8 States Fixed Export QA
+
+HTML pages checked: 520
+New unlocked HTML pages: 520
+Updated sitemap URL count: 652
+Remaining noindex files: 0
+Missing asset references: 0
+
+Remaining noindex files:
+None
+
+Missing asset refs:
+None

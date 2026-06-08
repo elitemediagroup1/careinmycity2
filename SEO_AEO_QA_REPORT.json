@@ -1,0 +1,72 @@
+{
+  "summary": {
+    "source_file": "careinmycity_DONE_states_only_upload_v2(1).zip",
+    "optimized_date": "2026-06-05",
+    "html_pages_checked": 124,
+    "changes_applied": 124,
+    "state_pages": 4,
+    "city_hub_pages": 24,
+    "city_service_pages": 96,
+    "noindex_pages": 0,
+    "missing_meta_description": 0,
+    "missing_h1": 0,
+    "missing_canonical": 0,
+    "missing_schema": 0,
+    "duplicate_titles": 0,
+    "duplicate_descriptions": 0,
+    "duplicate_h1s": 0,
+    "exact_duplicate_body_pages": 0,
+    "missing_asset_refs": 0,
+    "min_body_word_count": 691,
+    "avg_body_word_count": 1060.7,
+    "max_body_word_count": 1537
+  },
+  "noindex_pages": [],
+  "missing_meta_description": [],
+  "missing_h1": [],
+  "missing_canonical": [],
+  "missing_schema": [],
+  "missing_asset_refs": [],
+  "sample_low_word_count_pages": [
+    [
+      691,
+      "new-york/queens/ssdi/index.html"
+    ],
+    [
+      695,
+      "florida/orlando/ssdi/index.html"
+    ],
+    [
+      695,
+      "new-jersey/trenton/ssdi/index.html"
+    ],
+    [
+      697,
+      "florida/tampa/ssdi/index.html"
+    ],
+    [
+      698,
+      "new-jersey/newark/ssdi/index.html"
+    ],
+    [
+      699,
+      "florida/miami/ssdi/index.html"
+    ],
+    [
+      699,
+      "new-jersey/jersey-city/ssdi/index.html"
+    ],
+    [
+      699,
+      "texas/dallas/ssdi/index.html"
+    ],
+    [
+      700,
+      "new-jersey/edison/ssdi/index.html"
+    ],
+    [
+      700,
+      "texas/san-antonio/ssdi/index.html"
+    ]
+  ]
+}

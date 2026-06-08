@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Discharge Helper | CareInMyCity</title>
+  <meta name="description" content="A discharge moment can be chaotic. Carl helps families organize home safety, medication, transportation, follow-up, and care support questions." />
+  <meta name="robots" content="index, follow" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="../index.html" class="brand" aria-label="CareInMyCity home">
+      <img src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity" />
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="../index.html#tools">Tools</a>
+      <a href="../tools/carl-care-quiz.html">Care Quiz</a>
+      <a href="../tools/family-care-summary.html">Family Summary</a>
+      <a href="../index.html#local">Local Directory</a>
+    </nav>
+    <a href="../tools/carl-care-quiz.html" class="btn btn-primary">Start with Carl</a>
+  </div>
+</header>
+
+<main>
+  <section class="tool-hero">
+    <div class="container">
+      <div class="eyebrow"><span class="dot"></span> Carl’s Care Support Toolkit</div>
+      <h1>Organize the first steps after hospital discharge.</h1>
+      <p class="hero-copy">A discharge moment can be chaotic. Carl helps families organize home safety, medication, transportation, follow-up, and care support questions.</p>
+      <div class="hero-actions">
+        <a href="#tool" class="btn btn-primary">Use This Tool</a>
+        <a href="../index.html#tools" class="btn btn-secondary">See All Tools</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="tool">
+    <div class="container tool-layout">
+      <aside class="card sidebar-card">
+        <div class="icon">🏥</div>
+        <h3>How Carl uses this</h3>
+        <p>This tool helps turn a stressful care question into a clearer next step. It is not medical, legal, insurance, or benefits advice.</p>
+        <div class="notice">For urgent safety or medical concerns, contact emergency services or a qualified professional directly.</div>
+      </aside>
+
+      <div class="form-card">
+        <div class="label">Start here</div>
+        <h2>Hospital Discharge Helper</h2>
+        <p>Fill in what you know. The goal is clarity, not perfection.</p>
+
+        
+          <div class="field">
+            <label for="q1">When is discharge expected?</label>
+            <select id="q1"><option>Today</option><option>Tomorrow</option><option>This week</option><option>Not sure</option></select>
+          </div>
+          <div class="field">
+            <label for="q2">Can the person walk safely?</label>
+            <select id="q2"><option>Yes</option><option>No</option><option>Sometimes</option><option>Not sure</option></select>
+          </div>
+          <div class="field">
+            <label for="q3">What changed medically or physically?</label>
+            <textarea id="q3" placeholder="Fall, surgery, wound, new medication, weakness, confusion, diagnosis"></textarea>
+          </div>
+
+        <label>What applies?</label>
+        <fieldset>
+          <label class="option"><input type="checkbox" value="Medication changed"><span>Medication changed</span></label><label class="option"><input type="checkbox" value="Follow-up appointment needed"><span>Follow-up appointment needed</span></label><label class="option"><input type="checkbox" value="Home may not be safe"><span>Home may not be safe</span></label><label class="option"><input type="checkbox" value="Needs help bathing/dressing"><span>Needs help bathing/dressing</span></label><label class="option"><input type="checkbox" value="Needs transportation"><span>Needs transportation</span></label><label class="option"><input type="checkbox" value="Family cannot cover all shifts"><span>Family cannot cover all shifts</span></label><label class="option"><input type="checkbox" value="Memory or confusion concern"><span>Memory or confusion concern</span></label>
+        </fieldset>
+
+        <button class="btn btn-primary" onclick="buildResult()">Create Carl’s Summary</button>
+
+        <div class="result" id="result">
+          <h3>Carl’s draft summary</h3>
+          <p id="summaryText">Carl may suggest home care questions, home health questions for a doctor, medication review, fall-risk checklist, transportation planning, and caregiver backup.</p>
+          <div class="result-grid">
+            <div class="result-box">
+              <strong>Likely next steps</strong>
+              <ul class="check-list" id="nextSteps"></ul>
+            </div>
+            <div class="result-box">
+              <strong>Care paths to compare</strong>
+              <div id="badges"></div>
+            </div>
+          </div>
+          <div class="notice">Save this summary, share it with family, or use it before calling a provider or qualified professional.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <img class="footer-logo" src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity" />
+    <span>Local care options for the people you love.</span>
+    <span>© 2026 CareInMyCity. All rights reserved.</span>
+  </div>
+</footer>
+<a class="carl-widget" href="../tools/carl-care-quiz.html" aria-label="Start with Carl">
+  <img src="../assets/carl-care-guide.png" alt="" />
+  <span>Start with Carl</span>
+</a>
+
+<script>
+function buildResult() {
+  const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(x => x.value);
+  const result = document.getElementById('result');
+  const nextSteps = document.getElementById('nextSteps');
+  const badges = document.getElementById('badges');
+  nextSteps.innerHTML = '';
+  badges.innerHTML = '';
+
+  const baseSteps = [
+    'Write down what changed and when it started.',
+    'Decide who in the family needs to be part of the next conversation.',
+    'Gather any documents, medication lists, notes, or deadline letters.',
+    'Compare the care path that matches the most urgent concern.'
+  ];
+  baseSteps.forEach(step => {
+    const li = document.createElement('li');
+    li.textContent = step;
+    nextSteps.appendChild(li);
+  });
+
+  const paths = new Set();
+  checked.forEach(item => {
+    const lower = item.toLowerCase();
+    if (lower.includes('home') || lower.includes('bath') || lower.includes('medication')) paths.add('Home Care');
+    if (lower.includes('memory') || lower.includes('stove') || lower.includes('wandering') || lower.includes('confusion')) paths.add('Memory Care');
+    if (lower.includes('overwhelmed') || lower.includes('sleep') || lower.includes('backup') || lower.includes('alone')) paths.add('Respite Care');
+    if (lower.includes('assisted')) paths.add('Assisted Living');
+    if (lower.includes('legal') || lower.includes('poa') || lower.includes('attorney') || lower.includes('power')) paths.add('Elder Law');
+    if (lower.includes('ssdi') || lower.includes('disability') || lower.includes('denial')) paths.add('SSDI Help');
+    if (lower.includes('final') || lower.includes('funeral') || lower.includes('insurance')) paths.add('Final Expense Support');
+  });
+  if (!paths.size) ['Home Care','Respite Care','Elder Law'].forEach(x => paths.add(x));
+  paths.forEach(path => {
+    const span = document.createElement('span');
+    span.className = 'badge';
+    span.textContent = path;
+    badges.appendChild(span);
+  });
+  result.classList.add('show');
+  result.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+</script>
+</body>
+</html>

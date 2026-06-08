@@ -1,0 +1,85 @@
+{
+  "package": "CareInMyCity Care Support Toolkit",
+  "tools_created": 9,
+  "tools": [
+    {
+      "title": "Carl\u2019s Care Quiz",
+      "slug": "carl-care-quiz",
+      "path": "/tools/carl-care-quiz.html"
+    },
+    {
+      "title": "Caregiver Burnout Checker",
+      "slug": "caregiver-burnout-checker",
+      "path": "/tools/caregiver-burnout-checker.html"
+    },
+    {
+      "title": "Home Safety Walkthrough",
+      "slug": "home-safety-walkthrough",
+      "path": "/tools/home-safety-walkthrough.html"
+    },
+    {
+      "title": "Family Care Summary Builder",
+      "slug": "family-care-summary",
+      "path": "/tools/family-care-summary.html"
+    },
+    {
+      "title": "Provider Call Prep Tool",
+      "slug": "provider-call-prep",
+      "path": "/tools/provider-call-prep.html"
+    },
+    {
+      "title": "Document Checklist",
+      "slug": "document-checklist",
+      "path": "/tools/document-checklist.html"
+    },
+    {
+      "title": "Hospital Discharge Helper",
+      "slug": "hospital-discharge-helper",
+      "path": "/tools/hospital-discharge-helper.html"
+    },
+    {
+      "title": "Memory Concern Tracker",
+      "slug": "memory-concern-tracker",
+      "path": "/tools/memory-concern-tracker.html"
+    },
+    {
+      "title": "First 72 Hours Plan",
+      "slug": "first-72-hours",
+      "path": "/tools/first-72-hours.html"
+    }
+  ],
+  "assets": [
+    "assets/styles.css",
+    "assets/careinmycity-logo.png",
+    "assets/carl-care-guide.png"
+  ],
+  "notes": "Static prototype tools with front-end summary behavior. Carl Carl/backend can be wired later.",
+  "llm_upgrade": {
+    "tool": "Carl\u2019s Care Quiz",
+    "frontend": "/tools/carl-care-quiz.html",
+    "netlify_function": "/netlify/functions/carl-care-quiz.js",
+    "env_required": [
+      "ANTHROPIC_API_KEY"
+    ],
+    "env_optional": [
+      "ANTHROPIC_MODEL"
+    ],
+    "fallback": "Local routing fallback when function/API is unavailable"
+  },
+  "polish_pass": {
+    "carl_visual_size": "increased",
+    "user_facing_llm_language": "removed",
+    "logo_assets_added": [
+      "assets/careinmycity-logo-clean.png",
+      "assets/careinmycity-logo-clean.webp"
+    ],
+    "note": "True vector logo should replace raster if available."
+  },
+  "transparent_logo_fix": {
+    "asset": "assets/careinmycity-logo-transparent.png",
+    "webp": "assets/careinmycity-logo-transparent.webp",
+    "white_canvas_removed": true,
+    "html_references_updated": true,
+    "footer_white_card_removed": true
+  }
+}

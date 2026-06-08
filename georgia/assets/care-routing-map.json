@@ -1,0 +1,40 @@
+{
+  "concern_to_service": {
+    "memory": "memory-care",
+    "forgetting": "memory-care",
+    "stove": "memory-care",
+    "wandering": "memory-care",
+    "confusion": "memory-care",
+    "missed medication": "home-care",
+    "help at home": "home-care",
+    "bathing": "home-care",
+    "transportation": "home-care",
+    "caregiver burnout": "respite-care",
+    "overwhelmed": "respite-care",
+    "backup": "respite-care",
+    "cannot live alone": "assisted-living",
+    "daily support": "assisted-living",
+    "power of attorney": "elder-law",
+    "poa": "elder-law",
+    "guardianship": "elder-law",
+    "medicaid planning": "elder-law",
+    "ssdi denial": "ssdi",
+    "disability": "ssdi",
+    "appeal": "ssdi",
+    "funeral": "final-expense-support",
+    "burial": "final-expense-support",
+    "final expense": "final-expense-support"
+  },
+  "tool_to_primary_path": {
+    "carl-care-quiz": "care-roadmap",
+    "caregiver-burnout-checker": "respite-care",
+    "home-safety-walkthrough": "home-care",
+    "family-care-summary": "care-roadmap",
+    "provider-call-prep": "provider-call-prep",
+    "document-checklist": "elder-law",
+    "hospital-discharge-helper": "home-care",
+    "memory-concern-tracker": "memory-care",
+    "first-72-hours": "care-roadmap"
+  },
+  "url_pattern": "/{state_slug}/{city_slug}/{service_slug}/"
+}

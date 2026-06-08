@@ -1,0 +1,117 @@
+{
+  "summary": {
+    "source_file": "careinmycity_DONE_states_SEO_AEO_OPTIMIZED.zip",
+    "optimized_date": "2026-06-05",
+    "html_pages_checked": 124,
+    "ssdi_pages_expanded": 24,
+    "ssdi_pages_total": 24,
+    "remaining_noindex_pages": 0,
+    "missing_asset_refs": 0,
+    "missing_schema_pages": 0,
+    "ssdi_pages_missing_faq_schema": 0,
+    "ssdi_min_word_count": 1047,
+    "ssdi_avg_word_count": 1064.3,
+    "ssdi_max_word_count": 1082
+  },
+  "ssdi_word_counts": [
+    [
+      1047,
+      "new-york/queens/ssdi/index.html"
+    ],
+    [
+      1049,
+      "florida/tampa/ssdi/index.html"
+    ],
+    [
+      1051,
+      "florida/orlando/ssdi/index.html"
+    ],
+    [
+      1053,
+      "florida/miami/ssdi/index.html"
+    ],
+    [
+      1057,
+      "new-jersey/trenton/ssdi/index.html"
+    ],
+    [
+      1057,
+      "texas/san-antonio/ssdi/index.html"
+    ],
+    [
+      1058,
+      "new-jersey/edison/ssdi/index.html"
+    ],
+    [
+      1059,
+      "new-jersey/newark/ssdi/index.html"
+    ],
+    [
+      1060,
+      "new-york/brooklyn/ssdi/index.html"
+    ],
+    [
+      1061,
+      "texas/dallas/ssdi/index.html"
+    ],
+    [
+      1062,
+      "florida/jacksonville/ssdi/index.html"
+    ],
+    [
+      1063,
+      "new-jersey/jersey-city/ssdi/index.html"
+    ],
+    [
+      1065,
+      "florida/fort-lauderdale/ssdi/index.html"
+    ],
+    [
+      1066,
+      "texas/austin/ssdi/index.html"
+    ],
+    [
+      1067,
+      "texas/houston/ssdi/index.html"
+    ],
+    [
+      1069,
+      "new-jersey/toms-river/ssdi/index.html"
+    ],
+    [
+      1069,
+      "new-york/new-york-city/ssdi/index.html"
+    ],
+    [
+      1069,
+      "texas/fort-worth/ssdi/index.html"
+    ],
+    [
+      1071,
+      "florida/west-palm-beach/ssdi/index.html"
+    ],
+    [
+      1074,
+      "new-york/long-island/ssdi/index.html"
+    ],
+    [
+      1076,
+      "florida/delray-beach/ssdi/index.html"
+    ],
+    [
+      1076,
+      "new-jersey/hoboken/ssdi/index.html"
+    ],
+    [
+      1082,
+      "florida/boca-raton/ssdi/index.html"
+    ],
+    [
+      1082,
+      "new-york/staten-island/ssdi/index.html"
+    ]
+  ],
+  "remaining_noindex_pages": [],
+  "missing_asset_refs": [],
+  "ssdi_pages_missing_faq_schema": []
+}
