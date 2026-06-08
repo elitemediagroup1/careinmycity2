@@ -13,6 +13,9 @@
 /tools/provider-call-prep.html   /tools/provider-call-prep   301!
 /tools/index.html   /tools/   301!
 
+# --- Favicon fallback (serve PNG for .ico requests) ---
+/assets/favicon.ico   /assets/careinmycity-logo-web.png   200
+
 # --- Internal / build files: force 404 (override static serving) ---
 /931527fc2c60480a97bfe58c417e0503.txt   /404.html   404!
 /CARE_RESOURCES_UNBLOCK_NOTES.txt   /404.html   404!
