@@ -97,6 +97,13 @@
     }
     .profile-saved.show { display:block; }
   </style>
+
+  <link rel="canonical" href="https://careinmycity.com/tools/carl-care-quiz">
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/careinmycity-logo-web.png">
+  <link rel="apple-touch-icon" href="/assets/careinmycity-logo-web.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Carl’s Care Quiz","description":"Tell Carl what changed and get a personalized Care Roadmap with suggested care paths, questions to ask, and a next step.","url":"https://careinmycity.com/tools/carl-care-quiz","isPartOf":{"@type":"WebSite","name":"CareInMyCity","url":"https://careinmycity.com/"},"publisher":{"@type":"Organization","name":"CareInMyCity","url":"https://careinmycity.com/","logo":{"@type":"ImageObject","url":"https://careinmycity.com/assets/careinmycity-logo-full.png"}},"applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 </head>
 <body>
 
@@ -106,11 +113,12 @@
       <img src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity" />
     </a>
     <nav class="nav-links" aria-label="Main navigation">
-      <a href="../index.html#tools">Tools</a>
+      <a href="index.html">Tools</a>
       <a href="carl-care-quiz.html">Care Quiz</a>
       <a href="family-care-summary.html">Family Summary</a>
-      <a href="../index.html#local">Local Directory</a>
+      <a href="../search/index.html">Local Directory</a>
     </nav>
+        <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
     <a href="carl-care-quiz.html" class="btn btn-primary">Start with Carl</a>
   </div>
 </header>
@@ -123,7 +131,7 @@
       <p class="hero-copy">Carl’s Care Quiz uses a personalized response to summarize the situation, suggest care paths to compare, and give one clear next step — without replacing medical, legal, insurance, or benefits professionals.</p>
       <div class="hero-actions">
         <a href="#tool" class="btn btn-primary">Start Carl’s Care Quiz</a>
-        <a href="../index.html#tools" class="btn btn-secondary">See All Tools</a>
+        <a href="index.html" class="btn btn-secondary">See All Tools</a>
       </div>
     </div>
   </section>
@@ -191,7 +199,7 @@
 
         <div class="llm-response-card" id="responseCard">
           <div class="carl-response-header">
-            <img src="../assets/carl-care-guide.png" class="carl-avatar-small" alt="" />
+            <img src="../assets/carl-care-guide.png" class="carl-avatar-small" alt="Carl, the CareInMyCity care guide assistant" />
             <div>
               <div class="label" style="margin-bottom:2px;">Carl’s Care Roadmap</div>
               <h2 style="font-size:32px;margin-bottom:0;">Here’s where I’d start.</h2>
@@ -242,7 +250,7 @@
 </footer>
 
 <a class="carl-widget" href="carl-care-quiz.html" aria-label="Start with Carl">
-  <img src="../assets/carl-care-guide.png" alt="" />
+  <img src="../assets/carl-care-guide.png" alt="Carl, the CareInMyCity care guide assistant" />
   <span>Start with Carl</span>
 </a>
 
@@ -432,5 +440,6 @@ function copyCarlSummary() {
   });
 }
 </script>
+  <script src="../assets/site.js"></script>
 </body>
 </html>
