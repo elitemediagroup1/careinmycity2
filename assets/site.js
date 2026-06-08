@@ -1253,3 +1253,25 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(renderSsdiFallback, 700);
   });
 })();
+
+
+/* CareInMyCity — inject site-wide Tools nav link */
+(function(){
+  function addToolsNavLink(){
+    var nav = document.querySelector('.nav-links');
+    if(!nav) return;
+    if(nav.querySelector('a[data-tools-link]')) return;
+    var link = document.createElement('a');
+    link.href = '/tools/';
+    link.textContent = 'Tools';
+    link.setAttribute('data-tools-link','');
+    if(location.pathname.indexOf('/tools') === 0){ link.classList.add('active'); }
+    var about = nav.querySelector('a[href="/about/"]');
+    if(about && about.nextSibling){ nav.insertBefore(link, about.nextSibling); }
+    else if(about){ nav.appendChild(link); }
+    else { nav.appendChild(link); }
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', addToolsNavLink);
+  } else { addToolsNavLink(); }
+})();
