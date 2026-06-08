@@ -912,9 +912,9 @@ footer { background: #203645; color: rgba(255,255,255,0.68); padding: 34px 0; fo
 .carl-avatar {
   display: block;
   flex-shrink: 0;
-  background-image: url('carl-avatar.svg');
+  background-image: url('carl-avatar.png');
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
   border: 3px solid rgba(255,255,255,0.92);
   box-shadow: 0 16px 34px rgba(35, 107, 210, 0.22);
@@ -1204,9 +1204,9 @@ footer { background: #203645; color: rgba(255,255,255,0.68); padding: 34px 0; fo
 .carl-avatar-large {
   display: block;
   flex-shrink: 0;
-  background-image: url('carl-avatar.svg');
+  background-image: url('carl-avatar.png');
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
   background-color: var(--blue);
   border: 3px solid rgba(255,255,255,0.96);
