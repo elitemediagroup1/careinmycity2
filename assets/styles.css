@@ -2646,3 +2646,15 @@ img.footer-logo {
   padding: 0;
   box-shadow: none;
 }
+
+
+/* CareInMyCity — fix mobile nav: collapse by default, show only when toggled (overrides duplicate .nav-links display:flex) */
+@media (max-width: 980px) {
+  .nav-links {
+    display: none;
+  }
+  .nav-links.mobile-open,
+  .nav-links.open {
+    display: flex;
+  }
+}
