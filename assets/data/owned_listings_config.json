@@ -2,8 +2,8 @@
   "consumerSupportHelp": {
     "brandName": "Consumer Support Help",
     "site": "https://consumersupporthelp.com/",
-    "finalExpenseDid": "REPLACE_WITH_FINAL_EXPENSE_DID",
-    "finalExpenseTelHref": "tel:REPLACE_WITH_FINAL_EXPENSE_DID",
+    "finalExpenseDid": "18336915024",
+    "finalExpenseTelHref": "tel:18336915024",
     "enabledCategories": [
       "final-expense-support",
       "search-results-final-expense",
@@ -14,7 +14,7 @@
     ],
     "notes": [
       "Search results should show Consumer Support Help first for final-expense-support searches.",
-      "Replace REPLACE_WITH_FINAL_EXPENSE_DID before enabling live call routing.",
+      "Replace 18336915024 before enabling live call routing.",
       "If DID is not active, route the CTA to a lead form instead."
     ],
     "requiredOn": "All live/indexable final expense pages and all protected final expense pages before batch unlock.",
