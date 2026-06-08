@@ -1,3 +1,15 @@
 User-agent: *
 Disallow:
+
+# Internal build/QA files (also return 404 via _redirects)
+Disallow: /*_NOTES.txt$
+Disallow: /*_QA.json$
+Disallow: /*_PLAN.json$
+Disallow: /*_REPORT.json$
+Disallow: /*_MANIFEST.json$
+Disallow: /*_STATUS.json$
+Disallow: /DID_REPLACEMENT_PLAN_FOR_MATT.txt
+Disallow: /sitemap_all_internal_qa.xml
+Disallow: /*README
+
 Sitemap: https://careinmycity.com/sitemap.xml
