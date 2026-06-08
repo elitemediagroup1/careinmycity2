@@ -1,0 +1,24 @@
+{
+  "package": "CareInMyCity Carl Tools Live Integration Patch",
+  "tool_pages": 9,
+  "has_netlify_function": true,
+  "has_transparent_logo": true,
+  "has_carl_image": true,
+  "has_integration_css": true,
+  "has_routing_helper": true,
+  "snippet_files": 9,
+  "total_files": 36,
+  "copy_cleanup": {
+    "removed_user_facing_llm_language": true,
+    "patched_files_count": 7,
+    "patched_files": [
+      "index.html",
+      "CARE_SUPPORT_TOOLS_MANIFEST.json",
+      "README_FOR_MATT.md",
+      "README_LLM_CARE_QUIZ_FOR_MATT.md",
+      "README_CARL_LIVE_INTEGRATION_FOR_MATT.md",
+      "integration-snippets/ask-carl-widget-update.html",
+      "netlify/functions/carl-care-quiz.js"
+    ]
+  }
+}
