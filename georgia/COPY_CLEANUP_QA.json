@@ -1,0 +1,13 @@
+{
+  "patched_files": [
+    "index.html",
+    "CARE_SUPPORT_TOOLS_MANIFEST.json",
+    "README_FOR_MATT.md",
+    "README_LLM_CARE_QUIZ_FOR_MATT.md",
+    "README_CARL_LIVE_INTEGRATION_FOR_MATT.md",
+    "integration-snippets/ask-carl-widget-update.html",
+    "netlify/functions/carl-care-quiz.js"
+  ],
+  "remaining_terms_in_html": {},
+  "note": "Technical terms may remain in README/JS for developer instructions, but should not appear in user-facing HTML."
+}

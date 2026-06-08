@@ -1,71 +1,50 @@
-# CareInMyCity Done States Only Upload
+# CareInMyCity Next 8 States Upload Package — FIXED
 
-This package was pulled from the recovered source file:
-`careinmycity_city_universe_expanded(1).zip`
+This package replaces the earlier broken upload package.
 
-Use this package when Matt only needs to upload the NEW completed/indexable state/city/service files and the correct public sitemap.
+## What was fixed
 
-## What is included
+- Removed the extra wrapper-folder problem from the zip.
+- Included the required `/assets/` folder from the recovered source package.
+- Kept the 8 new state directories at the site root level.
+- Preserved the recovered page copy, metadata, schema, templates, and internal links.
+- Removed noindex robots tags from the included pages.
+- Rebuilt the public `sitemap.xml` with existing public URLs plus the newly unlocked URLs.
 
-### Completed / unlocked state page universe
-- Florida
-- New York
-- New Jersey
-- Texas
+## New states included
 
-### Files included
-- 4 unlocked state pages
-- 24 unlocked city hub pages
-- 96 unlocked city/service pages
-- 124 unlocked/indexable HTML pages total
-- `/assets/` folder from the recovered source package
-- `sitemap.xml` from the recovered source package
-- `robots.txt` from the recovered source package
-- `NEW_DONE_STATE_FILES_MANIFEST.csv`
-- QA and launch notes in `/handoff_notes/`
+- /california/ — California
+- /pennsylvania/ — Pennsylvania
+- /north-carolina/ — North Carolina
+- /georgia/ — Georgia
+- /ohio/ — Ohio
+- /illinois/ — Illinois
+- /arizona/ — Arizona
+- /michigan/ — Michigan
 
-## Correct sitemap
+## Counts
 
-The included `sitemap.xml` is the recovered source sitemap.
+New unlocked HTML pages: 520
+Updated sitemap URL count: 652
+Remaining noindex files in this export: 0
+Missing asset references found in QA: 0
 
-It contains 132 public URLs total:
-- Existing core public pages: 8
-- New completed state/local pages: 124
+## Upload instruction for Matt
 
-The sitemap includes the completed unlocked state/local pages and excludes protected/noindex expansion pages.
+Upload the CONTENTS of this zip to the site root.
 
-## QA status
+After extraction, the root should contain:
 
-- Exported HTML pages checked: 124
-- Exported pages containing `noindex`: 0
-- Protected/noindex expansion pages were not included in this upload package.
-- Gainesville is not included in this package.
-- DID placeholders and tracking plans were left untouched from the recovered source.
+- `/assets/`
+- `/california/`
+- `/pennsylvania/`
+- `/north-carolina/`
+- `/georgia/`
+- `/ohio/`
+- `/illinois/`
+- `/arizona/`
+- `/michigan/`
+- `/sitemap.xml`
+- `/robots.txt`
 
-## Unlocked cities included
-
-Florida:
-boca-raton, delray-beach, fort-lauderdale, jacksonville, miami, orlando, tampa, west-palm-beach
-
-New York:
-brooklyn, long-island, new-york-city, queens, staten-island
-
-New Jersey:
-edison, hoboken, jersey-city, newark, toms-river, trenton
-
-Texas:
-austin, dallas, fort-worth, houston, san-antonio
-
-## Services unlocked per city
-
-- home-care
-- memory-care
-- final-expense-support
-- ssdi
-
-## Upload instruction
-
-Upload the contents of this folder into the site root, preserving paths.
-
-Do not use the prior reconstructed scaffold export.
-This package is sourced from the recovered real build.
+Do not upload the previous `careinmycity_next_8_states_upload.zip`.
