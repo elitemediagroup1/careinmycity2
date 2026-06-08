@@ -1,0 +1,13 @@
+{
+  "name": "careinmycity-carl-care-quiz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CareInMyCity Carl Care Quiz Netlify function",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "netlify dev",
+    "test:function": "node -e \"console.log('Netlify function uses native fetch and ANTHROPIC_API_KEY env var')\""
+  }
+}
