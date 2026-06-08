@@ -1275,3 +1275,56 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('DOMContentLoaded', addToolsNavLink);
   } else { addToolsNavLink(); }
 })();
+
+
+/* === Final Expense DID activation (CareInMyCity) ===
+   Replaces the REPLACE_WITH_FINAL_EXPENSE_DID placeholder at runtime with the
+   live Consumer Support Help number so every final-expense CTA is click-to-call.
+   Real DID: 18336915024  Display: 1-833-691-5024 */
+(function () {
+  var CIM_FE_DID = "18336915024";
+  var CIM_FE_DID_HREF = "tel:" + CIM_FE_DID;
+  var CIM_FE_DID_DISPLAY = "1-833-691-5024";
+  function cimActivateFinalExpenseDid(root) {
+    var scope = root && root.querySelectorAll ? root : document;
+    var links = scope.querySelectorAll("[data-final-expense-did]");
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      var href = link.getAttribute("href") || "";
+      if (href.indexOf("REPLACE_WITH_FINAL_EXPENSE_DID") !== -1 || href === "" || href === "#") {
+        link.setAttribute("href", CIM_FE_DID_HREF);
+      }
+      link.classList.remove("needs-did");
+      if ((link.getAttribute("title") || "").indexOf("DID before launch") !== -1) {
+        link.removeAttribute("title");
+      }
+      if (!link.getAttribute("aria-label")) {
+        link.setAttribute("aria-label", "Call Consumer Support Help at " + CIM_FE_DID_DISPLAY);
+      }
+      if (!link.getAttribute("data-did-display-applied")) {
+        var txt = (link.textContent || "").trim();
+        if (txt && txt.indexOf(CIM_FE_DID_DISPLAY) === -1 && txt.indexOf("5024") === -1) {
+          link.textContent = txt + " \u2014 " + CIM_FE_DID_DISPLAY;
+        }
+        link.setAttribute("data-did-display-applied", "1");
+      }
+    }
+  }
+  function cimRun() { cimActivateFinalExpenseDid(document); }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", cimRun);
+  } else {
+    cimRun();
+  }
+  try {
+    var obs = new MutationObserver(function (mutations) {
+      for (var m = 0; m < mutations.length; m++) {
+        if (mutations[m].addedNodes && mutations[m].addedNodes.length) {
+          cimActivateFinalExpenseDid(document);
+          break;
+        }
+      }
+    });
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+  } catch (e) {}
+})();
