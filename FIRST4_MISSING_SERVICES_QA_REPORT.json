@@ -1,0 +1,507 @@
+{
+  "summary": {
+    "source_file": "careinmycity_DONE_states_SEO_AEO_SSDI_BEEFED_UP.zip",
+    "reference_file": "careinmycity_DONE_states_only_upload_v2(1).zip",
+    "patched_date": "2026-06-05",
+    "html_pages_checked": 196,
+    "new_missing_service_pages_created": 72,
+    "city_hubs_updated": 0,
+    "state_pages_updated": 0,
+    "sitemap_url_count": 204,
+    "remaining_noindex_pages": 0,
+    "missing_meta_descriptions": 0,
+    "missing_h1s": 0,
+    "missing_canonicals": 0,
+    "missing_schema_pages": 0,
+    "duplicate_titles": 0,
+    "duplicate_descriptions": 0,
+    "duplicate_h1s": 0,
+    "exact_duplicate_body_pages": 0,
+    "missing_asset_refs": 0,
+    "missing_created_pages": 0,
+    "min_body_word_count": 510,
+    "avg_body_word_count": 913.4,
+    "max_body_word_count": 1537
+  },
+  "created_pages": [
+    [
+      "/florida/boca-raton/assisted-living/",
+      "Florida",
+      "Boca Raton",
+      "Assisted Living"
+    ],
+    [
+      "/florida/boca-raton/elder-law/",
+      "Florida",
+      "Boca Raton",
+      "Elder Law"
+    ],
+    [
+      "/florida/boca-raton/respite-care/",
+      "Florida",
+      "Boca Raton",
+      "Respite Care"
+    ],
+    [
+      "/florida/delray-beach/assisted-living/",
+      "Florida",
+      "Delray Beach",
+      "Assisted Living"
+    ],
+    [
+      "/florida/delray-beach/elder-law/",
+      "Florida",
+      "Delray Beach",
+      "Elder Law"
+    ],
+    [
+      "/florida/delray-beach/respite-care/",
+      "Florida",
+      "Delray Beach",
+      "Respite Care"
+    ],
+    [
+      "/florida/fort-lauderdale/assisted-living/",
+      "Florida",
+      "Fort Lauderdale",
+      "Assisted Living"
+    ],
+    [
+      "/florida/fort-lauderdale/elder-law/",
+      "Florida",
+      "Fort Lauderdale",
+      "Elder Law"
+    ],
+    [
+      "/florida/fort-lauderdale/respite-care/",
+      "Florida",
+      "Fort Lauderdale",
+      "Respite Care"
+    ],
+    [
+      "/florida/jacksonville/assisted-living/",
+      "Florida",
+      "Jacksonville",
+      "Assisted Living"
+    ],
+    [
+      "/florida/jacksonville/elder-law/",
+      "Florida",
+      "Jacksonville",
+      "Elder Law"
+    ],
+    [
+      "/florida/jacksonville/respite-care/",
+      "Florida",
+      "Jacksonville",
+      "Respite Care"
+    ],
+    [
+      "/florida/miami/assisted-living/",
+      "Florida",
+      "Miami",
+      "Assisted Living"
+    ],
+    [
+      "/florida/miami/elder-law/",
+      "Florida",
+      "Miami",
+      "Elder Law"
+    ],
+    [
+      "/florida/miami/respite-care/",
+      "Florida",
+      "Miami",
+      "Respite Care"
+    ],
+    [
+      "/florida/orlando/assisted-living/",
+      "Florida",
+      "Orlando",
+      "Assisted Living"
+    ],
+    [
+      "/florida/orlando/elder-law/",
+      "Florida",
+      "Orlando",
+      "Elder Law"
+    ],
+    [
+      "/florida/orlando/respite-care/",
+      "Florida",
+      "Orlando",
+      "Respite Care"
+    ],
+    [
+      "/florida/tampa/assisted-living/",
+      "Florida",
+      "Tampa",
+      "Assisted Living"
+    ],
+    [
+      "/florida/tampa/elder-law/",
+      "Florida",
+      "Tampa",
+      "Elder Law"
+    ],
+    [
+      "/florida/tampa/respite-care/",
+      "Florida",
+      "Tampa",
+      "Respite Care"
+    ],
+    [
+      "/florida/west-palm-beach/assisted-living/",
+      "Florida",
+      "West Palm Beach",
+      "Assisted Living"
+    ],
+    [
+      "/florida/west-palm-beach/elder-law/",
+      "Florida",
+      "West Palm Beach",
+      "Elder Law"
+    ],
+    [
+      "/florida/west-palm-beach/respite-care/",
+      "Florida",
+      "West Palm Beach",
+      "Respite Care"
+    ],
+    [
+      "/new-york/brooklyn/assisted-living/",
+      "New York",
+      "Brooklyn",
+      "Assisted Living"
+    ],
+    [
+      "/new-york/brooklyn/elder-law/",
+      "New York",
+      "Brooklyn",
+      "Elder Law"
+    ],
+    [
+      "/new-york/brooklyn/respite-care/",
+      "New York",
+      "Brooklyn",
+      "Respite Care"
+    ],
+    [
+      "/new-york/long-island/assisted-living/",
+      "New York",
+      "Long Island",
+      "Assisted Living"
+    ],
+    [
+      "/new-york/long-island/elder-law/",
+      "New York",
+      "Long Island",
+      "Elder Law"
+    ],
+    [
+      "/new-york/long-island/respite-care/",
+      "New York",
+      "Long Island",
+      "Respite Care"
+    ],
+    [
+      "/new-york/new-york-city/assisted-living/",
+      "New York",
+      "New York City",
+      "Assisted Living"
+    ],
+    [
+      "/new-york/new-york-city/elder-law/",
+      "New York",
+      "New York City",
+      "Elder Law"
+    ],
+    [
+      "/new-york/new-york-city/respite-care/",
+      "New York",
+      "New York City",
+      "Respite Care"
+    ],
+    [
+      "/new-york/queens/assisted-living/",
+      "New York",
+      "Queens",
+      "Assisted Living"
+    ],
+    [
+      "/new-york/queens/elder-law/",
+      "New York",
+      "Queens",
+      "Elder Law"
+    ],
+    [
+      "/new-york/queens/respite-care/",
+      "New York",
+      "Queens",
+      "Respite Care"
+    ],
+    [
+      "/new-york/staten-island/assisted-living/",
+      "New York",
+      "Staten Island",
+      "Assisted Living"
+    ],
+    [
+      "/new-york/staten-island/elder-law/",
+      "New York",
+      "Staten Island",
+      "Elder Law"
+    ],
+    [
+      "/new-york/staten-island/respite-care/",
+      "New York",
+      "Staten Island",
+      "Respite Care"
+    ],
+    [
+      "/new-jersey/edison/assisted-living/",
+      "New Jersey",
+      "Edison",
+      "Assisted Living"
+    ],
+    [
+      "/new-jersey/edison/elder-law/",
+      "New Jersey",
+      "Edison",
+      "Elder Law"
+    ],
+    [
+      "/new-jersey/edison/respite-care/",
+      "New Jersey",
+      "Edison",
+      "Respite Care"
+    ],
+    [
+      "/new-jersey/hoboken/assisted-living/",
+      "New Jersey",
+      "Hoboken",
+      "Assisted Living"
+    ],
+    [
+      "/new-jersey/hoboken/elder-law/",
+      "New Jersey",
+      "Hoboken",
+      "Elder Law"
+    ],
+    [
+      "/new-jersey/hoboken/respite-care/",
+      "New Jersey",
+      "Hoboken",
+      "Respite Care"
+    ],
+    [
+      "/new-jersey/jersey-city/assisted-living/",
+      "New Jersey",
+      "Jersey City",
+      "Assisted Living"
+    ],
+    [
+      "/new-jersey/jersey-city/elder-law/",
+      "New Jersey",
+      "Jersey City",
+      "Elder Law"
+    ],
+    [
+      "/new-jersey/jersey-city/respite-care/",
+      "New Jersey",
+      "Jersey City",
+      "Respite Care"
+    ],
+    [
+      "/new-jersey/newark/assisted-living/",
+      "New Jersey",
+      "Newark",
+      "Assisted Living"
+    ],
+    [
+      "/new-jersey/newark/elder-law/",
+      "New Jersey",
+      "Newark",
+      "Elder Law"
+    ],
+    [
+      "/new-jersey/newark/respite-care/",
+      "New Jersey",
+      "Newark",
+      "Respite Care"
+    ],
+    [
+      "/new-jersey/toms-river/assisted-living/",
+      "New Jersey",
+      "Toms River",
+      "Assisted Living"
+    ],
+    [
+      "/new-jersey/toms-river/elder-law/",
+      "New Jersey",
+      "Toms River",
+      "Elder Law"
+    ],
+    [
+      "/new-jersey/toms-river/respite-care/",
+      "New Jersey",
+      "Toms River",
+      "Respite Care"
+    ],
+    [
+      "/new-jersey/trenton/assisted-living/",
+      "New Jersey",
+      "Trenton",
+      "Assisted Living"
+    ],
+    [
+      "/new-jersey/trenton/elder-law/",
+      "New Jersey",
+      "Trenton",
+      "Elder Law"
+    ],
+    [
+      "/new-jersey/trenton/respite-care/",
+      "New Jersey",
+      "Trenton",
+      "Respite Care"
+    ],
+    [
+      "/texas/austin/assisted-living/",
+      "Texas",
+      "Austin",
+      "Assisted Living"
+    ],
+    [
+      "/texas/austin/elder-law/",
+      "Texas",
+      "Austin",
+      "Elder Law"
+    ],
+    [
+      "/texas/austin/respite-care/",
+      "Texas",
+      "Austin",
+      "Respite Care"
+    ],
+    [
+      "/texas/dallas/assisted-living/",
+      "Texas",
+      "Dallas",
+      "Assisted Living"
+    ],
+    [
+      "/texas/dallas/elder-law/",
+      "Texas",
+      "Dallas",
+      "Elder Law"
+    ],
+    [
+      "/texas/dallas/respite-care/",
+      "Texas",
+      "Dallas",
+      "Respite Care"
+    ],
+    [
+      "/texas/fort-worth/assisted-living/",
+      "Texas",
+      "Fort Worth",
+      "Assisted Living"
+    ],
+    [
+      "/texas/fort-worth/elder-law/",
+      "Texas",
+      "Fort Worth",
+      "Elder Law"
+    ],
+    [
+      "/texas/fort-worth/respite-care/",
+      "Texas",
+      "Fort Worth",
+      "Respite Care"
+    ],
+    [
+      "/texas/houston/assisted-living/",
+      "Texas",
+      "Houston",
+      "Assisted Living"
+    ],
+    [
+      "/texas/houston/elder-law/",
+      "Texas",
+      "Houston",
+      "Elder Law"
+    ],
+    [
+      "/texas/houston/respite-care/",
+      "Texas",
+      "Houston",
+      "Respite Care"
+    ],
+    [
+      "/texas/san-antonio/assisted-living/",
+      "Texas",
+      "San Antonio",
+      "Assisted Living"
+    ],
+    [
+      "/texas/san-antonio/elder-law/",
+      "Texas",
+      "San Antonio",
+      "Elder Law"
+    ],
+    [
+      "/texas/san-antonio/respite-care/",
+      "Texas",
+      "San Antonio",
+      "Respite Care"
+    ]
+  ],
+  "city_hub_updates": [],
+  "state_updates": [],
+  "remaining_noindex_pages": [],
+  "missing_asset_refs": [],
+  "missing_created_pages": [],
+  "sample_low_word_counts": [
+    [
+      510,
+      "new-jersey/hoboken/respite-care/index.html"
+    ],
+    [
+      513,
+      "new-jersey/hoboken/assisted-living/index.html"
+    ],
+    [
+      522,
+      "new-jersey/edison/respite-care/index.html"
+    ],
+    [
+      524,
+      "new-jersey/hoboken/elder-law/index.html"
+    ],
+    [
+      524,
+      "new-york/staten-island/respite-care/index.html"
+    ],
+    [
+      525,
+      "new-jersey/edison/assisted-living/index.html"
+    ],
+    [
+      525,
+      "new-jersey/newark/respite-care/index.html"
+    ],
+    [
+      527,
+      "florida/tampa/respite-care/index.html"
+    ],
+    [
+      527,
+      "new-york/staten-island/assisted-living/index.html"
+    ],
+    [
+      528,
+      "new-jersey/newark/assisted-living/index.html"
+    ]
+  ]
+}
