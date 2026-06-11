@@ -391,126 +391,231 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Carl, your Care Companion
+// Carl, your Care Companion — conversational widget (no quiz, no keyword routing).
+// Talks to the /carl-care-quiz Netlify function with full conversation history so
+// Carl behaves like a real care navigator that remembers context across turns.
 function getCarlBasePath() {
   const path = window.location.pathname;
   if (path.includes('/florida/boca-raton/')) return '../../';
   if (path.includes('/florida/')) return '../';
   if (path.includes('/search/')) return '../';
-  if (path.includes('/services/')) return '../../';
+  if (path.includes('/tools/')) return '../';
   if (path.includes('/about/')) return '../';
-  return '';
+  if (path.includes('/services/')) return '../';
+  if (path.includes('/states/')) return '../';
+  const seg = path.split("/").filter(Boolean);
+  if (seg.length >= 2) return '../../';
+  if (seg.length === 1) return '../';
+  return './';
 }
 
-function carlCategoryLabel(category) {
-  const labels = {
-    'home-care': 'home care and in-home support',
-    'memory-care': 'memory care and safety support',
-    'elder-law': 'elder law, planning, and benefits resources',
-    'final-expense-support': 'final expense and planning resources',
-    'caregiver-support': 'caregiver support'
-  };
-  return labels[category] || 'care resources';
+// Endpoint for the conversational backend.
+var CARL_ENDPOINT = '/.netlify/functions/carl-care-quiz';
+
+// In-memory conversation history for the current visit.
+var carlHistory = [];
+var carlBusy = false;
+var carlGreeted = false;
+
+// Quietly record useful signals through whatever analytics the page already loads.
+// Never blocks the conversation; never asks form-style questions.
+function carlTrack(eventName, params) {
+  try {
+    if (typeof window.gtag === 'function') { window.gtag('event', eventName, params || {}); }
+    if (Array.isArray(window.dataLayer)) {
+      window.dataLayer.push(Object.assign({ event: 'carl_' + eventName }, params || {}));
+    }
+  } catch (e) {}
 }
 
-function carlRecommendation(category, locationText) {
-  const base = getCarlBasePath();
-  const cleanLocation = normalizeValue(locationText || '');
-  const city = cleanLocation.includes('boca') || cleanLocation === '33432' || cleanLocation === '33433' || cleanLocation === '33434' || cleanLocation === '33486' || cleanLocation === '33487'
-    ? 'boca-raton'
-    : cleanLocation;
-
-  let destination = `${base}search/index.html?state=florida&careType=${encodeURIComponent(category)}`;
-  if (city) destination += `&location=${encodeURIComponent(city)}`;
-
-  if (city === 'boca-raton' && category === 'home-care') {
-    destination = `${base}florida/boca-raton/index.html#boca-categories`;
-  }
-
-  return {
-    label: carlCategoryLabel(category),
-    url: destination
-  };
+// Detect lightweight lead signals from free text, only to log them (not to route).
+function carlDetectSignals(text) {
+  var t = (text || "").toLowerCase();
+  var signals = {};
+  if (/\bmom\b|mother|\bdad\b|father|parent/.test(t)) signals.care_for = 'parent';
+  else if (/husband|wife|spouse|partner/.test(t)) signals.care_for = 'spouse';
+  else if (/myself|\bi am\b|for me\b/.test(t)) signals.care_for = 'self';
+  if (/memory|forget|dementia|alzheimer|confus/.test(t)) signals.concern = 'memory';
+  else if (/fall|fell|balance|unsteady/.test(t)) signals.concern = 'falls';
+  else if (/overwhelm|burnout|exhaust|caregiver/.test(t)) signals.concern = 'caregiver_stress';
+  if (/afford|budget|cost|expensive|pay for|money/.test(t)) signals.budget_concern = true;
+  if (/medicare|medicaid|insurance|benefit/.test(t)) signals.insurance_concern = true;
+  if (/\bdog\b|\bcat\b|\bpet\b|companion animal/.test(t)) signals.pet = true;
+  var zip = t.match(/\b\d{5}\b/); if (zip) signals.zip = zip[0];
+  return signals;
 }
 
-function addCarlMessage(text, type = 'carl') {
-  const messages = document.getElementById('carlMessages');
-  if (!messages) return;
-  const bubble = document.createElement('div');
-  bubble.className = `carl-message ${type}`;
-  bubble.innerHTML = text;
-  messages.appendChild(bubble);
+// Render a message bubble. Carl messages may include a single inline link when he
+// naturally points to local resources; we linkify a bare URL if present.
+function addCarlMessage(text, type) {
+  type = type || 'carl';
+  var messages = document.getElementById('carlMessages');
+  if (!messages) return null;
+  var wrap = document.createElement('div');
+  wrap.className = 'carl-message carl-message-' + type;
+  var bubble = document.createElement('div');
+  bubble.className = 'carl-bubble';
+  bubble.textContent = text;
+  wrap.appendChild(bubble);
+  messages.appendChild(wrap);
   messages.scrollTop = messages.scrollHeight;
+  return wrap;
+}
+
+function setCarlTyping(on) {
+  var messages = document.getElementById('carlMessages');
+  if (!messages) return;
+  var existing = document.getElementById('carlTyping');
+  if (on) {
+    if (existing) return;
+    var el = document.createElement('div');
+    el.id = 'carlTyping';
+    el.className = 'carl-message carl-message-carl';
+    el.innerHTML = '<div class="carl-bubble carl-typing"><span></span><span></span><span></span></div>';
+    messages.appendChild(el);
+    messages.scrollTop = messages.scrollHeight;
+  } else if (existing) {
+    existing.remove();
+  }
+}
+
+// Local conversational fallback if the network/function is unavailable.
+// Still warm and curious — never a canned routing template.
+function carlLocalReply() {
+  var turns = carlHistory.filter(function (m) { return m.role === "user"; }).length;
+  var last = "";
+  for (var i = carlHistory.length - 1; i >= 0; i--) { if (carlHistory[i].role === "user") { last = carlHistory[i].content.toLowerCase(); break; } }
+  if (turns <= 1) {
+    if (/forget|memory|confus/.test(last)) return "That can be really worrying to watch. How old is she, and what sorts of things has she been forgetting lately?";
+    if (/fall|fell|balance/.test(last)) return "Falls are scary, and they are often what finally worries families. Has it happened more than once, and is he still getting around the house okay?";
+    if (/overwhelm|exhaust|burnout|tired/.test(last)) return "Honestly, that is what so many caregivers tell me — you are carrying a lot. Who are you caring for, and what does a typical day look like right now?";
+    if (/afford|cost|money|budget/.test(last)) return "Cost is one of the first things almost everyone runs into, so you are in good company. Tell me a bit about who needs care and what they are needing day to day.";
+    return "Thanks for sharing that. So I can actually be helpful — are you looking into this for yourself or for someone you care about?";
+  }
+  return "Got it, that helps. Tell me a little more about how things are going day to day, and we can sort out a sensible next step together.";
+}
+
+// Send the running conversation to Carl and render his reply.
+function sendCarlMessage(userText) {
+  if (carlBusy) return;
+  var text = (userText || "").trim();
+  if (!text) return;
+
+  addCarlMessage(text, 'user');
+  carlHistory.push({ role: 'user', content: text });
+
+  var signals = carlDetectSignals(text);
+  carlTrack('message', { turn: carlHistory.length, signals: JSON.stringify(signals) });
+  if (Object.keys(signals).length) { carlTrack("signal", signals); }
+
+  carlBusy = true;
+  setCarlTyping(true);
+
+  var base = getCarlBasePath();
+  var pageContext = document.title || window.location.pathname;
+
+  fetch(CARL_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: carlHistory.slice(-24), pageContext: pageContext })
+  })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      setCarlTyping(false);
+      carlBusy = false;
+      var reply = data && data.reply ? data.reply : carlLocalReply();
+      addCarlMessage(reply, 'carl');
+      carlHistory.push({ role: 'assistant', content: reply });
+    })
+    .catch(function () {
+      setCarlTyping(false);
+      carlBusy = false;
+      var reply = carlLocalReply();
+      addCarlMessage(reply, 'carl');
+      carlHistory.push({ role: 'assistant', content: reply });
+    });
+}
+
+// Chips are conversation STARTERS, not categories. Clicking one sends a natural
+// first-person message so Carl responds conversationally and asks a follow-up.
+var CARL_CHIP_STARTERS = {
+  'home-care': 'My parent wants to stay at home, and I am trying to figure out if that is still realistic.',
+  'memory-care': 'I am noticing some memory changes and I am not sure what to do.',
+  'caregiver-support': 'I am feeling pretty overwhelmed with caregiving right now.',
+  'assisted-living': 'I am starting to wonder about assisted living options.',
+  'elder-law': 'I have some questions about planning, benefits, or legal stuff.',
+  'final-expense-support': 'I am trying to plan ahead and get organized for what is coming.',
+  'medicare': 'I have some Medicare questions I am trying to sort out.'
+};
+
+function carlChipStarter(need) {
+  return CARL_CHIP_STARTERS[need] || "I could use some help thinking through a care situation.";
+}
+
+function carlGreet() {
+  if (carlGreeted) return;
+  carlGreeted = true;
+  var greeting = "Hi, I'm Carl. I help families think through care decisions, find the right resources, and figure out the next step. What's going on today?";
+  var messages = document.getElementById('carlMessages');
+  if (messages && !messages.querySelector(".carl-message")) {
+    addCarlMessage(greeting, 'carl');
+  }
 }
 
 function openCarl() {
-  const panel = document.getElementById('carlPanel');
-  if (!panel) return;
-  panel.classList.add('open');
-  const input = document.getElementById('carlInput');
-  if (input) setTimeout(() => input.focus(), 100);
+  var panel = document.getElementById('carlPanel');
+  var floating = document.querySelector('.carl-floating');
+  if (floating) floating.classList.add("carl-open");
+  if (panel) { panel.hidden = false; panel.classList.add('carl-panel-open'); }
+  carlGreet();
+  carlTrack('open', {});
+  var input = document.getElementById('carlInput');
+  if (input) { try { input.focus(); } catch (e) {} }
 }
 
 function closeCarl() {
-  const panel = document.getElementById('carlPanel');
-  if (!panel) return;
-  panel.classList.remove('open');
+  var panel = document.getElementById('carlPanel');
+  var floating = document.querySelector('.carl-floating');
+  if (floating) floating.classList.remove("carl-open");
+  if (panel) { panel.classList.remove('carl-panel-open'); panel.hidden = true; }
 }
 
 function initializeCarl() {
-  document.querySelectorAll('.carl-launcher, [data-open-carl]').forEach((button) => {
+  document.querySelectorAll('.carl-launcher, [data-open-carl]').forEach(function (button) {
     button.addEventListener('click', openCarl);
   });
 
-  document.querySelectorAll('.carl-close').forEach((button) => {
+  document.querySelectorAll('.carl-close, [data-close-carl]').forEach(function (button) {
     button.addEventListener('click', closeCarl);
   });
 
-  document.querySelectorAll('[data-carl-need]').forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const category = chip.dataset.carlNeed;
-      const text = chip.textContent.trim();
-      addCarlMessage(text, 'user');
-      const rec = carlRecommendation(category, 'boca-raton');
-      addCarlMessage(`
-        <div class="carl-recommendation">
-          <strong>A good starting point may be ${rec.label}.</strong>
-          Based on this site’s current coverage, I can start you in Boca Raton and nearby Florida resources.
-          <a href="${rec.url}">View starting point</a>
-        </div>
-      `);
+  // Chips start a conversation instead of routing to a category.
+  document.querySelectorAll('[data-carl-need]').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var need = chip.getAttribute('data-carl-need');
+      carlTrack('chip', { need: need });
+      sendCarlMessage(carlChipStarter(need));
     });
   });
 
-  const form = document.getElementById('carlForm');
-  if (form) {
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const input = document.getElementById('carlInput');
-      const value = input ? input.value.trim() : '';
-      if (!value) return;
+  // Free-text input goes straight to Carl (no keyword classification).
+  var form = document.getElementById('carlForm');
+  var input = document.getElementById('carlInput');
+  var sendBtn = document.getElementById('carlSend');
 
-      addCarlMessage(value, 'user');
+  function submitInput(e) {
+    if (e) e.preventDefault();
+    var value = input ? input.value.trim() : '';
+    if (!value) return;
+    if (input) input.value = '';
+    sendCarlMessage(value);
+  }
 
-      const lower = value.toLowerCase();
-      let category = 'caregiver-support';
-
-      if (lower.includes('home') || lower.includes('stay') || lower.includes('companion') || lower.includes('transport')) category = 'home-care';
-      if (lower.includes('memory') || lower.includes('dementia') || lower.includes('alzheimer') || lower.includes('wandering') || lower.includes('safety')) category = 'memory-care';
-      if (lower.includes('legal') || lower.includes('attorney') || lower.includes('ssdi') || lower.includes('benefit') || lower.includes('estate') || lower.includes('guardianship')) category = 'elder-law';
-      if (lower.includes('final') || lower.includes('funeral') || lower.includes('expense') || lower.includes('life insurance') || lower.includes('planning ahead')) category = 'final-expense-support';
-
-      const rec = carlRecommendation(category, value);
-
-      addCarlMessage(`
-        <div class="carl-recommendation">
-          <strong>I’d start with ${rec.label}.</strong>
-          From there, compare the category, read the questions to ask, and narrow by city or ZIP. I can help route you, but a qualified professional should answer medical, legal, financial, or insurance questions.
-          <a href="${rec.url}">Go to recommended resources</a>
-        </div>
-      `);
-
-      input.value = '';
+  if (form) form.addEventListener('submit', submitInput);
+  if (sendBtn) sendBtn.addEventListener('click', submitInput);
+  if (input) {
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) { submitInput(e); }
     });
   }
 }
