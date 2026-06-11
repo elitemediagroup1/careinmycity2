@@ -452,11 +452,9 @@ function addCarlMessage(text, type) {
   var messages = document.getElementById('carlMessages');
   if (!messages) return null;
   var wrap = document.createElement('div');
-  wrap.className = 'carl-message carl-message-' + type;
-  var bubble = document.createElement('div');
-  bubble.className = 'carl-bubble';
-  bubble.textContent = text;
-  wrap.appendChild(bubble);
+  // Match existing CSS: .carl-message with a .user or .carl modifier.
+  wrap.className = 'carl-message ' + (type === 'user' ? 'user' : 'carl');
+  wrap.textContent = text;
   messages.appendChild(wrap);
   messages.scrollTop = messages.scrollHeight;
   return wrap;
@@ -470,8 +468,8 @@ function setCarlTyping(on) {
     if (existing) return;
     var el = document.createElement('div');
     el.id = 'carlTyping';
-    el.className = 'carl-message carl-message-carl';
-    el.innerHTML = '<div class="carl-bubble carl-typing"><span></span><span></span><span></span></div>';
+    el.className = 'carl-message carl';
+    el.textContent = 'Carl is typing\u2026';
     messages.appendChild(el);
     messages.scrollTop = messages.scrollHeight;
   } else if (existing) {
@@ -566,7 +564,7 @@ function openCarl() {
   var panel = document.getElementById('carlPanel');
   var floating = document.querySelector('.carl-floating');
   if (floating) floating.classList.add("carl-open");
-  if (panel) { panel.hidden = false; panel.classList.add('carl-panel-open'); }
+  if (panel) { panel.hidden = false; panel.classList.add('open'); }
   carlGreet();
   carlTrack('open', {});
   var input = document.getElementById('carlInput');
@@ -577,7 +575,7 @@ function closeCarl() {
   var panel = document.getElementById('carlPanel');
   var floating = document.querySelector('.carl-floating');
   if (floating) floating.classList.remove("carl-open");
-  if (panel) { panel.classList.remove('carl-panel-open'); panel.hidden = true; }
+  if (panel) { panel.classList.remove('open'); panel.hidden = true; }
 }
 
 function initializeCarl() {
