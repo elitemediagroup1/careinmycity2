@@ -286,23 +286,151 @@
     return el ? String(el.value || '').trim() : '';
   }
 
+  // ---- Inline homepage results: resolve ZIP via Google, render on-page. ----
+  // Resources data path relative to the current page depth.
+  function resourceDataPath() {
+    return rootPrefix() + 'assets/data/resources.json';
+  }
+
+  var __resourceCache = null;
+  function loadResourceData() {
+    if (__resourceCache) return Promise.resolve(__resourceCache);
+    return fetch(resourceDataPath(), { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (data) { __resourceCache = Array.isArray(data) ? data : []; return __resourceCache; })
+      .catch(function () { return []; });
+  }
+
+  function norm(v) {
+    return String(v == null ? '' : v).trim().toLowerCase().replace(/\s+/g, '-');
+  }
+
+  // Filter by state (primary). City and careType are applied only when they
+  // still leave matches, so the homepage never dead-ends on a resolved ZIP.
+  function filterResources(all, stateSlug, citySlug, careType) {
+    var byState = all.filter(function (r) { return norm(r.state) === stateSlug; });
+    if (!byState.length) return [];
+    var result = byState;
+    if (citySlug) {
+      var byCity = byState.filter(function (r) {
+        var rc = norm(r.city);
+        var near = (r.nearbyAreas || []).map(norm);
+        return rc === citySlug || near.indexOf(citySlug) !== -1;
+      });
+      if (byCity.length) result = byCity;
+    }
+    if (careType) {
+      var ct = norm(careType);
+      var byCat = result.filter(function (r) { return norm(r.category) === ct; });
+      if (byCat.length) result = byCat;
+    }
+    var featured = result.filter(function (r) { return r.featured; });
+    var regular = result.filter(function (r) { return !r.featured; });
+    return featured.concat(regular);
+  }
+
+  function titleCaseSlug(value) {
+    return String(value || '').replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Resolve a resource URL to be correct from the homepage (root) context.
+  function resourceUrl(resource) {
+    var url = resource && resource.url;
+    if (!url || url === '#') return '#';
+    if (/^(https?:|\/|#)/.test(url)) return url;
+    return rootPrefix() + url.replace(/^(\.\.\/)+/, '');
+  }
+
+  function buildCard(resource) {
+    var card = document.createElement('article');
+    card.className = 'resource-result-card' + (resource.featured ? ' featured' : '');
+    var type = resource.type === 'guide' ? 'Guide' : 'Resource';
+    var tags = (resource.tags || []).slice(0, 4)
+      .map(function (t) { return '<span class="resource-tag">' + esc(t) + '</span>'; }).join('');
+    var area = [resource.city ? titleCaseSlug(resource.city) : '', resource.state ? titleCaseSlug(resource.state) : '']
+      .filter(Boolean).join(', ');
+    var label = resource.ctaLabel || (resource.type === 'guide' ? 'View guide' : 'Compare option');
+    var url = resourceUrl(resource);
+    card.innerHTML =
+      '<span class="resource-type">' + type + (resource.featured ? ' \u00b7 Featured' : '') + '</span>' +
+      '<h3>' + esc(resource.name) + '</h3>' +
+      '<p>' + esc(resource.description) + '</p>' +
+      (area ? '<p><strong>Area:</strong> ' + esc(area) + '</p>' : '') +
+      '<div class="resource-tags">' + tags + '</div>' +
+      '<div class="resource-card-actions"><a href="' + esc(url) + '">' + esc(label) + '</a></div>';
+    return card;
+  }
+
+  // Render resolved-location results into the homepage results section.
+  function renderHomeResults(resolved, careType) {
+    var section = document.getElementById('home-search-results');
+    var grid = document.querySelector('[data-home-resource-results]');
+    var meta = document.querySelector('[data-home-resource-meta]');
+    if (!section || !grid) return;
+    enrich(resolved);
+    var stateSlug = resolved ? resolved.stateSlug : '';
+    var citySlug = resolved ? resolved.citySlug : '';
+    section.hidden = false;
+    grid.innerHTML = '<div class="no-results-card"><h3>Finding local options...</h3></div>';
+    if (meta) meta.textContent = '';
+    return loadResourceData().then(function (all) {
+      var matches = stateSlug ? filterResources(all, stateSlug, citySlug, careType) : [];
+      var locationLabel = (resolved && resolved.city) ? (resolved.city + (resolved.stateCode ? ', ' + resolved.stateCode : ''))
+        : (stateSlug ? titleCaseSlug(stateSlug) : 'your area');
+      if (meta) {
+        meta.textContent = matches.length
+          ? (matches.length + ' resource' + (matches.length === 1 ? '' : 's') + ' found for ' + locationLabel + '.')
+          : ('We could not match local resources for ' + locationLabel + ' yet.');
+      }
+      grid.innerHTML = '';
+      if (!matches.length) {
+        var stateLink = stateSlug && ROUTE_INDEX[stateSlug]
+          ? '<p><a href="' + esc(rootPrefix() + stateSlug + '/') + '">Browse the ' + esc(titleCaseSlug(stateSlug)) + ' care guide</a>.</p>'
+          : '';
+        grid.innerHTML = '<div class="no-results-card"><h3>No matching resources yet.</h3>' +
+          '<p>This directory is still growing. ' + (stateLink ? '' : 'Try a different ZIP code.') + '</p>' + stateLink + '</div>';
+        return;
+      }
+      matches.forEach(function (r) { grid.appendChild(buildCard(r)); });
+      try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    });
+  }
+
+  // Homepage care finder: resolve the ZIP via Google, then render results
+  // INLINE on the homepage. No redirect.
   function interceptHomepageForm() {
     var form = document.getElementById('careFinderForm');
     if (!form) return;
+    // Only take over when the homepage has an inline results target.
+    if (!document.getElementById('home-search-results')) return;
     form.addEventListener('submit', function (event) {
       var zip = fieldValue(form, 'zip', 'zip');
       if (!zip) return;
       var careType = fieldValue(form, 'careType', 'careType');
-      var timeline = fieldValue(form, 'timeline', 'timeline');
-      var params = new URLSearchParams();
-      if (careType) params.set('careType', careType);
-      if (timeline) params.set('timeline', timeline);
-      if (zip) params.set('zip', zip);
-      params.set('source', 'google');
       event.preventDefault();
       event.stopImmediatePropagation();
-      var fb = searchFallbackUrl(null, params);
-      goToBest(zip, params, fb);
+      var section = document.getElementById('home-search-results');
+      var grid = document.querySelector('[data-home-resource-results]');
+      if (section) section.hidden = false;
+      if (grid) grid.innerHTML = '<div class="no-results-card"><h3>Finding local options...</h3></div>';
+      try { if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+      resolve(zip).then(function (resolved) {
+        if (!resolved) {
+          var grid2 = document.querySelector('[data-home-resource-results]');
+          var meta2 = document.querySelector('[data-home-resource-meta]');
+          if (meta2) meta2.textContent = '';
+          if (grid2) grid2.innerHTML = '<div class="no-results-card"><h3>We could not look up that ZIP.</h3>' +
+            '<p>Please double-check the ZIP code and try again.</p></div>';
+          return;
+        }
+        renderHomeResults(resolved, careType);
+      });
     }, true);
   }
 
