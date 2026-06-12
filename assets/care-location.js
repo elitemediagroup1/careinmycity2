@@ -236,7 +236,7 @@
   function resolve(query) {
     var q = String(query || '').trim();
     if (!q) return Promise.resolve(null);
-    return fetch(endpoint() + '?q=' + encodeURIComponent(q), {
+        return fetch(endpoint() + "?q=" + encodeURIComponent(q) + "&_=" + Date.now(), {
       method: 'GET',
       headers: { 'Accept': 'application/json' }
     })
