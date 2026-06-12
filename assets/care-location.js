@@ -570,82 +570,98 @@ function labelFromSlug(slug) {
     if (selected && cities.indexOf(selected) !== -1) citySel.value = selected;
   }
 
-  // ---- Wire the /search/ filter dropdowns: state -> city dependency + routing.
-  function interceptSearchForm() {
-    var form = document.getElementById('resourceFilterForm');
-    if (!form) return;
-
-    var stateSel = document.getElementById('filterState');
-    var citySel = document.getElementById('filterCity');
-    var locInput = document.getElementById('filterLocation');
-
-    // Seed selections from the URL so a shared link restores filter state.
-    var urlParams = new URLSearchParams(window.location.search);
-    var initState = urlParams.get('state') || '';
-    var initCity = urlParams.get('city') || '';
-
-    if (stateSel) populateStateFilter(stateSel, initState);
-    if (citySel) populateCityFilter(citySel, stateSel ? stateSel.value : '', initCity);
-
-    // On state change: clear current city and repopulate from existing pages.
-    if (stateSel && citySel) {
-      stateSel.addEventListener('change', function () {
-        citySel.value = '';
-        populateCityFilter(citySel, stateSel.value, '');
-      });
+  // ---- Render live local businesses inline on the /search/ page. ----
+// Mirrors the homepage behavior: query places-nearby for the chosen
+// location + care category, render LOCAL BUSINESS cards into the existing
+// directory grid, with a state guide link / static fallback below.
+function renderSearchResults(locationQuery, locationLabel, stateSlug, citySlug, careType) {
+  var section = document.getElementById('search-results');
+  var grid = document.querySelector('[data-resource-results]');
+  var meta = document.querySelector('[data-resource-meta]');
+  if (!grid) return Promise.resolve();
+  grid.innerHTML = '<div class="no-results-card"><h3>Finding local options...</h3></div>';
+  if (meta) meta.textContent = '';
+  try { if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+  return fetchNearbyBusinesses(locationQuery, careType).then(function (businesses) {
+    if (businesses && businesses.length) {
+      grid.innerHTML = '';
+      if (meta) {
+        meta.textContent = businesses.length + ' local option' +
+          (businesses.length === 1 ? '' : 's') + ' found near ' + locationLabel + '.';
+      }
+      businesses.forEach(function (b) { grid.appendChild(buildBusinessCard(b)); });
+      var link = stateGuideLink(stateSlug);
+      if (link) grid.appendChild(link);
+      return;
     }
+    var pseudo = { stateSlug: stateSlug, citySlug: citySlug };
+    return renderGuideFallback(grid, meta, pseudo, careType, locationLabel);
+  });
+}
 
-    form.addEventListener('submit', function (event) {
-      var state = stateSel ? String(stateSel.value || '').trim() : fieldValue(form, 'filterState', 'state');
-      var city = citySel ? String(citySel.value || '').trim() : '';
-      var location = locInput ? String(locInput.value || '').trim() : fieldValue(form, 'filterLocation', 'location');
-      var careType = fieldValue(form, 'filterCareType', 'careType');
+// ---- Wire the /search/ filter dropdowns: state -> city dependency + live results.
+function interceptSearchForm() {
+  var form = document.getElementById('resourceFilterForm');
+  if (!form) return;
 
-      var prefix = rootPrefix();
-      var qs = new URLSearchParams();
-      if (careType) qs.set('careType', careType);
-      var qss = qs.toString();
-      qss = qss ? '?' + qss : '';
+  var stateSel = document.getElementById('filterState');
+  var citySel = document.getElementById('filterCity');
+  var locInput = document.getElementById('filterLocation');
 
-      // 1) State + city both chosen and the city page exists -> city page.
-      if (state && city && ROUTE_INDEX[state] && ROUTE_INDEX[state].indexOf(city) !== -1) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        window.location.href = prefix + state + '/' + city + '/' + qss;
-        return;
-      }
+  // Seed selections from the URL so a shared link restores filter state.
+  var urlParams = new URLSearchParams(window.location.search);
+  var initState = urlParams.get('state') || '';
+  var initCity = urlParams.get('city') || '';
 
-      // 2) Free-text location typed -> resolve via Google to best existing page.
-      if (location) {
-        var params = new URLSearchParams();
-        if (careType) params.set('careType', careType);
-        if (state) params.set('state', state);
-        params.set('location', location);
-        params.set('source', 'google');
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        var fbParams = new URLSearchParams();
-        if (careType) fbParams.set('careType', careType);
-        if (state) fbParams.set('state', state);
-        fbParams.set('location', location);
-        var fb = searchFallbackUrl(null, fbParams);
-        goToBest(location, params, fb);
-        return;
-      }
+  if (stateSel) populateStateFilter(stateSel, initState);
+  if (citySel) populateCityFilter(citySel, stateSel ? stateSel.value : '', initCity);
 
-      // 3) State only (with a real page) -> state page.
-      if (state && ROUTE_INDEX[state]) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        window.location.href = prefix + state + '/' + qss;
-        return;
-      }
-
-      // 4) Nothing actionable -> let the existing /search/ handler run (fallback).
-    }, true);
+  // On state change: clear current city and repopulate from existing pages.
+  if (stateSel && citySel) {
+    stateSel.addEventListener('change', function () {
+      citySel.value = '';
+      populateCityFilter(citySel, stateSel.value, '');
+    });
   }
 
-  function wireForms() {
+  // Only take over the submit when this page has an inline results grid.
+  var hasGrid = !!document.querySelector('[data-resource-results]');
+
+  form.addEventListener('submit', function (event) {
+    var state = stateSel ? String(stateSel.value || '').trim() : fieldValue(form, 'filterState', 'state');
+    var city = citySel ? String(citySel.value || '').trim() : '';
+    var location = locInput ? String(locInput.value || '').trim() : fieldValue(form, 'filterLocation', 'location');
+    var careType = fieldValue(form, 'filterCareType', 'careType');
+
+    // Build the best location query + human label for the Google lookup.
+    // Priority: typed ZIP/city/county > selected city > selected state.
+    var locationQuery = '';
+    var locationLabel = '';
+    if (location) {
+      locationQuery = location;
+      locationLabel = location;
+    } else if (state && city && ROUTE_INDEX[state] && ROUTE_INDEX[state].indexOf(city) !== -1) {
+      locationQuery = labelFromSlug(city) + ', ' + labelFromSlug(state);
+      locationLabel = labelFromSlug(city) + ', ' + labelFromSlug(state);
+    } else if (state && ROUTE_INDEX[state]) {
+      locationQuery = labelFromSlug(state);
+      locationLabel = labelFromSlug(state);
+    }
+
+    // If we have an actionable location and an inline grid, render live
+    // local businesses on THIS page instead of redirecting.
+    if (locationQuery && hasGrid) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      renderSearchResults(locationQuery, locationLabel, state, city, careType);
+      return;
+    }
+
+    // No actionable location -> let the existing /search/ handler run (fallback).
+  }, true);
+}
+
+function wireForms() {
     try { interceptHomepageForm(); } catch (e) {}
     try { interceptSearchForm(); } catch (e) {}
   }
