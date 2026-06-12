@@ -138,9 +138,16 @@ gtag('config', 'G-X5VT8NLY3Y');
 </select>
 </div>
 <div>
-<label for="filterLocation">City, ZIP, or county</label>
+<label for="filterCity">City</label>
+<select id="filterCity" name="city" disabled>
+<option value="">Select a state first</option>
+</select>
+<small class="form-hint">Choose a state to see available city pages, or use the field below to search by ZIP or county.</small>
+</div>
+<div>
+<label for="filterLocation">Or enter a ZIP, city, or county</label>
 <input id="filterLocation" name="location" type="text" placeholder="ZIP, city, city/state, or county" autocomplete="off" />
-<small class="form-hint">Enter a ZIP code, city, city and state, or county. Leave blank to see results for the whole state.</small>
+<small class="form-hint">Optional. Enter a ZIP code, city, city and state, or county to search beyond the city list above.</small>
 </div>
 <div>
 <label for="filterCareType">Care category</label>
