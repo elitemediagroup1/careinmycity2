@@ -1,3 +1,4 @@
+// redeploy trigger: pick up GOOGLE_PLACES_API_KEY runtime scope (no functional change)
 /**
  * Netlify Function - places-lookup
  *
