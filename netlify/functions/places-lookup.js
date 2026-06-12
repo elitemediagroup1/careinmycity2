@@ -1,3 +1,10 @@
+// Use the runtime's global fetch when available (Node 18+); otherwise fall back to
+// node-fetch (declared in netlify/functions/package.json). Mirrors the working
+// petsinmycity function so resolution does not depend on a global fetch.
+var fetch = (typeof globalThis !== 'undefined' && globalThis.fetch)
+  ? globalThis.fetch.bind(globalThis)
+  : require('node-fetch');
+
 /**
  * Netlify Function - places-lookup
  *
