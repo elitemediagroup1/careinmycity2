@@ -367,7 +367,71 @@
     return card;
   }
 
+  // Live local business card (Google Places result).
+  function buildBusinessCard(biz) {
+    var card = document.createElement('article');
+    card.className = 'resource-result-card';
+    var ratingLine = '';
+    if (biz.rating != null) {
+      var count = biz.userRatingsTotal != null ? (' (' + biz.userRatingsTotal + ')') : '';
+      ratingLine = '<p><strong>Rating:</strong> ' + esc(String(biz.rating)) + ' \u2605' + esc(count) + '</p>';
+    }
+    var openLine = '';
+    if (biz.openNow === true) openLine = '<span class="resource-tag">Open now</span>';
+    var typeTags = (biz.types || []).filter(function (t) {
+      return t && t !== 'point_of_interest' && t !== 'establishment';
+    }).slice(0, 3).map(function (t) {
+      return '<span class="resource-tag">' + esc(titleCaseSlug(t.replace(/_/g, '-'))) + '</span>';
+    }).join('');
+    var link = biz.mapsUrl || '#';
+    card.innerHTML =
+      '<span class="resource-type">Local business</span>' +
+      '<h3>' + esc(biz.name) + '</h3>' +
+      (biz.address ? '<p>' + esc(biz.address) + '</p>' : '') +
+      ratingLine +
+      '<div class="resource-tags">' + openLine + typeTags + '</div>' +
+      '<div class="resource-card-actions"><a href="' + esc(link) + '" target="_blank" rel="noopener">View on Google Maps</a></div>';
+    return card;
+  }
+
+  // Build the 'Browse the {State} guide' fallback link element.
+  function stateGuideLink(stateSlug) {
+    if (!stateSlug || !ROUTE_INDEX[stateSlug]) return null;
+    var wrap = document.createElement('div');
+    wrap.className = 'no-results-card';
+    wrap.innerHTML = '<h3>Prefer a plain-English overview?</h3>' +
+      '<p><a href="' + esc(rootPrefix() + stateSlug + '/') + '">Browse the ' +
+      esc(titleCaseSlug(stateSlug)) + ' care guide</a> for questions to ask and next steps.</p>';
+    return wrap;
+  }
+
+  // Render the static directory guide cards (used as a fallback when no live
+  // local businesses are available).
+  function renderGuideFallback(grid, meta, resolved, careType, locationLabel) {
+    enrich(resolved);
+    var stateSlug = resolved ? resolved.stateSlug : '';
+    var citySlug = resolved ? resolved.citySlug : '';
+    return loadResourceData().then(function (all) {
+      var matches = stateSlug ? filterResources(all, stateSlug, citySlug, careType) : [];
+      grid.innerHTML = '';
+      if (meta) {
+        meta.textContent = matches.length
+          ? ('Showing ' + matches.length + ' care guide' + (matches.length === 1 ? '' : 's') + ' for ' + locationLabel + '.')
+          : ('We could not match local resources for ' + locationLabel + ' yet.');
+      }
+      if (!matches.length) {
+        var link = stateGuideLink(stateSlug);
+        grid.innerHTML = '<div class="no-results-card"><h3>No matching resources yet.</h3>' +
+          '<p>This directory is still growing. Try a different ZIP code or care type.</p></div>';
+        if (link) grid.appendChild(link);
+        return;
+      }
+      matches.forEach(function (r) { grid.appendChild(buildCard(r)); });
+    });
+  }
+
   // Render resolved-location results into the homepage results section.
+  // Primary: LIVE local businesses from Google Places. Fallback: state guides.
   function renderHomeResults(resolved, careType) {
     var section = document.getElementById('home-search-results');
     var grid = document.querySelector('[data-home-resource-results]');
@@ -375,31 +439,46 @@
     if (!section || !grid) return;
     enrich(resolved);
     var stateSlug = resolved ? resolved.stateSlug : '';
-    var citySlug = resolved ? resolved.citySlug : '';
+    var locationLabel = (resolved && resolved.city)
+      ? (resolved.city + (resolved.stateCode ? ', ' + resolved.stateCode : ''))
+      : (stateSlug ? titleCaseSlug(stateSlug) : 'your area');
     section.hidden = false;
     grid.innerHTML = '<div class="no-results-card"><h3>Finding local options...</h3></div>';
     if (meta) meta.textContent = '';
-    return loadResourceData().then(function (all) {
-      var matches = stateSlug ? filterResources(all, stateSlug, citySlug, careType) : [];
-      var locationLabel = (resolved && resolved.city) ? (resolved.city + (resolved.stateCode ? ', ' + resolved.stateCode : ''))
-        : (stateSlug ? titleCaseSlug(stateSlug) : 'your area');
-      if (meta) {
-        meta.textContent = matches.length
-          ? (matches.length + ' resource' + (matches.length === 1 ? '' : 's') + ' found for ' + locationLabel + '.')
-          : ('We could not match local resources for ' + locationLabel + ' yet.');
-      }
-      grid.innerHTML = '';
-      if (!matches.length) {
-        var stateLink = stateSlug && ROUTE_INDEX[stateSlug]
-          ? '<p><a href="' + esc(rootPrefix() + stateSlug + '/') + '">Browse the ' + esc(titleCaseSlug(stateSlug)) + ' care guide</a>.</p>'
-          : '';
-        grid.innerHTML = '<div class="no-results-card"><h3>No matching resources yet.</h3>' +
-          '<p>This directory is still growing. ' + (stateLink ? '' : 'Try a different ZIP code.') + '</p>' + stateLink + '</div>';
+
+    var zip = resolved ? (resolved.zip || resolved.formatted || resolved.city || '') : '';
+    return fetchNearbyBusinesses(zip, careType).then(function (businesses) {
+      if (businesses && businesses.length) {
+        grid.innerHTML = '';
+        if (meta) {
+          meta.textContent = businesses.length + ' local option' +
+            (businesses.length === 1 ? '' : 's') + ' found near ' + locationLabel + '.';
+        }
+        businesses.forEach(function (b) { grid.appendChild(buildBusinessCard(b)); });
+        var link = stateGuideLink(stateSlug);
+        if (link) grid.appendChild(link);
+        try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
         return;
       }
-      matches.forEach(function (r) { grid.appendChild(buildCard(r)); });
-      try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+      // No live businesses (no key, no match, or error) -> guide fallback.
+      return renderGuideFallback(grid, meta, resolved, careType, locationLabel).then(function () {
+        try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+      });
     });
+  }
+
+  // Call the server-side places-nearby function for live local businesses.
+  function fetchNearbyBusinesses(query, careType) {
+    var q = String(query || '').trim();
+    if (!q) return Promise.resolve([]);
+    var url = rootPrefix() + '.netlify/functions/places-nearby' +
+      '?q=' + encodeURIComponent(q) +
+      '&type=' + encodeURIComponent(careType || '') +
+      '&_=' + Date.now();
+    return fetch(url, { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) { return (data && Array.isArray(data.results)) ? data.results : []; })
+      .catch(function () { return []; });
   }
 
   // Homepage care finder: resolve the ZIP via Google, then render results
