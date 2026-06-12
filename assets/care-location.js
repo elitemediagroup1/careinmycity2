@@ -306,27 +306,135 @@
     }, true);
   }
 
+  // ---- Human-readable label from a slug (e.g. 'new-jersey' -> 'New Jersey'). ----
+function labelFromSlug(slug) {
+    return String(slug || '')
+      .split('-')
+      .map(function (w) { return w ? w.charAt(0).toUpperCase() + w.slice(1) : w; })
+      .join(' ');
+  }
+
+  // ---- Populate the State <select> from the live ROUTE_INDEX. ----
+  // Every state that has a real page in the repo becomes an option; values are
+  // slugs ('new-jersey'), labels are human readable ('New Jersey').
+  function populateStateFilter(stateSel, selected) {
+    if (!stateSel) return;
+    var slugs = Object.keys(ROUTE_INDEX).sort();
+    stateSel.innerHTML = '';
+    var first = document.createElement('option');
+    first.value = '';
+    first.textContent = 'All states';
+    stateSel.appendChild(first);
+    for (var i = 0; i < slugs.length; i++) {
+      var opt = document.createElement('option');
+      opt.value = slugs[i];
+      opt.textContent = labelFromSlug(slugs[i]);
+      stateSel.appendChild(opt);
+    }
+    if (selected && ROUTE_INDEX[selected]) stateSel.value = selected;
+  }
+
+  // ---- Populate the City <select> with only the cities that exist under the ----
+  // selected state. No state selected -> 'Select a state first'. State with no
+  // city pages -> 'All cities' only.
+  function populateCityFilter(citySel, stateSlug, selected) {
+    if (!citySel) return;
+    citySel.innerHTML = '';
+    if (!stateSlug) {
+      var ph = document.createElement('option');
+      ph.value = '';
+      ph.textContent = 'Select a state first';
+      citySel.appendChild(ph);
+      citySel.disabled = true;
+      return;
+    }
+    citySel.disabled = false;
+    var allOpt = document.createElement('option');
+    allOpt.value = '';
+    allOpt.textContent = 'All cities';
+    citySel.appendChild(allOpt);
+    var cities = ROUTE_INDEX[stateSlug] || [];
+    for (var i = 0; i < cities.length; i++) {
+      var opt = document.createElement('option');
+      opt.value = cities[i];
+      opt.textContent = labelFromSlug(cities[i]);
+      citySel.appendChild(opt);
+    }
+    if (selected && cities.indexOf(selected) !== -1) citySel.value = selected;
+  }
+
+  // ---- Wire the /search/ filter dropdowns: state -> city dependency + routing.
   function interceptSearchForm() {
     var form = document.getElementById('resourceFilterForm');
     if (!form) return;
+
+    var stateSel = document.getElementById('filterState');
+    var citySel = document.getElementById('filterCity');
+    var locInput = document.getElementById('filterLocation');
+
+    // Seed selections from the URL so a shared link restores filter state.
+    var urlParams = new URLSearchParams(window.location.search);
+    var initState = urlParams.get('state') || '';
+    var initCity = urlParams.get('city') || '';
+
+    if (stateSel) populateStateFilter(stateSel, initState);
+    if (citySel) populateCityFilter(citySel, stateSel ? stateSel.value : '', initCity);
+
+    // On state change: clear current city and repopulate from existing pages.
+    if (stateSel && citySel) {
+      stateSel.addEventListener('change', function () {
+        citySel.value = '';
+        populateCityFilter(citySel, stateSel.value, '');
+      });
+    }
+
     form.addEventListener('submit', function (event) {
-      var state = fieldValue(form, 'filterState', 'state');
-      var location = fieldValue(form, 'filterLocation', 'location');
+      var state = stateSel ? String(stateSel.value || '').trim() : fieldValue(form, 'filterState', 'state');
+      var city = citySel ? String(citySel.value || '').trim() : '';
+      var location = locInput ? String(locInput.value || '').trim() : fieldValue(form, 'filterLocation', 'location');
       var careType = fieldValue(form, 'filterCareType', 'careType');
-      if (!location) return;
-      var params = new URLSearchParams();
-      if (careType) params.set('careType', careType);
-      if (state) params.set('state', state);
-      params.set('location', location);
-      params.set('source', 'google');
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      var fbParams = new URLSearchParams();
-      if (careType) fbParams.set('careType', careType);
-      if (state) fbParams.set('state', state);
-      fbParams.set('location', location);
-      var fb = searchFallbackUrl(null, fbParams);
-      goToBest(location, params, fb);
+
+      var prefix = rootPrefix();
+      var qs = new URLSearchParams();
+      if (careType) qs.set('careType', careType);
+      var qss = qs.toString();
+      qss = qss ? '?' + qss : '';
+
+      // 1) State + city both chosen and the city page exists -> city page.
+      if (state && city && ROUTE_INDEX[state] && ROUTE_INDEX[state].indexOf(city) !== -1) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        window.location.href = prefix + state + '/' + city + '/' + qss;
+        return;
+      }
+
+      // 2) Free-text location typed -> resolve via Google to best existing page.
+      if (location) {
+        var params = new URLSearchParams();
+        if (careType) params.set('careType', careType);
+        if (state) params.set('state', state);
+        params.set('location', location);
+        params.set('source', 'google');
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        var fbParams = new URLSearchParams();
+        if (careType) fbParams.set('careType', careType);
+        if (state) fbParams.set('state', state);
+        fbParams.set('location', location);
+        var fb = searchFallbackUrl(null, fbParams);
+        goToBest(location, params, fb);
+        return;
+      }
+
+      // 3) State only (with a real page) -> state page.
+      if (state && ROUTE_INDEX[state]) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        window.location.href = prefix + state + '/' + qss;
+        return;
+      }
+
+      // 4) Nothing actionable -> let the existing /search/ handler run (fallback).
     }, true);
   }
 
