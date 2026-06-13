@@ -96,7 +96,7 @@
 /STATE_LEVEL_COPY_UPDATE_NOTES.txt   /404.html   404!
 /STATE_PERSONALITY_COPY_PASS_MANIFEST.json   /404.html   404!
 /STATE_PERSONALITY_COPY_PASS_NOTES.txt   /404.html   404!
-/ads.txt   /404.html   404!
+# /ads.txt intentionally NOT blocked here -- AdSense requires it to be served at the site root (was 404'd by mistake)
 /assets/README.md   /404.html   404!
 /assets/data/README.md   /404.html   404!
 /georgia/CARL_LIVE_INTEGRATION_QA.json   /404.html   404!
