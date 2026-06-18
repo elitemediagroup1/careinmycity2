@@ -1,194 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CareInMyCity Care Support Toolkit | Carl Helps Families Organize Care Decisions</title>
-  <meta name="description" content="Use Carl’s Care Support Toolkit to build care roadmaps, caregiver checklists, family summaries, document lists, memory concern trackers, and first 72 hours plans." />
-  <meta name="robots" content="index, follow" />
-  <link rel="stylesheet" href="../assets/styles.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carl’s Care Tools | CareInMyCity</title>
+<meta name="description" content="Use Carl’s Care Tools to build a Care Roadmap, prepare provider calls, create checklists, and save work to My Care Folder.">
+<meta name="author" content="Charlie Brugnolotti">
+<link rel="stylesheet" href="../assets/carl-dashboard-fixed.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="canonical" href="https://careinmycity.com/tools/">
 
-  <link rel="canonical" href="https://careinmycity.com/tools/">
-  <link rel="icon" href="/assets/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" href="/assets/careinmycity-logo-web.png">
-  <link rel="apple-touch-icon" href="/assets/careinmycity-logo-web.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"CareInMyCity Care Support Toolkit","description":"Use Carl’s Care Support Toolkit to build care roadmaps, caregiver checklists, family summaries, document lists, memory concern trackers, and first 72 hours plans.","url":"https://careinmycity.com/tools/","isPartOf":{"@type":"WebSite","name":"CareInMyCity","url":"https://careinmycity.com/"},"publisher":{"@type":"Organization","name":"CareInMyCity","url":"https://careinmycity.com/","logo":{"@type":"ImageObject","url":"https://careinmycity.com/assets/careinmycity-logo-full.png"}}}</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://careinmycity.com/tools#webpage/","url":"https://careinmycity.com/tools/","name":"Carl’s Care Tools | CareInMyCity","description":"Use Carl’s Care Tools to build a Care Roadmap, prepare provider calls, create checklists, and save work to My Care Folder.","isPartOf":{"@type":"WebSite","@id":"https://careinmycity.com/#website/","url":"https://careinmycity.com/","name":"CareInMyCity"},"about":"Carl’s Care Tools"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://careinmycity.com/"},{"@type":"ListItem","position":2,"name":"Care Resources","item":"https://careinmycity.com/tools/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"name":"Carl’s Care Tools"},{"@type":"ListItem","position":2,"name":"My Care Folder"},{"@type":"ListItem","position":3,"name":"Start Quiz"},{"@type":"ListItem","position":4,"name":"Open Folder"},{"@type":"ListItem","position":5,"name":"Open Tool"},{"@type":"ListItem","position":6,"name":"Open Tool"},{"@type":"ListItem","position":7,"name":"Start with Carl"}]}</script>
 </head>
 <body>
-
-<header>
-  <div class="container nav">
-    <a href="../index.html" class="brand" aria-label="CareInMyCity home">
-      <img src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity" />
-    </a>
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="index.html">Tools</a>
-      <a href="carl-care-quiz.html">Care Quiz</a>
-      <a href="family-care-summary.html">Family Summary</a>
-      <a href="../search/index.html">Local Directory</a>
-    </nav>
-        <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
-    <a href="carl-care-quiz.html" class="btn btn-primary">Start with Carl</a>
-  </div>
-</header>
-
-<main>
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="eyebrow"><span class="dot"></span> Carl’s Care Support Toolkit</div>
-        <h1>Tools that help families move from panic to <em>next steps.</em></h1>
-        <p class="hero-copy">CareInMyCity should not just help people find pages. Carl can help families organize the moment that made them start looking: a fall, a memory concern, caregiver burnout, hospital discharge, paperwork deadline, or planning conversation.</p>
-        <div class="hero-actions">
-          <a href="carl-care-quiz.html" class="btn btn-primary">Start with Carl’s Care Quiz</a>
-          <a href="#tools" class="btn btn-secondary">Explore Tools</a>
-        </div>
-      </div>
-      <div class="carl-panel carl-feature-panel">
-        <img src="../assets/carl-care-guide.png" alt="Carl, the CareInMyCity guide" />
-        <div>
-          <h3>Carl’s job is clarity.</h3>
-          <p>He helps families ask better questions, build a Care Profile, prepare for calls, and understand which care path to compare next.</p>
-          <ul class="check-list">
-            <li>Care Profile</li>
-            <li>Care Roadmap</li>
-            <li>Questions to Ask</li>
-            <li>Family Summary</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section white" id="tools">
-    <div class="container">
-      <div class="section-heading">
-        <div class="label">Support utilities</div>
-        <h2>Create the care tools families wish they had sooner.</h2>
-        <p>Each tool is designed to be useful, safe, and emotionally grounded. Carl does not replace professionals — he helps families organize the situation before they talk to them.</p>
-      </div>
-      <div class="grid-3">
-        
-    <article class="card tool-card">
-      <div class="icon">🧭</div>
-      <h3>Carl’s Care Quiz</h3>
-      <p>Answer a few simple questions and Carl organizes your situation into likely care paths, questions to ask, and next steps.</p>
-      <a class="btn btn-secondary" href="carl-care-quiz.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">🤝</div>
-      <h3>Caregiver Burnout Checker</h3>
-      <p>A gentle self-check for family caregivers who may be carrying too much alone.</p>
-      <a class="btn btn-secondary" href="caregiver-burnout-checker.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">🏠</div>
-      <h3>Home Safety Walkthrough</h3>
-      <p>Identify the home risks that may point toward home care, memory support, respite care, or urgent family planning.</p>
-      <a class="btn btn-secondary" href="home-safety-walkthrough.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">👪</div>
-      <h3>Family Care Summary Builder</h3>
-      <p>Turn the situation into a clear summary for siblings, spouses, doctors, attorneys, or care providers.</p>
-      <a class="btn btn-secondary" href="family-care-summary.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">☎️</div>
-      <h3>Provider Call Prep Tool</h3>
-      <p>Get a simple call script and question list before contacting home care, memory care, assisted living, respite, or planning resources.</p>
-      <a class="btn btn-secondary" href="provider-call-prep.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">📄</div>
-      <h3>Document Checklist</h3>
-      <p>Build a document checklist for care, elder law, SSDI, final expense, or provider conversations.</p>
-      <a class="btn btn-secondary" href="document-checklist.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">🏥</div>
-      <h3>Hospital Discharge Helper</h3>
-      <p>A discharge moment can be chaotic. Carl helps families organize home safety, medication, transportation, follow-up, and care support questions.</p>
-      <a class="btn btn-secondary" href="hospital-discharge-helper.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">🧠</div>
-      <h3>Memory Concern Tracker</h3>
-      <p>Organize recent memory-related incidents so the family can speak more clearly with doctors, care providers, or support resources.</p>
-      <a class="btn btn-secondary" href="memory-concern-tracker.html">Open Tool</a>
-    </article>
-
-    <article class="card tool-card">
-      <div class="icon">⏱️</div>
-      <h3>First 72 Hours Plan</h3>
-      <p>For the moments that feel urgent: a fall, discharge, memory concern, burnout, SSDI denial, or legal planning trigger.</p>
-      <a class="btn btn-secondary" href="first-72-hours.html">Open Tool</a>
-    </article>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="section blue">
-    <div class="container">
-      <div class="section-heading">
-        <div class="label">How Carl connects the journey</div>
-        <h2>Carl turns care questions into clearer next steps.</h2>
-        <p>The local pages help families explore care by city and category. Carl helps them organize what changed, prepare better questions, and choose the right local path to review next.</p>
-      </div>
-      <div class="grid-3">
-        <article class="card" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);">
-          <h3>Ask Carl</h3>
-          <p>Carl can explain care options, organize what changed, route you toward the right tools, and help you prepare better questions before calling a provider or professional.</p>
-        </article>
-        <article class="card" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);">
-          <h3>Care Profile</h3>
-          <p>A simple snapshot of who needs help, what changed, where care is needed, how urgent it feels, and what the family has already tried.</p>
-        </article>
-        <article class="card" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);">
-          <h3>Care Roadmap</h3>
-          <p>Suggested care paths, local pages to review, questions to ask, documents to gather, and one practical next step.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="local">
-    <div class="container">
-      <div class="section-heading">
-        <div class="label">Local handoff</div>
-        <h2>From support tool to local care path.</h2>
-        <p>Every output should route families into city/service pages like home care, memory care, assisted living, respite care, elder law, SSDI, or final expense support.</p>
-      </div>
-      <div class="grid-3">
-        <article class="card"><h3>Situation</h3><p>“Dad left the stove on.”</p></article>
-        <article class="card"><h3>Carl’s route</h3><p>Memory care, home safety, respite care, elder law questions.</p></article>
-        <article class="card"><h3>Local path</h3><p>/florida/boca-raton/memory-care/ or the correct city/service page.</p></article>
-      </div>
-    </div>
-  </section>
+<header class="site-header top"><div class="topin"><a class="brand" href="../index.html"><img src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity"><span>Carl’s Care Tools</span></a><a class="btn primary" href="../my-care-folder/index.html">My Care Folder</a></div></header>
+<main class="wrap">
+<section class="hero">
+<h1>Carl’s Care Tools</h1>
+<p class="lead">Start with a Care Roadmap, then save notes, checklists, reminders, and family summaries in My Care Folder.</p>
+<div class="grid two" style="margin-top:22px">
+<div class="card"><h2>Carl’s Care Quiz</h2><p>Answer a few questions and Carl will help organize a starting Care Roadmap.</p><a class="btn primary" href="../tools/carl-care-quiz.html">Start Quiz</a></div>
+<div class="card"><h2>My Care Folder</h2><p>Save your roadmap, notes, reminders, checklists, and family summary.</p><a class="btn secondary" href="../my-care-folder/index.html">Open Folder</a></div>
+<div class="card"><h2>Provider Call Prep</h2><p>Prepare better questions before calling agencies, providers, or support resources.</p><a class="btn secondary" href="../tools/provider-call-prep/index.html">Open Tool</a></div>
+<div class="card"><h2>Document Checklist</h2><p>Gather the information families usually need during care conversations.</p><a class="btn secondary" href="../tools/document-checklist/index.html">Open Tool</a></div>
+</div>
+</section>
 </main>
+<a class="carl-widget" href="../tools/carl-care-quiz.html" aria-label="Start with Carl"><img src="../assets/carl-care-guide.png" alt="Carl care guide"><span>Start with Carl</span></a>
 
-<footer>
-  <div class="container footer-grid">
-    <img class="footer-logo" src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity" />
-    <span>Local care options for the people you love.</span>
-    <span>© 2026 CareInMyCity. All rights reserved.</span>
+<section class="local-section public-resource-section" aria-label="Public and official care resources">
+  <div class="container">
+    <p class="eyebrow">Public resource layer</p>
+    <h2>Public resources to use with this guide</h2>
+    <p class="section-lead">Use these official directories alongside CareInMyCity tools when you need local aging support, Medicare counseling, Medicaid information, or care comparisons.</p>
+    <div class="public-resource-grid">
+      <article class="public-resource-card">
+        <span class="resource-badge">Federal</span>
+        <h3>Eldercare Locator</h3>
+        <p>Find local Area Agencies on Aging, aging and disability resource centers, transportation support, caregiver help, and community programs by ZIP code.</p>
+        <a href="https://eldercare.acl.gov/Public/Index.aspx" target="_blank" rel="noopener noreferrer">Open resource →</a>
+      </article><article class="public-resource-card">
+        <span class="resource-badge">State/Federal</span>
+        <h3>SHIP Medicare Help</h3>
+        <p>Find free, unbiased Medicare counseling through the State Health Insurance Assistance Program.</p>
+        <a href="https://www.shiphelp.org/" target="_blank" rel="noopener noreferrer">Open resource →</a>
+      </article><article class="public-resource-card">
+        <span class="resource-badge">State/Federal</span>
+        <h3>Medicaid State Overviews</h3>
+        <p>Review state Medicaid starting points, including long-term services and home/community-based support pathways.</p>
+        <a href="https://www.medicaid.gov/state-overviews" target="_blank" rel="noopener noreferrer">Open resource →</a>
+      </article><article class="public-resource-card">
+        <span class="resource-badge">Federal</span>
+        <h3>Medicare Care Compare</h3>
+        <p>Compare Medicare-certified care options such as nursing homes, home health agencies, hospitals, and hospice providers.</p>
+        <a href="https://www.medicare.gov/care-compare/" target="_blank" rel="noopener noreferrer">Open resource →</a>
+      </article>
+    </div>
+    <p class="public-resource-note">CareInMyCity links to public agencies, government programs, and established nonprofit resources for orientation only. Availability, eligibility, and program details can change, so confirm directly with the linked resource or a qualified professional.</p>
+  </div>
+</section>
+<section class="trust-eat-strip" aria-label="CareInMyCity author and informational disclaimer">
+  <div class="container trust-eat-grid">
+    <div class="trust-author-line"><img src="../assets/images/charlie-founder-avatar.webp" alt="Charlie Brugnolotti, founder of CareInMyCity" loading="lazy"><p><strong>Written by <a href="../about/index.html">Charlie Brugnolotti</a></strong><br><span>Founder of CareInMyCity · Caregiver, Father, and Co-Founder of Elite Media Group</span></p></div>
+    <div class="trust-disclaimer-line"><strong>Important information</strong><p>CareInMyCity provides informational resources only. This is not medical, legal, financial, or insurance advice. Consult a qualified professional for decisions about care.</p></div>
+  </div>
+</section>
+<footer class="site-footer trust-footer">
+  <div class="container footer-grid footer-grid-v46">
+    <div class="footer-brand-block"><img class="footer-logo" src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity"><p>Clear guidance. Local resources. Stronger next steps.</p></div>
+    <div class="footer-links-block"><strong>Explore</strong><a href="../index.html">Home</a><a href="../tools/index.html">Care Resources</a><a href="../tools/index.html">Guides</a><a href="../state/index.html">States of Coverage</a><a href="../my-care-folder/index.html">My Care Folder</a></div>
+    <div class="footer-links-block"><strong>Company</strong><a href="../about/index.html">About</a><a href="../contact/index.html">Contact</a><a href="../privacy/index.html">Privacy Policy</a><a href="../terms/index.html">Terms of Service</a></div>
+    <div class="footer-contact-block"><strong>Get in touch</strong><a href="mailto:hello@elitemediagroup.io">hello@elitemediagroup.io</a><span>© 2026 CareInMyCity. All rights reserved.</span></div>
   </div>
 </footer>
-<a class="carl-widget" href="carl-care-quiz.html" aria-label="Start with Carl">
-  <img src="../assets/carl-care-guide.png" alt="Carl, the CareInMyCity care guide assistant" />
-  <span>Start with Carl</span>
-</a>
-
-  <script src="../assets/site.js"></script>
 </body>
 </html>

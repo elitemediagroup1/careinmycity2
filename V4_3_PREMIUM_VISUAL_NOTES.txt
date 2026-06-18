@@ -1,0 +1,22 @@
+CareInMyCity V4.3 Premium Visual Upgrade
+
+Base: V4.2 Legacy Complete Ship
+Scope: Presentation/design enhancement only.
+
+Preserved:
+- Copy/content
+- Routes/URLs
+- Sitemap/canonicals
+- JSON-LD
+- H1 structure
+- Carl
+- My Care Folder
+- CSH/DID placeholders
+- State/city/service page inventory
+
+Changed:
+- Appended premium visual CSS to assets/styles.css
+- Added version handoff notes file
+
+Intent:
+Make the existing fully-QA'd V4.2 site feel more premium, productized, scannable, and AEO-friendly without rebuilding or removing content.

@@ -1,60 +1,62 @@
 /**
- * Netlify Function: Carl — conversational Care Companion
+ * Netlify Function: Carl Care Quiz Carl response
  *
- * Powers the site-wide floating "Ask Carl" widget as a real back-and-forth
- * conversation (not a quiz, not a keyword router, not a generic AI assistant).
+ * Environment variable required:
+ *   ANTHROPIC_API_KEY
  *
- * Request body (JSON):
- *   { messages: [ { role: "user"|"assistant", content: "..." } ], pageContext?: "..." }
+ * Optional:
+ *   ANTHROPIC_MODEL
  *
- * Response (JSON): { reply: "Carl next conversational message" }
- *
- * Env: ANTHROPIC_API_KEY (required), ANTHROPIC_MODEL (optional)
+ * Recommended model default is intentionally configurable.
  */
 
 const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
 const DEFAULT_MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-5";
-const MAX_TURNS = 24;
 
 const SYSTEM_PROMPT = `
-You are Carl, the Care Companion at CareInMyCity. Think of yourself as the warm, experienced person who has quietly helped hundreds of families work through care situations for an aging parent, a spouse, or themselves. You are not a quiz, not a form, and not a generic AI assistant. You never describe yourself as an AI or a bot. You are Carl.
+You are Carl, the CareInMyCity care guide.
 
-HOW YOU TALK
-- Lead with warmth and a real human reaction before anything else. If someone says their mom keeps forgetting things, you first acknowledge that it is hard, then get curious.
-- Sound like a knowledgeable friend who happens to know this world well: patient, practical, plain-spoken. Short paragraphs. No corporate or clinical tone. No bullet-point checklists thrown at people.
-- Ask ONE thoughtful follow-up question at a time. Build understanding gradually. Do not interrogate, and never fire off a list of questions at once.
-- Use what the person already told you. Never re-ask something they have answered. Refer back to details they shared (who needs help, ages, what is changing) so it feels like one continuous conversation.
-- It is fine to gently normalize what they are feeling (for example: honestly, that is what most families tell me) so they do not feel alone.
+Your role:
+- Help families organize a care-related situation.
+- Summarize what the user shared in warm, plain English.
+- Suggest likely care paths to compare, with short rationale.
+- Give one specific next step.
+- Keep the response calm, practical, and human.
 
-WHAT YOU ARE TRYING TO UNDERSTAND (gradually, never as a checklist)
-- Who needs help and your relationship to them (parent, spouse, self, other).
-- What is actually happening and what changed recently.
-- Day-to-day realities: safety, falls, meals, medications, driving, memory, bathing, being alone.
-- How the caregiver is holding up.
-- Roughly where they are (city or ZIP) and any timeline, but only when it comes up naturally.
+You must not:
+- Provide medical advice, diagnosis, treatment recommendations, emergency triage, legal advice, insurance advice, financial advice, or benefits eligibility determinations.
+- Claim a specific provider, facility, attorney, insurance product, or benefit is right for the user.
+- Say the user qualifies for anything.
+- Overstate certainty.
+- Use fear-based language.
 
-RESOURCES — TIMING MATTERS
-- Do NOT jump to resources or links on the first message. Have a real conversation first.
-- Only suggest resources AFTER you understand the situation, the needs, and the main concerns — usually after a few exchanges.
-- When you do recommend something, make it feel like a natural next step, e.g. Based on what you have told me, a couple of things might really help here, then explain why in plain language.
-- CareInMyCity covers senior care, home care, assisted living, memory care, caregiver support, and aging resources. Point people toward comparing local options once you know roughly where they are.
+Safety:
+- If the user describes immediate danger, serious medical emergency, abuse, self-harm, or someone being unsafe right now, tell them to contact emergency services or a qualified professional immediately, then provide a brief organizing next step.
+- For medical questions, say to contact a doctor or qualified clinician.
+- For legal questions, say to contact a qualified attorney.
+- For SSDI/benefits questions, say to contact a qualified SSDI attorney, advocate, or benefits professional.
+- For insurance/final expense questions, say to contact a licensed insurance professional.
 
-THE BROADER ECOSYSTEM (mention only when genuinely relevant, never forced)
-- PetsInMyCity: only if a pet is part of the picture — a senior moving with a pet, a companion animal, or planning for a pet care when a caregiver is stretched.
-- ConsumerSupportHelp: only for Medicare, insurance, benefits, medical alert devices, or financial-planning questions that come up naturally.
-- Never shoehorn these in. If they are not relevant, do not mention them.
+Output format:
+Return ONLY valid JSON. No markdown. No extra text.
 
-STAYING SAFE AND HONEST (keep it conversational, never a robotic disclaimer)
-- You help families get organized and find a starting point. You are not a doctor, lawyer, financial advisor, or insurance agent, and you do not diagnose, prescribe, decide eligibility, or tell someone a specific provider or product is right for them. When that line comes up, say it warmly and in passing — for example: that is really a question for her doctor, but I can help you get ready for that conversation. Do not paste a formal disclaimer.
-- If someone describes an emergency, immediate danger, abuse, self-harm, or someone being unsafe right now, gently but clearly tell them to contact emergency services or a qualified professional right away, then offer one calm, grounding next step.
-- Never use fear-based or pushy language. Never make someone feel rushed or sold to.
+JSON shape:
+{
+  "situation_summary": "1 short paragraph, warm and specific to what they wrote.",
+  "suggested_paths": [
+    { "path": "Home Care", "reason": "one-line rationale" }
+  ],
+  "next_step": "one specific next step they can take today or this week.",
+  "questions_to_ask": [
+    "question 1",
+    "question 2",
+    "question 3"
+  ],
+  "local_routing_note": "one sentence explaining how CareInMyCity can route them to local city/service pages once location is known.",
+  "guardrail_note": "one sentence that Carl organizes the search but does not replace qualified medical/legal/insurance/benefits professionals."
+}
 
-SIGNALS TO NOTICE (do not ask form-style questions to get them)
-- As the conversation unfolds, quietly take note of useful context when the person offers it: care type, the person age, timeline, city/ZIP, budget worries, insurance concerns, caregiver stress, pet ownership. Let these emerge naturally — never run an intake form.
-
-STYLE GUARDRAILS
-- Keep replies short and human, usually two to four sentences, ending with a single gentle question while you are still learning the situation.
-- Plain text only. No markdown headers, no numbered lists, no bold. Just talk like a person.
+Keep total response content under 250 words.
 `;
 
 const allowedOrigins = [
@@ -66,7 +68,7 @@ const allowedOrigins = [
 ];
 
 function corsHeaders(event) {
-  const origin = (event.headers && event.headers.origin) || "";
+  const origin = event.headers.origin || "";
   const allowOrigin = allowedOrigins.includes(origin) ? origin : "https://careinmycity.com";
   return {
     "Access-Control-Allow-Origin": allowOrigin,
@@ -76,145 +78,183 @@ function corsHeaders(event) {
   };
 }
 
-function safeString(value, max) {
+function safeString(value, max = 800) {
   if (typeof value !== "string") return "";
-  return value.trim().slice(0, max || 4000);
+  return value.trim().slice(0, max);
 }
 
-// Accept a conversation history and keep only clean, recent turns.
 function normalizePayload(body) {
-  let data = {};
-  try { data = JSON.parse(body || "{}"); } catch (e) { data = {}; }
-
-  let messages = Array.isArray(data.messages) ? data.messages : [];
-  messages = messages
-    .filter(function (m) { return m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string"; })
-    .map(function (m) { return { role: m.role, content: safeString(m.content, 4000) }; })
-    .filter(function (m) { return m.content.length > 0; })
-    .slice(-MAX_TURNS);
-
-  // The Anthropic Messages API requires the first message to be from the user.
-  while (messages.length && messages[0].role !== "user") { messages.shift(); }
-
+  const data = JSON.parse(body || "{}");
+  const checked = Array.isArray(data.checked) ? data.checked.map(x => safeString(String(x), 120)).filter(Boolean).slice(0, 12) : [];
   return {
-    messages: messages,
+    whoNeedsHelp: safeString(data.whoNeedsHelp, 160),
+    location: safeString(data.location, 160),
+    whatChanged: safeString(data.whatChanged, 1000),
+    urgency: safeString(data.urgency, 100),
+    checked,
     pageContext: safeString(data.pageContext, 300)
   };
 }
 
-function lastUserMessage(messages) {
-  for (let i = messages.length - 1; i >= 0; i--) {
-    if (messages[i].role === "user") return messages[i].content;
+function validatePayload(payload) {
+  const hasEnough = payload.whoNeedsHelp || payload.location || payload.whatChanged || payload.checked.length;
+  if (!hasEnough) {
+    return "Please share at least one detail about the situation before Carl builds a summary.";
   }
-  return "";
+  return null;
 }
 
-// Warm conversational fallback. Never a canned routing template; always keeps the
-// conversation human and moving when the model is unavailable.
-function fallbackReply(payload) {
-  const turns = payload.messages.length;
-  const text = lastUserMessage(payload.messages).toLowerCase();
+function fallbackResponse(payload) {
+  const checkedText = payload.checked.length ? payload.checked.join(", ") : "general care support";
+  const paths = [];
+  const lower = `${payload.whatChanged} ${checkedText}`.toLowerCase();
 
-  if (turns <= 1) {
-    if (/forget|memory|confus|repeat|lost|names/.test(text)) {
-      return "That can be really unsettling to watch. Memory changes can come from a lot of different things, so it helps to understand the pattern. How old is she, and what kinds of things has she been forgetting lately?";
-    }
-    if (/fall|fell|balance|unsteady/.test(text)) {
-      return "Falls are scary, and they tend to be the thing that worries families most. Has this happened more than once, and is he still getting around the house okay on his own?";
-    }
-    if (/overwhelm|exhaust|burnout|tired|alone|cant keep|breaking/.test(text)) {
-      return "I hear you, and honestly that is what so many caregivers tell me. You are carrying a lot. Who are you caring for, and what does a typical day look like for you right now?";
-    }
-    if (/afford|money|cost|expensive|budget|pay for/.test(text)) {
-      return "Cost is one of the first things almost every family runs into, so you are not alone there. Tell me a little about the situation first — who needs care, and what kind of help are they needing day to day?";
-    }
-    return "Thanks for telling me that. I would love to understand a bit more so I can actually be helpful. Are you looking into this for yourself or for someone you care about?";
+  if (/memory|stove|wand|confus|forget|medication/.test(lower)) {
+    paths.push({ path: "Memory Care", reason: "Memory or safety concerns may mean the family should compare supervision, routines, and home-safety questions." });
+  }
+  if (/home|bath|dress|meal|transport|alone|daily/.test(lower)) {
+    paths.push({ path: "Home Care", reason: "Help at home may support daily routines, companionship, transportation, and caregiver relief." });
+  }
+  if (/burnout|overwhelm|backup|sleep|exhaust/.test(lower)) {
+    paths.push({ path: "Respite Care", reason: "Caregiver strain may mean short-term backup or scheduled relief should be explored." });
+  }
+  if (/poa|power|legal|medicaid|guardianship|attorney/.test(lower)) {
+    paths.push({ path: "Elder Law", reason: "Legal or decision-making questions should be discussed with a qualified elder law attorney." });
+  }
+  if (/ssdi|disability|denial|appeal|work/.test(lower)) {
+    paths.push({ path: "SSDI Help", reason: "Disability paperwork, appeals, or income disruption may call for an SSDI attorney, advocate, or benefits professional." });
+  }
+  if (/funeral|final|expense|insurance|burial/.test(lower)) {
+    paths.push({ path: "Final Expense Support", reason: "Planning around funeral-related costs or coverage should be reviewed with a licensed insurance professional." });
+  }
+  if (!paths.length) {
+    paths.push(
+      { path: "Home Care", reason: "It may be helpful to compare practical support at home first." },
+      { path: "Respite Care", reason: "If family caregivers are carrying the situation, backup support may be worth exploring." }
+    );
   }
 
-  return "Got it — that helps. Tell me a little more about what day to day looks like right now, and we can figure out a sensible next step together.";
+  return {
+    situation_summary: `It sounds like your family is trying to organize a care decision around ${payload.whatChanged || checkedText}. That can feel heavy because it is not just a service search — it is about safety, timing, family roles, and what to do next.`,
+    suggested_paths: paths.slice(0, 4),
+    next_step: "Write down what changed, when it started, who needs to be involved, and the most urgent question you need answered this week.",
+    questions_to_ask: [
+      "What support is needed immediately versus later?",
+      "Who in the family should be part of the next conversation?",
+      "What professional should answer the medical, legal, benefits, or insurance questions?"
+    ],
+    local_routing_note: payload.location ? `CareInMyCity can use ${payload.location} to route this into local city/service pages.` : "Once a city and state are added, CareInMyCity can route this into local city/service pages.",
+    guardrail_note: "Carl helps organize the search, but qualified professionals should answer medical, legal, benefits, insurance, or financial questions."
+  };
 }
 
-async function callCarl(payload, apiKey) {
-  const userParts = [];
-  if (payload.pageContext) {
-    userParts.push("[Context: the person is currently on this page: " + payload.pageContext + "]");
-  }
-
-  const apiMessages = payload.messages.slice();
-  if (userParts.length && apiMessages.length) {
-    // Prepend lightweight page context to the first user message.
-    apiMessages[0] = {
-      role: "user",
-      content: userParts.join(" ") + "\n\n" + apiMessages[0].content
-    };
-  }
-
-  const response = await fetch(ANTHROPIC_API_URL, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01"
-    },
-    body: JSON.stringify({
-      model: DEFAULT_MODEL,
-      max_tokens: 400,
-      system: SYSTEM_PROMPT,
-      messages: apiMessages
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error("Upstream error: " + response.status);
-  }
-
-  const data = await response.json();
-  const block = data && Array.isArray(data.content) ? data.content.find(function (b) { return b.type === "text"; }) : null;
-  const reply = block && block.text ? block.text.trim() : "";
-  return reply;
-}
-
-exports.handler = async function (event) {
+exports.handler = async (event) => {
   const headers = corsHeaders(event);
 
   if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers: headers, body: "" };
+    return { statusCode: 204, headers, body: "" };
   }
 
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, headers: headers, body: JSON.stringify({ error: "Method not allowed" }) };
+    return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allowed" }) };
   }
 
-  const payload = normalizePayload(event.body);
+  let payload;
+  try {
+    payload = normalizePayload(event.body);
+  } catch (error) {
+    return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON payload" }) };
+  }
 
-  if (!payload.messages.length) {
+  const validationError = validatePayload(payload);
+  if (validationError) {
+    return { statusCode: 400, headers, body: JSON.stringify({ error: validationError }) };
+  }
+
+  if (!process.env.ANTHROPIC_API_KEY) {
     return {
       statusCode: 200,
-      headers: headers,
-      body: JSON.stringify({ reply: "Hi, I am Carl. What is going on today — are you looking for help for yourself or someone you care about?" })
+      headers,
+      body: JSON.stringify({
+        source: "fallback",
+        response: fallbackResponse(payload)
+      })
     };
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const userPrompt = `
+Care quiz input:
+- Who needs help: ${payload.whoNeedsHelp || "Not specified"}
+- Location: ${payload.location || "Not specified"}
+- What changed recently: ${payload.whatChanged || "Not specified"}
+- Urgency: ${payload.urgency || "Not specified"}
+- Checked concerns: ${payload.checked.length ? payload.checked.join(", ") : "None"}
+- Page context: ${payload.pageContext || "CareInMyCity Carl Care Quiz"}
 
-  if (!apiKey) {
-    return { statusCode: 200, headers: headers, body: JSON.stringify({ reply: fallbackReply(payload) }) };
-  }
+Create Carl's response using the required JSON shape.
+`;
 
   try {
-    const reply = await callCarl(payload, apiKey);
+    const anthropicRes = await fetch(ANTHROPIC_API_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: DEFAULT_MODEL,
+        max_tokens: 750,
+        temperature: 0.35,
+        system: SYSTEM_PROMPT,
+        messages: [
+          { role: "user", content: userPrompt }
+        ]
+      })
+    });
+
+    if (!anthropicRes.ok) {
+      const errorText = await anthropicRes.text();
+      console.error("Anthropic error:", anthropicRes.status, errorText);
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          source: "fallback_after_api_error",
+          response: fallbackResponse(payload)
+        })
+      };
+    }
+
+    const anthropicData = await anthropicRes.json();
+    const textBlock = anthropicData.content && anthropicData.content.find(block => block.type === "text");
+    const rawText = textBlock ? textBlock.text : "";
+
+    let parsed;
+    try {
+      parsed = JSON.parse(rawText);
+    } catch (error) {
+      console.error("Failed to parse Claude JSON:", rawText);
+      parsed = fallbackResponse(payload);
+    }
+
     return {
       statusCode: 200,
-      headers: headers,
-      body: JSON.stringify({ reply: reply || fallbackReply(payload) })
+      headers,
+      body: JSON.stringify({
+        source: "anthropic",
+        response: parsed
+      })
     };
   } catch (error) {
-    console.error("Carl conversation error:", error);
+    console.error("Function error:", error);
     return {
       statusCode: 200,
-      headers: headers,
-      body: JSON.stringify({ reply: fallbackReply(payload) })
+      headers,
+      body: JSON.stringify({
+        source: "fallback_after_exception",
+        response: fallbackResponse(payload)
+      })
     };
   }
 };
-
