@@ -6,6 +6,7 @@
 <title>My Care Folder | CareInMyCity</title>
 <meta name="description" content="Manage your Care Profile, Carl’s Care Roadmap, checklists, provider notes, reminders, and family summary.">
 <meta name="author" content="Charlie Brugnolotti">
+<link rel="stylesheet" href="../assets/styles.css">
 <link rel="stylesheet" href="../assets/carl-dashboard-fixed.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="canonical" href="https://careinmycity.com/my-care-folder/">
@@ -14,18 +15,68 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://careinmycity.com/my-care-folder#webpage/","url":"https://careinmycity.com/my-care-folder/","name":"My Care Folder | CareInMyCity","description":"Manage your Care Profile, Carl’s Care Roadmap, checklists, provider notes, reminders, and family summary.","isPartOf":{"@type":"WebSite","@id":"https://careinmycity.com/#website/","url":"https://careinmycity.com/","name":"CareInMyCity"},"about":"Your family care plan, finally in one place."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://careinmycity.com/"},{"@type":"ListItem","position":2,"name":"My Care Folder","item":"https://careinmycity.com/my-care-folder/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","itemListElement":[{"@type":"ListItem","position":1,"name":"My Care Folder"},{"@type":"ListItem","position":2,"name":"Start with Carl’s Quiz"},{"@type":"ListItem","position":3,"name":"Update with Carl"},{"@type":"ListItem","position":4,"name":"Start with Carl"}]}</script>
+
+<style>
+/* My Care Folder page-specific fixes (V6.1) */
+img{max-width:100%;height:auto}
+.mcf-header{position:sticky;top:0;z-index:50;background:rgba(251,248,243,.96);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(35,107,210,.10)}
+.mcf-nav{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.mcf-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.mcf-brand img{width:auto;height:46px;max-height:46px;max-width:230px;object-fit:contain;display:block}
+.mcf-nav-right{display:flex;align-items:center;gap:10px}
+.mcf-links{display:flex;align-items:center;gap:4px;font-size:13.5px;font-weight:800}
+.mcf-links a{padding:9px 12px;border-radius:999px;color:#5b6675;text-decoration:none;transition:color .2s,background .2s}
+.mcf-links a:hover{color:#236bd2;background:rgba(35,107,210,.06)}
+.mcf-links a.active{color:#236bd2;background:rgba(35,107,210,.10)}
+.mcf-saved{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(35,107,210,.16);background:#fff;border-radius:999px;padding:7px 13px;color:#5b6675;font-size:13px;font-weight:700;white-space:nowrap}
+.mcf-saved .dot{width:8px;height:8px;border-radius:50%;background:#2e9e6b;display:inline-block}
+.mcf-toggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(35,107,210,.16);background:#fff;border-radius:12px;cursor:pointer;font-size:20px;color:#236bd2}
+.trust-eat-strip{max-width:1180px;margin:30px auto 0;padding:24px 20px;border-top:1px solid rgba(35,107,210,.10)}
+.trust-eat-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.trust-author-line{display:flex;align-items:center;gap:14px}
+.trust-author-line img{width:64px;height:64px;max-width:64px;border-radius:50%;object-fit:cover;flex:0 0 auto}
+.trust-eat-strip p{margin:4px 0;font-size:14px;color:#5b6675;line-height:1.55}
+.carl-widget{position:fixed;right:18px;bottom:18px;z-index:60;display:inline-flex;align-items:center;gap:10px;background:#236bd2;color:#fff;text-decoration:none;padding:10px 16px 10px 10px;border-radius:999px;box-shadow:0 10px 30px rgba(15,40,80,.22);font-weight:800;font-size:14px}
+.carl-widget img{width:34px;height:34px;max-width:34px;border-radius:50%;object-fit:cover}
+.site-footer .logo-img,.site-footer img.footer-logo{max-width:190px;max-height:54px;width:auto;height:auto;object-fit:contain}
+@media(max-width:860px){
+  .mcf-toggle{display:inline-flex}
+  .mcf-links{display:none;position:absolute;top:calc(100% - 1px);left:0;right:0;background:rgba(251,248,243,.99);border-bottom:1px solid rgba(35,107,210,.10);flex-direction:column;align-items:stretch;padding:12px 20px 18px;gap:4px;box-shadow:0 12px 30px rgba(15,40,80,.12)}
+  .mcf-links.open{display:flex}
+  .mcf-header{position:relative}
+  .trust-eat-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-<header class="site-header top"><div class="topin"><a class="brand" href="../index.html"><img src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity"><span>My Care Folder</span></a><div class="account" id="account"><span>Loading...</span></div></div></header>
+<header class="mcf-header">
+  <div class="mcf-nav">
+    <a class="mcf-brand" href="../index.html" aria-label="CareInMyCity home">
+      <img src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity">
+    </a>
+    <button class="mcf-toggle" id="mcfToggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    <nav class="mcf-links" id="mcfLinks" aria-label="Main navigation">
+      <a href="../index.html">Home</a>
+      <a href="../about/index.html">About</a>
+      <a href="../search/index.html">Search</a>
+      <a href="../tools/index.html">Care Tools</a>
+      <a href="../my-care-folder/index.html" class="active">My Care Folder</a>
+      <a href="../contact/index.html">Contact</a>
+    </nav>
+    <div class="mcf-nav-right">
+      <span class="mcf-saved" id="account" title="Your care folder is saved privately in this browser"><span class="dot"></span><span>Saved in this browser</span></span>
+    </div>
+  </div>
+</header>
 <main class="wrap">
 <section class="login" id="login">
   <div class="hero"><h1>Your family care plan, finally in one place.</h1><p class="lead">Carl helps you organize what changed, build a Care Roadmap, save checklists, prep provider calls, and come back when the situation changes.</p><div class="carl"><img src="../assets/carl-care-guide.png" alt="Carl care guide"><div><strong>Carl, your CareInMyCity guide</strong><span>I help you slow the moment down, organize the facts, and prepare better questions. I am not a doctor, lawyer, insurance agent, or emergency service.</span></div></div></div>
-  <div class="panel"><h2>Open My Care Folder</h2><p>This version works in the browser now. Matt can later connect the same flow to real login and database storage.</p><div class="field"><label>Name</label><input class="input" id="loginName" placeholder="Charlie"></div><div class="field"><label>Email</label><input class="input" id="loginEmail" type="email" placeholder="you@example.com"></div><div class="actions"><button class="btn primary" onclick="CIMC.signIn()">Create / Open Folder</button><a class="btn secondary" href="../tools/carl-care-quiz.html">Start with Carl’s Quiz</a></div><div class="note" style="margin-top:16px">MVP note: saved data stays in this browser until Matt connects backend auth/database.</div></div>
+  <div class="panel"><h2>Open My Care Folder</h2><p>This version saves your care folder privately in this browser. Cloud login and secure account storage can be added later.</p><div class="field"><label>Name</label><input class="input" id="loginName" placeholder="Charlie"></div><div class="field"><label>Email</label><input class="input" id="loginEmail" type="email" placeholder="you@example.com"></div><div class="actions"><button class="btn primary" onclick="CIMC.signIn()">Create / Open Folder</button><a class="btn secondary" href="../tools/carl-care-quiz.html">Start with Carl’s Quiz</a></div><div class="note" style="margin-top:16px">Account sign-in is coming later. For now, your folder is saved only on this device.</div></div>
 </section>
 <section class="app" id="app" style="display:none">
 <aside class="side"><div class="sidecarl"><img src="../assets/carl-care-guide.png" alt="Carl care guide"><div><strong>Carl</strong><span>Care guide + folder coach</span></div></div><nav class="nav">
 <button data-page="dashboard" onclick="CIMC.nav('dashboard')">Dashboard</button><button data-page="profile" onclick="CIMC.nav('profile')">Care Profile</button><button data-page="roadmap" onclick="CIMC.nav('roadmap')">Care Roadmap</button><button data-page="checklists" onclick="CIMC.nav('checklists')">Checklists</button><button data-page="provider" onclick="CIMC.nav('provider')">Provider Call Prep</button><button data-page="family" onclick="CIMC.nav('family')">Family Summary</button><button data-page="documents" onclick="CIMC.nav('documents')">Documents</button><button data-page="saved" onclick="CIMC.nav('saved')">Saved Pages</button><button data-page="reminders" onclick="CIMC.nav('reminders')">Reminders</button><button data-page="notes" onclick="CIMC.nav('notes')">Notes</button><button data-page="export" onclick="CIMC.nav('export')">Export / Import</button>
-</nav><div class="actions"><a class="btn primary" href="../tools/carl-care-quiz.html">Update with Carl</a><button class="btn danger" onclick="CIMC.reset()">Reset Demo</button></div></aside>
+</nav><div class="actions"><a class="btn primary" href="../tools/carl-care-quiz.html">Update with Carl</a><button class="btn danger" onclick="CIMC.reset()">Reset Folder</button></div></aside>
 <div>
 <section class="page active" id="page-dashboard"><div class="head"><div><h2 id="hello">Welcome back.</h2><p id="line"></p></div><button class="btn primary" onclick="CIMC.nav('profile')">Update Care Profile</button></div><div class="grid three"><div class="stat"><div class="num" id="roadStat">0</div><div class="label">Saved Roadmap</div></div><div class="stat"><div class="num" id="checkStat">0/0</div><div class="label">Checklist Progress</div></div><div class="stat"><div class="num" id="remStat">0</div><div class="label">Open Reminders</div></div></div><div class="grid two" style="margin-top:14px"><div class="card"><h2>Carl’s next step</h2><p id="dashNext"></p><button class="btn secondary" onclick="CIMC.nav('roadmap')">View Roadmap</button></div><div class="card"><h2>Suggested care paths</h2><p id="dashPaths"></p></div></div><div class="grid two" style="margin-top:14px"><div class="card"><h2>Upcoming reminders</h2><div id="dashReminders"></div></div><div class="card"><h2>Recent notes</h2><div id="dashNotes"></div></div></div></section>
 <section class="page" id="page-profile"><div class="head"><div><h2>Care Profile</h2><p>Capture the facts Carl needs to keep your roadmap useful.</p></div></div><div class="panel"><div class="grid two"><div class="field"><label>Who needs support?</label><input class="input" id="who"></div><div class="field"><label>Relationship / context</label><input class="input" id="rel"></div><div class="field"><label>Location</label><input class="input" id="loc"></div><div class="field"><label>Urgency</label><select class="select" id="urgency"><option>Not sure</option><option>Planning ahead</option><option>Needs help this month</option><option>Needs help this week</option><option>Urgent / safety concern</option></select></div><div class="field"><label>Living situation</label><input class="input" id="living"></div><div class="field"><label>Primary concern</label><input class="input" id="concern"></div></div><div class="field"><label>What changed?</label><textarea class="textarea" id="changed"></textarea></div><div class="field"><label>Current stage</label><input class="input" id="stage"></div><button class="btn primary" onclick="CIMC.saveProfile()">Save Profile + Update Roadmap</button></div></section>
@@ -33,11 +84,11 @@
 <section class="page" id="page-checklists"><div class="head"><div><h2>Checklists</h2><p>Track documents, provider calls, home safety, and family coordination.</p></div></div><div class="grid two" id="checks"></div></section>
 <section class="page" id="page-provider"><div class="head"><div><h2>Provider Call Prep</h2><p>Organize the call before you make it.</p></div></div><div class="grid two"><div class="card"><h2>New call note</h2><div class="field"><input class="input" id="callProvider" placeholder="Provider / agency"></div><div class="field"><input class="input" id="callPhone" placeholder="Phone / contact"></div><div class="field"><input class="input" id="callGoal" placeholder="Goal for call"></div><div class="field"><textarea class="textarea" id="callNotes" placeholder="Notes"></textarea></div><button class="btn primary" onclick="CIMC.addCall()">Save Call Prep</button></div><div class="card"><h2>Carl’s call script</h2><div class="share" id="callScript"></div><button class="btn secondary" onclick="CIMC.copy('callScript')">Copy Script</button></div></div><div class="card" style="margin-top:14px"><h2>Saved call notes</h2><div id="callList"></div></div></section>
 <section class="page" id="page-family"><div class="head"><div><h2>Family Care Summary</h2><p>A shareable summary for family members or provider conversations.</p></div><button class="btn primary" onclick="CIMC.regenFamily()">Regenerate</button></div><div class="card"><div class="share" id="familyBox"></div><button class="btn secondary" onclick="CIMC.copy('familyBox')">Copy Summary</button></div></section>
-<section class="page" id="page-documents"><div class="head"><div><h2>Documents</h2><p>Use this as readiness before provider, benefits, legal, or discharge conversations.</p></div></div><div class="note">Upload storage is not active in this front-end MVP. Matt can connect secure document storage later. For now, use the Document Checklist.</div><div class="card" style="margin-top:14px"><h2>Document readiness</h2><p>Gather ID, insurance cards, medication lists, doctor contacts, discharge papers, and power of attorney or health care proxy documents if available.</p><button class="btn primary" onclick="CIMC.nav('checklists')">Open Document Checklist</button></div></section>
+<section class="page" id="page-documents"><div class="head"><div><h2>Documents</h2><p>Use this as readiness before provider, benefits, legal, or discharge conversations.</p></div></div><div class="note">Document uploads are not available yet. Secure cloud document storage can be added later. For now, use the Document Checklist to stay organized.</div><div class="card" style="margin-top:14px"><h2>Document readiness</h2><p>Gather ID, insurance cards, medication lists, doctor contacts, discharge papers, and power of attorney or health care proxy documents if available.</p><button class="btn primary" onclick="CIMC.nav('checklists')">Open Document Checklist</button></div></section>
 <section class="page" id="page-saved"><div class="head"><div><h2>Saved Pages</h2><p>Keep local care pages, provider links, and useful resources together.</p></div></div><div class="card"><div class="field"><input class="input" id="savedTitle" placeholder="Page title"></div><div class="field"><input class="input" id="savedUrl" placeholder="https://..."></div><div class="field"><select class="select" id="savedType"><option>CareInMyCity page</option><option>Provider</option><option>Article</option><option>Document</option><option>Other</option></select></div><button class="btn primary" onclick="CIMC.addSaved()">Save Page</button></div><div class="card" style="margin-top:14px"><h2>Your saved pages</h2><div id="savedList"></div></div></section>
 <section class="page" id="page-reminders"><div class="head"><div><h2>Reminders</h2><p>Track follow-ups.</p></div></div><div class="card"><div class="grid two"><input class="input" id="remTitle" placeholder="Call agency Friday"><input class="input" id="remDate" type="date"></div><button class="btn primary" onclick="CIMC.addReminder()">Add Reminder</button></div><div class="card" style="margin-top:14px"><h2>Saved reminders</h2><div id="remList"></div></div></section>
 <section class="page" id="page-notes"><div class="head"><div><h2>Care Notes</h2><p>Keep notes from calls, family conversations, appointments, or changes.</p></div></div><div class="card"><div class="field"><input class="input" id="noteTitle" placeholder="Note title"></div><div class="field"><textarea class="textarea" id="noteBody" placeholder="Note"></textarea></div><button class="btn primary" onclick="CIMC.addNote()">Save Note</button></div><div class="card" style="margin-top:14px"><h2>Saved notes</h2><div id="noteList"></div></div></section>
-<section class="page" id="page-export"><div class="head"><div><h2>Export / Import</h2><p>Move test data between browsers or hand the structure to Matt.</p></div></div><div class="grid two"><div class="card"><h2>Export</h2><textarea class="textarea" id="exportBox" style="min-height:320px"></textarea><button class="btn secondary" onclick="CIMC.copy('exportBox')">Copy JSON</button></div><div class="card"><h2>Import</h2><textarea class="textarea" id="importBox" style="min-height:320px"></textarea><button class="btn primary" onclick="CIMC.importJson()">Import JSON</button></div></div></section>
+<section class="page" id="page-export"><div class="head"><div><h2>Export / Import</h2><p>Move your care folder data between browsers, or keep a personal backup.</p></div></div><div class="grid two"><div class="card"><h2>Export</h2><textarea class="textarea" id="exportBox" style="min-height:320px"></textarea><button class="btn secondary" onclick="CIMC.copy('exportBox')">Copy JSON</button></div><div class="card"><h2>Import</h2><textarea class="textarea" id="importBox" style="min-height:320px"></textarea><button class="btn primary" onclick="CIMC.importJson()">Import JSON</button></div></div></section>
 </div></section>
 </main><div class="toast" id="toast">Saved.</div><script src="../assets/carl-dashboard-fixed.js"></script><a class="carl-widget" href="../tools/carl-care-quiz.html" aria-label="Start with Carl"><img src="../assets/carl-care-guide.png" alt="Carl care guide"><span>Start with Carl</span></a>
 <section class="trust-eat-strip" aria-label="CareInMyCity author and informational disclaimer">
@@ -66,4 +117,6 @@
       </div>
     </div>
   </footer>
+
+<script>(function(){var t=document.getElementById("mcfToggle"),n=document.getElementById("mcfLinks");if(t&&n){t.addEventListener("click",function(){var o=n.classList.toggle("open");t.setAttribute("aria-expanded",o?"true":"false")});n.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){n.classList.remove("open");t.setAttribute("aria-expanded","false")})})}})();</script>
 </body></html>
