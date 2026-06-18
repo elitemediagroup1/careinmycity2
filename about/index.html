@@ -32,6 +32,8 @@ gtag('config', 'G-X5VT8NLY3Y');
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../assets/styles.css" />
 <style>
+.site-header .brand img,.site-header .logo-img{max-height:46px;width:auto;height:auto}
+.site-footer .footer-logo .logo-img,.site-footer .footer-logo img{max-height:44px;width:auto;height:auto}
 .about-founder{padding:64px 0;background:#fff}
 .about-founder-grid{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center}
 .about-founder-portrait{position:relative}
@@ -54,39 +56,35 @@ gtag('config', 'G-X5VT8NLY3Y');
 </style>
 </head>
 <body>
-<header>
+<header class="site-header">
 <div class="container nav">
-<a href="../index.html" class="logo image-logo" aria-label="CareInMyCity home">
-<img class="logo-img" src="../assets/careinmycity-logo-web.png" alt="CareInMyCity" />
+<a href="../index.html" class="brand" aria-label="CareInMyCity home">
+<img src="../assets/careinmycity-logo-transparent.png" alt="CareInMyCity" />
 </a>
-<div class="nav-right">
 <nav class="nav-links" aria-label="Main navigation">
 <a href="../index.html">Home</a>
-<a href="../about/index.html" class="active">About Us</a>
-
+<a href="../about/index.html" class="active">About</a>
+<a href="../state/index.html">States of Coverage</a>
+<a href="../tools/index.html">Care Resources</a>
 <div class="nav-dropdown">
-<button class="dropdown-toggle" type="button" aria-expanded="false">States of Coverage</button>
-<div class="dropdown-menu" data-states-menu>
-<div class="dropdown-label">All States</div>
-<a href="../states/index.html"><strong>View All States</strong><span>National coverage index</span></a>
+<a href="../tools/index.html" class="nav-dropdown-label">Guides</a>
+<div class="nav-menu" aria-label="Guides menu">
+<a href="../tools/index.html">All Guides & Tools</a>
+<a href="../tools/first-72-hours.html">First 72 Hours</a>
+<a href="../tools/hospital-discharge-helper.html">Hospital Discharge Helper</a>
+<a href="../tools/document-checklist.html">Document Checklist</a>
+<a href="../tools/provider-call-prep.html">Provider Call Prep</a>
+<a href="../tools/memory-concern-tracker.html">Memory Concern Tracker</a>
+<a href="../tools/caregiver-burnout-checker.html">Caregiver Burnout Checker</a>
+<a href="../tools/home-safety-walkthrough.html">Home Safety Walkthrough</a>
+<a href="../tools/family-care-summary.html">Family Care Summary</a>
+<a href="../tools/carl-care-quiz.html">Carl Care Quiz</a>
 </div>
 </div>
-
-<div class="nav-dropdown">
-<button class="dropdown-toggle" type="button" aria-expanded="false">Care Resources</button>
-<div class="dropdown-menu">
-<a href="../services/home-care/index.html"><strong>Home Care</strong><span>Understand in-home support and daily help.</span></a>
-<a href="../services/memory-care/index.html"><strong>Memory Care</strong><span>Dementia, wandering, safety, and supervision.</span></a>
-<a href="../services/assisted-living/index.html"><strong>Assisted Living</strong><span>Communities, care levels, costs, and questions.</span></a>
-<a href="../services/respite-care/index.html"><strong>Respite Care</strong><span>Backup care and short-term caregiver relief.</span></a>
-<a href="../services/elder-law/index.html"><strong>Elder Law & Benefits</strong><span>Planning documents, SSDI, Medicaid, and family decisions.</span></a>
-<a href="../services/final-expense/index.html"><strong>Final Expense Support</strong><span>End-of-life costs, coverage, and preparation.</span></a>
-</div>
-</div>
+<a href="../my-care-folder/index.html">My Care Folder</a>
+<a href="../contact/index.html">Contact</a>
 </nav>
-<button class="mobile-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
-<a href="../search/index.html" class="nav-cta">Find Care</a>
-</div>
+<a href="../tools/carl-care-quiz.html" class="btn btn-primary nav-cta">Find Care</a>
 </div>
 </header>
 
@@ -268,7 +266,7 @@ gtag('config', 'G-X5VT8NLY3Y');
 <ul>
 <li><a href="../my-care-folder/index.html">My Care Folder</a></li>
 <li><a href="../tools/index.html">Care Tools</a></li>
-<li><a href="../states/index.html">States of Coverage</a></li>
+<li><a href="../state/index.html">States of Coverage</a></li>
 <li><a href="../sitemap.xml">Sitemap</a></li>
 </ul>
 </div>
