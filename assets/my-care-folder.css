@@ -1,0 +1,20 @@
+
+/* CareInMyCity My Care Folder */
+.folder-hero{padding:72px 0 50px;background:radial-gradient(circle at 82% 10%,rgba(22,160,82,.16),transparent 32%),radial-gradient(circle at 12% 88%,rgba(18,104,216,.14),transparent 32%),linear-gradient(180deg,#fff 0%,#fbf8f3 100%)}
+.folder-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:34px;align-items:center}
+.folder-card{background:#fff;border:1px solid rgba(18,104,216,.15);border-radius:32px;box-shadow:0 18px 50px rgba(18,104,216,.14);padding:28px}
+.folder-card h3{color:#17324d;font-size:24px;margin-bottom:8px}.folder-card p{color:#667789}
+.folder-login-panel{display:grid;gap:12px;margin-top:20px}.folder-input{width:100%;border:1.5px solid rgba(18,104,216,.16);border-radius:16px;padding:13px 14px;background:#fff;color:#26394d;font:inherit}
+.folder-dashboard{padding:72px 0;background:#fff}.folder-dashboard.hidden,.folder-logged-out.hidden{display:none}
+.folder-overview{display:grid;grid-template-columns:.78fr 1.22fr;gap:22px;align-items:start}
+.folder-profile-card{position:sticky;top:108px;background:linear-gradient(145deg,#eaf3ff,#e3f7eb);border:1px solid rgba(18,104,216,.15);border-radius:30px;padding:24px}
+.folder-profile-card img{width:92px;height:92px;object-fit:cover;object-position:top center;border-radius:50%;background:#fff;border:3px solid #fff;margin-bottom:14px}
+.folder-profile-card h3{color:#17324d;font-size:24px;margin-bottom:8px}.folder-profile-card p{color:#667789}
+.folder-modules{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.folder-module{background:#fbf8f3;border:1px solid rgba(18,104,216,.12);border-radius:24px;padding:22px}
+.folder-module h3{color:#17324d;font-size:20px;margin-bottom:8px}.folder-module p,.folder-module li{color:#667789;font-size:15px}
+.folder-module ul{list-style:none;display:grid;gap:8px;margin-top:12px}.folder-module li{position:relative;padding-left:26px}
+.folder-module li::before{content:"✓";position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:#e3f7eb;color:#16a052;font-size:11px;font-weight:900}
+.folder-empty{color:#667789;font-style:italic}.folder-saved-note{display:none;margin-top:14px;padding:13px 14px;border-radius:16px;background:#e3f7eb;color:#0f7e40;font-weight:900}.folder-saved-note.show{display:block}
+.my-care-folder-nav-link{font-weight:900}.save-folder-button{display:inline-flex;align-items:center;justify-content:center;background:#16a052;color:#fff;border:0;border-radius:999px;padding:13px 18px;font-weight:900;cursor:pointer}
+@media(max-width:900px){.folder-grid,.folder-overview,.folder-modules{grid-template-columns:1fr}.folder-profile-card{position:static}}
