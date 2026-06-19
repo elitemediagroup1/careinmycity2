@@ -119,7 +119,7 @@
       <a href="../search/index.html">Local Directory</a>
     </nav>
         <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
-    <a href="carl-care-quiz.html" class="btn btn-primary">Start with Carl</a>
+    <button type="button" class="btn btn-primary" data-open-carl>Start with Carl</button>
   </div>
 </header>
 
@@ -130,7 +130,7 @@
       <h1>Tell Carl what changed. Get your Care Roadmap.</h1>
       <p class="hero-copy">Carl’s Care Quiz uses a personalized response to summarize the situation, suggest care paths to compare, and give one clear next step — without replacing medical, legal, insurance, or benefits professionals.</p>
       <div class="hero-actions">
-        <a href="#tool" class="btn btn-primary">Start Carl’s Care Quiz</a>
+        <button type="button" class="btn btn-primary" data-open-carl>Start Carl’s Care Quiz</button>
         <a href="index.html" class="btn btn-secondary">See All Tools</a>
       </div>
     </div>
@@ -249,10 +249,37 @@
   </div>
 </footer>
 
-<a class="carl-widget" href="carl-care-quiz.html" aria-label="Start with Carl">
-  <img src="../assets/carl-care-guide.png" alt="Carl, the CareInMyCity care guide assistant" />
-  <span>Start with Carl</span>
-</a>
+<div class="carl-floating" aria-live="polite">
+<button class="carl-launcher" type="button" aria-label="Ask Carl, your Care Companion">
+<span class="carl-avatar" aria-hidden="true"></span>
+<span class="carl-launcher-label">Ask Carl</span>
+</button>
+</div>
+<aside class="carl-panel" id="carlPanel" aria-label="Carl, your Care Companion">
+<div class="carl-panel-header">
+<div class="carl-title">
+<span class="carl-avatar" aria-hidden="true"></span>
+<div><strong>Carl, your Care Companion</strong><span>Here to help you find a starting point</span></div>
+</div>
+<button class="carl-close" type="button" aria-label="Close Carl">×</button>
+</div>
+<div class="carl-messages" id="carlMessages">
+<div class="carl-message carl">Hi, I’m Carl. Tell me what’s going on, and I’ll help you find a good starting point. I can’t give medical, legal, financial, or insurance advice, but I can help you organize the next step.</div>
+<div class="carl-options" aria-label="Common care situations">
+<button class="carl-chip" type="button" data-carl-need="home-care">They want to stay at home</button>
+<button class="carl-chip" type="button" data-carl-need="memory-care">Memory or safety concerns</button>
+<button class="carl-chip" type="button" data-carl-need="elder-law">Legal or benefits help</button>
+<button class="carl-chip" type="button" data-carl-need="final-expense-support">Planning ahead financially</button>
+</div>
+</div>
+<form class="carl-form" id="carlForm">
+<div class="carl-input-row">
+<input id="carlInput" type="text" placeholder="City, ZIP, or what changed recently..." aria-label="Tell Carl what changed recently">
+<button type="submit">Send</button>
+</div>
+<p class="carl-disclaimer">Carl provides general navigation help only. For medical, legal, financial, or insurance advice, speak with a qualified professional.</p>
+</form>
+</aside>
 
 <script>
 let latestPayload = null;
