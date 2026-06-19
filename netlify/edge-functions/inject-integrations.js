@@ -4,14 +4,16 @@
 // (care-location.js) are present on EVERY HTML page, sitewide, without
 // editing thousands of pre-generated static HTML files.
 //
-// It is idempotent: if a page already includes a script, it is NOT added
-// again. Only text/html responses are modified. Non-HTML assets, the
-// Netlify functions, and the script files themselves are passed through
-// untouched. No API keys are involved here (keys stay server-side in the
-// Netlify Functions).
+// It is idempotent and PATH-AGNOSTIC: if a page already references a script
+// by filename (via /assets/site.js, assets/site.js, ./assets/site.js,
+// ../assets/site.js, etc.) it is NOT added again. Only text/html responses
+// are modified. Non-HTML assets and the Netlify functions are excluded.
+// No API keys are involved here (keys stay server-side in the functions).
 
-const SITE_JS = '/assets/site.js';
-const CARE_LOCATION_JS = '/assets/care-location.js';
+const SCRIPTS = [
+  { file: 'site.js', src: '/assets/site.js' },
+  { file: 'care-location.js', src: '/assets/care-location.js' }
+];
 
 export default async (request, context) => {
   const response = await context.next();
@@ -24,21 +26,22 @@ export default async (request, context) => {
   let html = await response.text();
 
   const tags = [];
-  if (!html.includes(SITE_JS)) {
-    tags.push('<script src="' + SITE_JS + '" defer></script>');
-  }
-  if (!html.includes(CARE_LOCATION_JS)) {
-    tags.push('<script src="' + CARE_LOCATION_JS + '" defer></script>');
+  for (const { file, src } of SCRIPTS) {
+    // Match the filename regardless of the path prefix used in the page.
+    const alreadyPresent = new RegExp('["\'/]' + file.replace('.', '\\.') + '["\']').test(html)
+      || html.includes('/' + file)
+      || html.includes(file);
+    if (!alreadyPresent) {
+      tags.push('<script src="' + src + '" defer></script>');
+    }
   }
 
   if (tags.length === 0) {
-    // Nothing to add; return original HTML unchanged.
     return new Response(html, response);
   }
 
   const injection = '\n' + tags.join('\n') + '\n';
 
-  // Prefer injecting right before </body>; fall back to </head>, then append.
   if (html.includes('</body>')) {
     html = html.replace('</body>', injection + '</body>');
   } else if (html.includes('</head>')) {
@@ -51,8 +54,6 @@ export default async (request, context) => {
 };
 
 export const config = {
-  // Run on all paths; the handler itself filters to text/html only.
   path: '/*',
-  // Exclude the script assets and Netlify functions from rewriting for safety.
   excludedPath: ['/assets/*', '/.netlify/*']
 };
