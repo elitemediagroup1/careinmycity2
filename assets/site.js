@@ -1431,3 +1431,42 @@ document.addEventListener('DOMContentLoaded', () => {
     obs.observe(document.documentElement, { childList: true, subtree: true });
   } catch (e) {}
 })();
+
+
+/* Carl chat: accessibility enhancements (Escape to close + aria-expanded sync) */
+(function(){
+  function carlPanelEl(){ return document.getElementById('carlPanel'); }
+  function carlLaunchers(){ return Array.prototype.slice.call(document.querySelectorAll('.carl-launcher, [data-open-carl]')); }
+  function syncAria(){
+    var panel = carlPanelEl();
+    if(!panel) return;
+    var open = panel.classList.contains('open');
+    carlLaunchers().forEach(function(b){
+      if(!b.hasAttribute('aria-controls')) b.setAttribute('aria-controls','carlPanel');
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  function closeCarlPanel(){
+    var panel = carlPanelEl();
+    if(!panel || !panel.classList.contains('open')) return false;
+    if(typeof window.closeCarl === 'function'){ try{ window.closeCarl(); }catch(e){ panel.classList.remove('open'); } }
+    else { panel.classList.remove('open'); }
+    syncAria();
+    var l = document.querySelector('.carl-launcher'); if(l && l.focus){ try{ l.focus(); }catch(e){} }
+    return true;
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' || e.key === 'Esc'){ closeCarlPanel(); }
+  });
+  function init(){
+    var panel = carlPanelEl();
+    if(!panel) return;
+    syncAria();
+    try{
+      var obs = new MutationObserver(syncAria);
+      obs.observe(panel, { attributes:true, attributeFilter:['class'] });
+    }catch(e){}
+  }
+  if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
+})();
