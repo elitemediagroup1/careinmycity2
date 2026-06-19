@@ -1,17 +1,15 @@
-// Safe IndexNow trigger: reads the live sitemap, filters to canonical
+// IndexNow trigger: reads the live production sitemap, filters to canonical
 // production URLs, and submits them to IndexNow in batches.
 //
-// Invocation:
-//   - Manual admin call: POST/GET with header 'x-indexnow-token' (or
-//     ?token=...) matching the INDEXNOW_ADMIN_TOKEN env var.
-//   - Can be wired to a post-deploy hook that calls this endpoint with
-//     the same token.
-//
-// Safety:
-//   - Refuses to run without a valid admin token (prevents public abuse).
-//   - Only submits canonical https://careinmycity.com/... URLs
-//     (legacy state paths and preview hosts are filtered out).
-//   - Submits in batches and returns the REAL IndexNow status per batch.
+// Safety model (no admin token required):
+//   - The ONLY source of URLs is the live production sitemap.
+//     https://careinmycity.com/sitemap.xml
+//   - It NEVER accepts request-body URL lists or query-string URL lists,
+//     so a caller cannot inject arbitrary URLs.
+//   - All URLs are filtered to canonical https://careinmycity.com/... only:
+//     legacy top-level state paths, preview/branch/localhost hosts, and
+//     non-careinmycity.com hosts are rejected.
+//   - Returns the REAL IndexNow status/body per batch.
 
 const { filterCanonicalUrls } = require('./lib/canonical-urls');
 
@@ -56,21 +54,9 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers, body: '' };
   }
 
-  // --- Auth: require admin token ---
-  const expected = process.env.INDEXNOW_ADMIN_TOKEN;
-  const provided =
-    (event.headers && (event.headers['x-indexnow-token'] || event.headers['X-Indexnow-Token'])) ||
-    (event.queryStringParameters && event.queryStringParameters.token);
-
-  if (!expected || !provided || provided !== expected) {
-    return {
-      statusCode: 401,
-      headers,
-      body: JSON.stringify({ ok: false, error: 'Unauthorized' })
-    };
-  }
-
   try {
+    // The only URL source is the live production sitemap. No user-provided
+    // URLs (body or query string) are ever read or trusted.
     const res = await fetch(SITEMAP_URL, { headers: { 'Cache-Control': 'no-cache' } });
     if (!res.ok) {
       return {
