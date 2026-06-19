@@ -3,11 +3,22 @@ exports.handler = async (event) => {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json'
   };
+
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
   }
+
   try {
     const { urls, key } = JSON.parse(event.body);
+
+    if (!Array.isArray(urls) || urls.length === 0) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ ok: false, error: 'No urls provided' })
+      };
+    }
+
     const response = await fetch('https://api.indexnow.org/indexnow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -18,16 +29,28 @@ exports.handler = async (event) => {
         urlList: urls
       })
     });
+
+    // Surface the REAL IndexNow API response (status + body) instead of
+    // always reporting success. IndexNow returns 200/202 on accept, and
+    // 4xx (e.g. 403 invalid key, 422 invalid urls) on rejection.
+    const responseBody = await response.text();
+    const ok = response.status >= 200 && response.status < 300;
+
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ status: response.status, message: 'Submitted successfully' })
+      body: JSON.stringify({
+        ok,
+        indexnowStatus: response.status,
+        indexnowBody: responseBody,
+        submittedCount: urls.length
+      })
     };
   } catch (error) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: error.message })
+      body: JSON.stringify({ ok: false, error: error.message })
     };
   }
 };
