@@ -140,7 +140,45 @@ function offlineFallback(query) {
   };
 }
 
+
+// Reverse geocode browser coordinates (lat,lng) into a resolved city/state,
+// used by the sitewide "Search Near Me" feature. Uses the same server-side
+// Google Geocoding key; coordinates never expose any API key to the client.
+async function reverseGeocode(lat, lng, apiKey, source) {
+  const url =
+    'https://maps.googleapis.com/maps/api/geocode/json?latlng=' +
+    encodeURIComponent(lat + ',' + lng) +
+    '&key=' + encodeURIComponent(apiKey);
+  const resp = await fetch(url);
+  const data = await resp.json();
+  if (data.status !== 'OK' || !data.results || !data.results.length) {
+    return null;
+  }
+  return normalizeFromGeocode(data.results[0], source);
+}
+
 exports.handler = async function (event) {
+  // Sitewide "Search Near Me": if the client sends browser coordinates,
+  // reverse-geocode them server-side and return the resolved place.
+  const __qs = (event && event.queryStringParameters) || {};
+  const __lat = __qs.lat;
+  const __lng = __qs.lng;
+  if (__lat && __lng) {
+    const __key = process.env.GOOGLE_GEOCODING_API_KEY || process.env.GOOGLE_PLACES_API_KEY;
+    if (!__key) {
+      return jsonResponse(200, { ok: false, query: '', resolved: null, reason: 'no_api_key' });
+    }
+    try {
+      const __resolved = await reverseGeocode(__lat, __lng, __key, 'reverse');
+      if (__resolved) {
+        return jsonResponse(200, { ok: true, query: __lat + ',' + __lng, resolved: __resolved });
+      }
+      return jsonResponse(200, { ok: false, query: __lat + ',' + __lng, resolved: null, reason: 'not_found' });
+    } catch (e) {
+      return jsonResponse(200, { ok: false, query: __lat + ',' + __lng, resolved: null, reason: 'reverse_error' });
+    }
+  }
+
   var query = getQuery(event);
   if (!query) {
     return jsonResponse(200, { ok: false, query: "", resolved: null, reason: "empty_query" });

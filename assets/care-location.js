@@ -689,3 +689,107 @@ function wireForms() {
     ROUTE_INDEX: ROUTE_INDEX
   };
 })();
+
+
+/* ------------------------------------------------------------------ *
+ * Search Near Me (sitewide)                                           *
+ *                                                                     *
+ * Uses the browser's geolocation, then reverse-geocodes the coords    *
+ * server-side via the places-lookup Netlify function (no Google key   *
+ * in the browser). Resolves to a city/state and routes the visitor    *
+ * to the best canonical /state/... page using the existing           *
+ * CareLocation routing. Falls back to the /search/ page if anything   *
+ * is unavailable. This block is fully independent of the main IIFE    *
+ * above and only enhances behavior; it never breaks existing forms.   *
+ * ------------------------------------------------------------------ */
+(function () {
+  'use strict';
+
+  var BUTTON_SELECTOR = '[data-near-me], .search-near-me, #search-near-me, [data-action="near-me"]';
+
+  function rootPrefix() {
+    // Mirror depth handling so the function path resolves from any page depth.
+    return '/.netlify/functions/places-lookup';
+  }
+
+  function setStatus(btn, text) {
+    if (!btn) return;
+    if (!btn.dataset.originalLabel) btn.dataset.originalLabel = btn.textContent;
+    btn.textContent = text;
+  }
+
+  function restore(btn) {
+    if (btn && btn.dataset.originalLabel) btn.textContent = btn.dataset.originalLabel;
+  }
+
+  function searchFallback() {
+    // Always-available fallback: the dedicated search page.
+    window.location.href = '/search/';
+  }
+
+  function routeFromResolved(resolved) {
+    try {
+      var CL = window.CareLocation;
+      if (CL && typeof CL.goToBest === 'function' && resolved && resolved.city && resolved.stateCode) {
+        CL.goToBest(resolved.city + ', ' + resolved.stateCode, null, '/search/');
+        return;
+      }
+    } catch (e) {}
+    searchFallback();
+  }
+
+  function handleNearMe(btn) {
+    if (!('geolocation' in navigator)) {
+      searchFallback();
+      return;
+    }
+    setStatus(btn, 'Locating\u2026');
+    navigator.geolocation.getCurrentPosition(
+      function (pos) {
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        fetch(rootPrefix() + '?lat=' + encodeURIComponent(lat) + '&lng=' + encodeURIComponent(lng), { cache: 'no-store' })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            restore(btn);
+            if (data && data.ok && data.resolved) {
+              routeFromResolved(data.resolved);
+            } else {
+              searchFallback();
+            }
+          })
+          .catch(function () { restore(btn); searchFallback(); });
+      },
+      function () {
+        // Permission denied or unavailable: graceful fallback.
+        restore(btn);
+        searchFallback();
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+    );
+  }
+
+  function wireNearMe() {
+    var buttons = document.querySelectorAll(BUTTON_SELECTOR);
+    for (var i = 0; i < buttons.length; i++) {
+      var btn = buttons[i];
+      if (btn.dataset.nearMeWired) continue;
+      btn.dataset.nearMeWired = '1';
+      btn.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        handleNearMe(ev.currentTarget);
+      });
+    }
+  }
+
+  // Expose a programmatic hook so other code (e.g. Carl) can trigger it too.
+  if (window.CareLocation) {
+    window.CareLocation.searchNearMe = function () { handleNearMe(null); };
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireNearMe);
+  } else {
+    wireNearMe();
+  }
+})();
