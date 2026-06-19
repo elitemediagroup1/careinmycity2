@@ -4,3 +4,10 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+# Edge function that injects the Carl widget (site.js) and the location/
+# search client (care-location.js) into every HTML page, sitewide. It is
+# idempotent and only modifies text/html responses.
+[[edge_functions]]
+  path = "/*"
+  function = "inject-integrations"
