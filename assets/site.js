@@ -494,7 +494,7 @@ function carlLocalReply() {
 }
 
 // Send the running conversation to Carl and render his reply.
-function sendCarlMessage(userText) {
+async function sendCarlMessage(userText) {
   if (carlBusy) return;
   var text = (userText || "").trim();
   if (!text) return;
@@ -510,12 +510,13 @@ function sendCarlMessage(userText) {
   setCarlTyping(true);
 
   var base = getCarlBasePath();
+  var __carlProviderResult = (window.__carlFetchProviders ? await window.__carlFetchProviders(userText) : null);
   var pageContext = document.title || window.location.pathname;
 
   fetch(CARL_ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: carlHistory.slice(-24), pageContext: pageContext })
+    body: JSON.stringify({ messages: carlHistory.slice(-24), pageContext: (window.__carlMergeProviderContext ? window.__carlMergeProviderContext(pageContext, __carlProviderResult) : pageContext) })
   })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (data) {
@@ -1570,3 +1571,132 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 })();
 /* ===== end canonical mobile nav controller ===== */
+
+
+/* ===== Carl provider-search tool-use bridge (fix/google-search-carl-tool-use) ===== */
+(function(){
+  "use strict";
+
+  var SERVICE_PATTERNS = [
+    { slug: "home-care", phrase: "home care", re: /\b(in-?home care|home care|home health|homecare|care at home|help (?:my |her |his |their )?\w+ at home)\b/i },
+    { slug: "assisted-living", phrase: "assisted living", re: /\bassisted living\b/i },
+    { slug: "memory-care", phrase: "memory care", re: /\b(memory care|dementia care|alzheimer)\b/i },
+    { slug: "skilled-nursing", phrase: "skilled nursing", re: /\b(skilled nursing|nursing home|snf)\b/i },
+    { slug: "independent-living", phrase: "independent living", re: /\bindependent living\b/i },
+    { slug: "hospice", phrase: "hospice", re: /\bhospice\b/i },
+    { slug: "respite-care", phrase: "respite care", re: /\brespite\b/i },
+    { slug: "adult-day-care", phrase: "adult day care", re: /\badult day (?:care|services)\b/i }
+  ];
+
+  // Words that signal the user wants actual providers/listings, not general info.
+  var PROVIDER_INTENT_RE = /\b(provider|providers|agency|agencies|facility|facilities|near me|nearby|find|show me|list|options near|who can help|recommend|places?)\b/i;
+  var ZIP_RE = /\b(\d{5})\b/;
+
+  function detectService(text){
+    for(var i=0;i<SERVICE_PATTERNS.length;i++){ if(SERVICE_PATTERNS[i].re.test(text)) return SERVICE_PATTERNS[i]; }
+    return null;
+  }
+
+  // Pull a location phrase out of "<service> near <location>" or "in <location>".
+  function extractLocation(text){
+    var zip = (text.match(ZIP_RE) || [])[1] || "";
+    if(zip) return { kind: "zip", value: zip };
+    var m = text.match(/\b(?:near|in|around|by|close to)\s+([A-Za-z][A-Za-z .\-]{1,40}?)(?:[?.,!]|$)/i);
+    if(m && m[1]){
+      var loc = m[1].trim();
+      if(/^me\b/i.test(loc)) return { kind: "nearme", value: "" };
+      return { kind: "place", value: loc };
+    }
+    if(/\bnear me\b/i.test(text)) return { kind: "nearme", value: "" };
+    return null;
+  }
+
+  // Resolve a near-me request to coordinates via browser geolocation (client-side only).
+  function getGeo(){
+    return new Promise(function(resolve){
+      if(!navigator.geolocation){ resolve(null); return; }
+      navigator.geolocation.getCurrentPosition(
+        function(pos){ resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }); },
+        function(){ resolve(null); },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 }
+      );
+    });
+  }
+
+  // Main bridge: detect intent, call existing server-side Google functions, return a result object.
+  window.__carlFetchProviders = async function(userText){
+    try{
+      var text = String(userText || "");
+      var service = detectService(text);
+      var hasIntent = PROVIDER_INTENT_RE.test(text) || !!service;
+      if(!service || !hasIntent) return null; // not a provider-search request
+
+      var loc = extractLocation(text);
+      var phrase = service.phrase;
+      var locLabel = "";
+      var nearbyQuery = "";
+
+      if(loc && loc.kind === "zip"){
+        locLabel = loc.value;
+        nearbyQuery = phrase + " near " + loc.value;
+      } else if(loc && loc.kind === "place"){
+        locLabel = loc.value;
+        nearbyQuery = phrase + " near " + loc.value;
+      } else if(loc && loc.kind === "nearme"){
+        var geo = await getGeo();
+        if(!geo){ return { status: "need_location", service: service.slug, phrase: phrase }; }
+        nearbyQuery = phrase + " near " + geo.lat + "," + geo.lng;
+        locLabel = "your current location";
+      } else {
+        // service mentioned but no location -> let Claude ask for a location naturally
+        return { status: "need_location", service: service.slug, phrase: phrase };
+      }
+
+      var url = "/.netlify/functions/places-nearby?q=" + encodeURIComponent(nearbyQuery);
+      var resp = await fetch(url, { headers: { "Accept": "application/json" } });
+      if(!resp.ok){ return { status: "error", phrase: phrase, location: locLabel }; }
+      var data = await resp.json();
+      var results = (data && data.results) ? data.results.slice(0, 6) : [];
+      if(!results.length){ return { status: "no_results", phrase: phrase, location: locLabel }; }
+      return { status: "ok", phrase: phrase, location: locLabel, results: results };
+    }catch(err){
+      return { status: "error" };
+    }
+  };
+
+  // Fold provider results into the existing pageContext string that Claude already receives.
+  window.__carlMergeProviderContext = function(pageContext, providerResult){
+    var base = (pageContext == null) ? "" : String(pageContext);
+    if(!providerResult) return base;
+    var note = "";
+    if(providerResult.status === "ok"){
+      var lines = providerResult.results.map(function(p, i){
+        var bits = [ (i+1) + ". " + (p.name || "Listing") ];
+        if(p.address) bits.push("   Address: " + p.address);
+        if(typeof p.rating === "number") bits.push("   Google rating: " + p.rating + (p.userRatingsTotal ? " (" + p.userRatingsTotal + " reviews)" : ""));
+        if(p.mapsUrl) bits.push("   Map: " + p.mapsUrl);
+        return bits.join("\n");
+      }).join("\n");
+      note = "\n\n[LIVE PROVIDER SEARCH RESULTS]\n"
+        + "The following are real, current " + providerResult.phrase + " listings found via live Google Places local search for " + providerResult.location + ". "
+        + "Present these to the user conversationally as \"nearby provider listings I found through live local search.\" "
+        + "Do NOT invent additional providers beyond this list. "
+        + "Include a brief, natural disclaimer that CareInMyCity does not endorse, verify, or guarantee any provider and that families should confirm details and licensing directly. "
+        + "Do not claim any provider is licensed, vetted, or recommended.\n" + lines + "\n[END PROVIDER RESULTS]\n";
+    } else if(providerResult.status === "no_results"){
+      note = "\n\n[LIVE PROVIDER SEARCH: no results]\n"
+        + "A live provider search for " + (providerResult.phrase||"care") + " near " + (providerResult.location||"that area") + " returned no listings. "
+        + "Explain this naturally and suggest trying a nearby city or a broader search term. Do not invent providers.\n";
+    } else if(providerResult.status === "need_location"){
+      note = "\n\n[LIVE PROVIDER SEARCH: location needed]\n"
+        + "The user appears to want " + (providerResult.phrase||"care") + " providers but did not give a usable city or ZIP. "
+        + "Ask, in a warm and natural way, for a city or ZIP code so a live local search can be run.\n";
+    } else if(providerResult.status === "error"){
+      note = "\n\n[LIVE PROVIDER SEARCH: lookup failed]\n"
+        + "A live provider lookup was attempted but had a technical problem. "
+        + "Tell the user that live provider lookup had trouble right now and suggest trying again in a moment. Do not invent providers.\n";
+    }
+    return base + note;
+  };
+})();
+/* ===== end Carl provider-search tool-use bridge ===== */
