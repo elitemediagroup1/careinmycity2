@@ -893,3 +893,245 @@ function wireForms() {
   } else { initRouterForms(); }
 })();
 /* ===== end canonical routing + form wiring ===== */
+
+
+/* ============================================================
+   Homepage live provider search (PetsInMyCity-style)
+   Renders provider cards inline beneath the hero instead of
+   redirecting. Shares the loaded JSON with Carl. SEO /state/
+   pages remain the canonical indexed content.
+   ============================================================ */
+(function(){
+  'use strict';
+  var CL = window.CareLocation;
+  if(!CL) return;
+  // Only enhance the homepage hero search form.
+  function heroForm(){ return document.querySelector('.care-search-form[data-care-router]') || document.querySelector('.care-search-form'); }
+  function isHomepage(){ var p = location.pathname.replace(/index\.html$/,''); return p==='/' || p===''; }
+
+  // Map a care-type <option> value to a service slug + label + search phrase.
+  var SERVICE_META = {
+    'home-care': {label:'Home Care', phrase:'home care'},
+    'memory-care': {label:'Memory Care', phrase:'memory care'},
+    'respite-care': {label:'Respite Care', phrase:'respite care'},
+    'assisted-living': {label:'Assisted Living', phrase:'assisted living'},
+    'final-expense-support': {label:'Final Expense Support', phrase:'final expense insurance'},
+    'ssdi': {label:'SSDI Attorney', phrase:'social security disability attorney'},
+    'elder-law': {label:'Elder Law Attorney', phrase:'elder law attorney'}
+  };
+  function serviceFromOption(val){
+    if(!val) return null;
+    var m = String(val).match(/\/([a-z-]+)\/index\.htm/);
+    if(m && SERVICE_META[m[1]]) return m[1];
+    return null; // 'senior care' general, or quiz
+  }
+  // ---- Data layer -------------------------------------------------
+  // Shared store so Carl can reuse the exact JSON already loaded.
+  window.__careHomeProviders = window.__careHomeProviders || null;
+
+  function fnFetch(path){
+    return fetch(path, {headers:{'Accept':'application/json'}}).then(function(r){ return r.json(); });
+  }
+  function lookup(q){ return fnFetch('/.netlify/functions/places-lookup?q=' + encodeURIComponent(q)); }
+  function nearbyByPhrase(phrase, locText){ return fnFetch('/.netlify/functions/places-nearby?q=' + encodeURIComponent(phrase + ' near ' + locText)); }
+  function nearbyByCoords(phrase, lat, lng){ return fnFetch('/.netlify/functions/places-nearby?q=' + encodeURIComponent(phrase) + '&lat=' + lat + '&lng=' + lng); }
+
+  // Resolve a free-text/zip query into a resolved location object.
+  function resolveLocation(query){
+    return lookup(query).then(function(d){ var rz = (d && d.ok && d.resolved) ? d.resolved : null; if(rz && !rz.city && !rz.stateCode && !rz.zip) rz = null; return rz; });
+  }
+
+  // Run the discovery: returns {resolved, groups:[{slug,label,results}], center, locText}.
+  // serviceSlug null => discover across the core care categories (grouped).
+  function discover(query, serviceSlug){
+    return resolveLocation(query).then(function(resolved){
+      if(!resolved) return {error:'no_location'};
+      var locText = [resolved.city, resolved.stateCode].filter(Boolean).join(' ');
+      var slugs = serviceSlug ? [serviceSlug] : ['home-care','assisted-living','memory-care'];
+      var jobs = slugs.map(function(slug){
+        var meta = SERVICE_META[slug] || {label:slug, phrase:slug.replace(/-/g,' ')};
+        return nearbyByPhrase(meta.phrase, locText).then(function(d){
+          return {slug:slug, label:meta.label, results:(d && d.results) ? d.results : [], center:(d && d.center)||null, reason:(d&&d.reason)||null};
+        }).catch(function(){ return {slug:slug, label:meta.label, results:[], error:true}; });
+      });
+      return Promise.all(jobs).then(function(groups){
+        var center = null; groups.forEach(function(g){ if(!center && g.center) center=g.center; });
+        var payload = {resolved:resolved, groups:groups, center:center, locText:locText, serviceSlug:serviceSlug||null, ts:Date.now()};
+        window.__careHomeProviders = payload; // share with Carl
+        try{ document.dispatchEvent(new CustomEvent('care:providers-loaded', {detail:payload})); }catch(e){}
+        return payload;
+      });
+    });
+  }
+  // ---- Render layer ----------------------------------------------
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+  function stars(rating){
+    var r = Math.round((Number(rating)||0)*2)/2, out='', i;
+    for(i=1;i<=5;i++){ out += (r>=i) ? '\u2605' : (r>=i-0.5 ? '\u2605' : '\u2606'); }
+    return out;
+  }
+  function cardHTML(p, canonHref){
+    var ratingBits = '';
+    if(typeof p.rating === 'number' && p.rating>0){
+      ratingBits = '<div class="chp-rating"><span class="chp-stars" aria-hidden="true">' + stars(p.rating) + '</span> '
+        + '<span class="chp-rating-num">' + esc(p.rating.toFixed(1)) + '</span>'
+        + (p.userRatingsTotal ? ' <span class="chp-reviews">(' + esc(p.userRatingsTotal) + ' reviews)</span>' : '') + '</div>';
+    }
+    var openBits = '';
+    if(p.openNow === true){ openBits = '<div class="chp-open chp-open-yes">\u25CF Open now</div>'; }
+    else if(p.openNow === false){ openBits = '<div class="chp-open chp-open-no">\u25CF Closed</div>'; }
+    var addr = p.address ? '<div class="chp-addr"><span class="chp-pin" aria-hidden="true">\uD83D\uDCCD</span> ' + esc(p.address) + '</div>' : '';
+    var maps = p.mapsUrl ? '<a class="chp-maps" href="' + esc(p.mapsUrl) + '" target="_blank" rel="noopener noreferrer">View on Maps</a>' : '';
+    var more = canonHref ? '<a class="chp-learn" href="' + esc(canonHref) + '">Local guide &amp; resources</a>' : '';
+    return '<article class="care-home-provider">'
+      + '<h4 class="chp-name">' + esc(p.name) + '</h4>'
+      + addr + ratingBits + openBits
+      + '<div class="chp-actions">' + maps + more + '</div>'
+      + '</article>';
+  }
+  // Container injected right after the hero section (homepage only).
+    // Inject a scoped <style> so tiles render as a grid even if styles.css
+  // has not loaded yet (robust against asset-build/cache lag).
+  function ensureInlineStyles(){
+    if(document.getElementById('care-home-inline-style')) return;
+    var css = ''
+      + '#care-home-results{padding:2.5rem 1rem 1rem;}'
+      + '#care-home-results:empty{display:none;padding:0;}'
+      + '#care-home-results .care-home-results-inner{max-width:1080px;margin:0 auto;}'
+      + '#care-home-results .care-home-results-head{text-align:center;margin-bottom:1.5rem;}'
+      + '#care-home-results .chr-title{font-size:clamp(1.4rem,3vw,2rem);margin:0 0 .35rem;color:#1d3a37;}'
+      + '#care-home-results .chr-sub{color:#5a6b6a;margin:0;font-size:.98rem;}'
+      + '#care-home-results .chr-loading,#care-home-results .chr-msg{text-align:center;color:#5a6b6a;padding:1.5rem;font-size:1.05rem;}'
+      + '#care-home-results .chr-disclaimer{margin-top:1.5rem;font-size:.82rem;color:#7a8786;text-align:center;line-height:1.5;}'
+      + '#care-home-results .care-home-group{margin-bottom:2rem;}'
+      + '#care-home-results .chg-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.85rem;border-bottom:1px solid #e6efee;padding-bottom:.5rem;}'
+      + '#care-home-results .chg-title{font-size:1.15rem;margin:0;color:#23423f;}'
+      + '#care-home-results .chg-all{font-size:.9rem;color:#1f8f87;text-decoration:none;white-space:nowrap;}'
+      + '#care-home-results .chg-all:hover{text-decoration:underline;}'
+      + '#care-home-results .chg-empty{font-size:.9rem;color:#7a8786;margin:.25rem 0 0;}'
+      + '#care-home-results .care-home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}'
+      + '#care-home-results .care-home-provider{background:#fff;border:1px solid #e6efee;border-radius:14px;padding:1.1rem 1.15rem;box-shadow:0 1px 3px rgba(20,50,48,.05);display:flex;flex-direction:column;gap:.45rem;transition:box-shadow .15s ease,transform .15s ease;}'
+      + '#care-home-results .care-home-provider:hover{box-shadow:0 6px 18px rgba(20,50,48,.10);transform:translateY(-2px);}'
+      + '#care-home-results .chp-name{font-size:1.02rem;margin:0;color:#1d3a37;line-height:1.3;}'
+      + '#care-home-results .chp-addr{font-size:.88rem;color:#5a6b6a;line-height:1.4;}'
+      + '#care-home-results .chp-pin{margin-right:.15rem;}'
+      + '#care-home-results .chp-rating{font-size:.9rem;color:#3a4d4b;display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}'
+      + '#care-home-results .chp-stars{color:#f5a623;letter-spacing:1px;}'
+      + '#care-home-results .chp-rating-num{font-weight:600;}'
+      + '#care-home-results .chp-reviews{color:#7a8786;}'
+      + '#care-home-results .chp-open{font-size:.85rem;font-weight:600;}'
+      + '#care-home-results .chp-open-yes{color:#1f9d55;}'
+      + '#care-home-results .chp-open-no{color:#b0453a;}'
+      + '#care-home-results .chp-actions{margin-top:auto;padding-top:.5rem;display:flex;gap:.9rem;flex-wrap:wrap;}'
+      + '#care-home-results .chp-maps,#care-home-results .chp-learn{font-size:.86rem;text-decoration:none;font-weight:600;}'
+      + '#care-home-results .chp-maps{color:#1f8f87;}'
+      + '#care-home-results .chp-learn{color:#1f6f6b;}'
+      + '#care-home-results .chp-maps:hover,#care-home-results .chp-learn:hover{text-decoration:underline;}'
+      + '@media (max-width:640px){#care-home-results{padding:1.75rem .85rem .5rem;}#care-home-results .care-home-grid{grid-template-columns:1fr;}#care-home-results .chg-head{flex-direction:column;align-items:flex-start;gap:.25rem;}}';
+    var st = document.createElement('style');
+    st.id = 'care-home-inline-style';
+    st.textContent = css;
+    document.head.appendChild(st);
+  }
+
+function resultsContainer(){
+    var c = document.getElementById('care-home-results');
+    if(c) return c;
+    c = document.createElement('section');
+    c.id = 'care-home-results';
+    ensureInlineStyles();
+    c.className = 'care-home-results local-section';
+    c.setAttribute('aria-live','polite');
+    var hero = document.querySelector('.home-hero') || document.querySelector('.care-search-form');
+    if(hero && hero.parentNode){
+      var anchor = (hero.className||'').indexOf('home-hero')>=0 ? hero : (hero.closest('section')||hero);
+      anchor.parentNode.insertBefore(c, anchor.nextSibling);
+    } else { document.body.appendChild(c); }
+    return c;
+  }
+  function setStatus(html){ var c = resultsContainer(); c.innerHTML = html; c.scrollIntoView({behavior:'smooth', block:'start'}); }
+
+  function groupHTML(g, resolved){
+    var canon = (CL.canonicalCityPath && resolved) ? CL.canonicalCityPath(resolved, g.slug) : null;
+    if(!g.results || !g.results.length){
+      return '<div class="care-home-group care-home-group-empty"><h3 class="chg-title">' + esc(g.label) + '</h3>'
+        + '<p class="chg-empty">No live listings came back for this category here. Try a nearby city or broader search.</p></div>';
+    }
+    var cards = g.results.slice(0,8).map(function(p){ return cardHTML(p, canon); }).join('');
+    var head = '<div class="chg-head"><h3 class="chg-title">' + esc(g.label) + '</h3>'
+      + (canon ? '<a class="chg-all" href="' + esc(canon) + '">See full ' + esc(g.label) + ' guide \u2192</a>' : '') + '</div>';
+    return '<div class="care-home-group">' + head + '<div class="care-home-grid">' + cards + '</div></div>';
+  }
+
+  function renderPayload(payload){
+    if(!payload || payload.error==='no_location'){
+      setStatus('<div class="care-home-results-inner"><p class="chr-msg">I could not pin down that location. Try a ZIP code (like 08050) or a city and state (like Newark NJ).</p></div>');
+      return;
+    }
+    var r = payload.resolved;
+    var place = [r.city, r.stateCode].filter(Boolean).join(', ');
+    var total = payload.groups.reduce(function(n,g){ return n + (g.results?g.results.length:0); }, 0);
+    var disclaimer = '<p class="chr-disclaimer">These are nearby provider listings found through live local search. CareInMyCity does not endorse, verify, or guarantee any provider \u2014 please confirm details directly with each provider.</p>';
+    var headerHTML = '<div class="care-home-results-head"><h2 class="chr-title">Care Options Near ' + esc(place) + '</h2>'
+      + '<p class="chr-sub">Showing top live results' + (payload.serviceSlug ? '' : ' across home care, assisted living, and memory care') + '</p></div>';
+    var body = payload.groups.map(function(g){ return groupHTML(g, r); }).join('');
+    setStatus('<div class="care-home-results-inner">' + headerHTML + body + disclaimer + '</div>');
+  }
+  // ---- Wiring -----------------------------------------------------
+  function loadingState(label){ setStatus('<div class="care-home-results-inner"><p class="chr-loading">Finding ' + esc(label||'local care options') + '\u2026</p></div>'); }
+
+  function runSearch(query, serviceSlug, label){
+    loadingState(label);
+    discover(query, serviceSlug).then(renderPayload).catch(function(){
+      setStatus('<div class="care-home-results-inner"><p class="chr-msg">Live provider lookup had trouble just now. Please try again in a moment.</p></div>');
+    });
+  }
+
+  function getFormState(form){
+    var sel = form.querySelector('select');
+    var zip = form.querySelector('input[type=text], input:not([type])');
+    var slug = serviceFromOption(sel ? sel.value : '');
+    var label = slug && SERVICE_META[slug] ? SERVICE_META[slug].label : 'local care options';
+    var isQuiz = sel && /carl-care-quiz|tools\//.test(sel.value||'');
+    return {zip:(zip?zip.value.trim():''), slug:slug, label:label, isQuiz:isQuiz};
+  }
+
+  function attach(){
+    if(!isHomepage()) return;
+    var form = heroForm();
+    if(!form || form.__careHomeWired) return;
+    form.__careHomeWired = true;
+    // Capture-phase submit handler so it pre-empts the PR23 redirect handler.
+    form.addEventListener('submit', function(e){
+      var st = getFormState(form);
+      if(st.isQuiz){ return; } // 'Not sure yet' keeps original behavior (Carl quiz)
+      if(!st.zip){ setStatus('<div class="care-home-results-inner"><p class="chr-msg">Enter a ZIP code or city to see live local options.</p></div>'); e.preventDefault(); e.stopImmediatePropagation(); return; }
+      e.preventDefault(); e.stopImmediatePropagation();
+      runSearch(st.zip, st.slug, st.label);
+    }, true);
+
+    // Near Me: use geolocation, then resolve via coords, render inline.
+    var nearBtn = form.querySelector('[data-near-me]');
+    if(nearBtn && !nearBtn.__careHomeWired){
+      nearBtn.__careHomeWired = true;
+      nearBtn.addEventListener('click', function(e){
+        e.preventDefault(); e.stopImmediatePropagation();
+        if(!navigator.geolocation){ setStatus('<div class="care-home-results-inner"><p class="chr-msg">Location is not available in this browser. Enter a ZIP code instead.</p></div>'); return; }
+        var st = getFormState(form);
+        loadingState(st.label);
+        navigator.geolocation.getCurrentPosition(function(pos){
+          var lat = pos.coords.latitude, lng = pos.coords.longitude;
+          lookup(lat + ',' + lng).then(function(d){
+            var q = (d && d.resolved) ? ([d.resolved.city, d.resolved.stateCode].filter(Boolean).join(' ') || (lat+','+lng)) : (lat+','+lng);
+            runSearch(q, st.slug, st.label);
+          });
+        }, function(){ setStatus('<div class="care-home-results-inner"><p class="chr-msg">No problem \u2014 location access was declined. Enter a ZIP code or city and we\u2019ll find local options.</p></div>'); }, {enableHighAccuracy:false, timeout:8000, maximumAge:300000});
+      }, true);
+    }
+  }
+
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', attach); }
+  else { attach(); }
+  // Re-attach if the form is injected late.
+  setTimeout(attach, 1200);
+})();

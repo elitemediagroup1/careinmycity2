@@ -1709,3 +1709,66 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 })();
 /* ===== end Carl provider-search tool-use bridge ===== */
+
+
+/* ===== Carl reuses homepage-loaded provider JSON (no 2nd lookup) ===== */
+(function(){
+  'use strict';
+  // Wrap the existing provider fetch so that, when the homepage has already
+  // loaded live provider results for a location, Carl reuses that exact JSON
+  // instead of performing a second Google lookup.
+  var original = window.__carlFetchProviders;
+  if(typeof original !== 'function') return;
+
+  function norm(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
+
+  // Flatten the homepage store {groups:[{slug,label,results}]} into a flat
+  // results[] array, de-duplicated by placeId, in the same shape Carl expects.
+  function flattenStore(store){
+    var seen = {}, out = [];
+    (store.groups||[]).forEach(function(g){
+      (g.results||[]).forEach(function(p){
+        var key = p.placeId || (p.name + '|' + p.address);
+        if(seen[key]) return; seen[key] = 1;
+        var copy = {}; for(var k in p){ if(p.hasOwnProperty(k)) copy[k]=p[k]; }
+        copy.category = g.label; copy.categorySlug = g.slug;
+        out.push(copy);
+      });
+    });
+    return out;
+  }
+
+  // Decide if the homepage store satisfies this Carl query.
+  function storeMatches(store, userText){
+    if(!store || !store.resolved) return false;
+    if((Date.now() - (store.ts||0)) > 15*60*1000) return false; // stale after 15 min
+    var q = norm(userText);
+    var city = norm(store.resolved.city);
+    var st = norm(store.resolved.state);
+    var sc = norm(store.resolved.stateCode);
+    var zip = norm(store.resolved.zip);
+    // If the user named a place/zip, it must line up with the loaded one.
+    var mentionsZip = /\b\d{5}\b/.test(userText);
+    if(mentionsZip){ return zip && q.indexOf(zip)!==-1; }
+    if(city && q.indexOf(city)!==-1) return true;
+    // Generic 'near me'/no explicit location => reuse what is on screen.
+    var hasOtherPlace = /\bin\b|\bnear\b/.test(q) && !(city && q.indexOf(city)!==-1);
+    if(/near me|nearby|around here|my area/.test(q)) return true;
+    return false;
+  }
+
+  window.__carlFetchProviders = function(userText){
+    try {
+      var store = window.__careHomeProviders;
+      if(storeMatches(store, userText)){
+        var results = flattenStore(store);
+        if(results.length){
+          var loc = [store.resolved.city, store.resolved.stateCode].filter(Boolean).join(', ');
+          return Promise.resolve({status:'ok', phrase:(store.serviceSlug||'care'), location:loc, results:results, reused:true});
+        }
+      }
+    } catch(e){}
+    return original(userText);
+  };
+})();
+/* ===== end Carl homepage-store reuse ===== */
