@@ -1527,6 +1527,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Only intercept when the mobile nav toggle is visible (collapsed mode)
         if(getComputedStyle(toggle).display === "none") return; // desktop: let hover/native behavior work
         e.preventDefault();
+        e.stopPropagation();
         var isOpen = dd.classList.toggle("open");
         label.setAttribute("aria-expanded", isOpen ? "true" : "false");
       }
