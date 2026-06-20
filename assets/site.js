@@ -1539,6 +1539,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close the menu when a real navigation link is clicked (not the Guides label)
     navLinks.addEventListener("click", function(e){
       var a = e.target.closest("a");
+      if(a && a.closest(".nav-dropdown-label")) return; // disclosure control, not navigation
       if(a && header.classList.contains("nav-open") && getComputedStyle(toggle).display !== "none"){
         setOpen(false);
       }
