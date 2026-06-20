@@ -938,7 +938,7 @@ function wireForms() {
 
   // Resolve a free-text/zip query into a resolved location object.
   function resolveLocation(query){
-    return lookup(query).then(function(d){ return (d && d.ok && d.resolved) ? d.resolved : null; });
+    return lookup(query).then(function(d){ var rz = (d && d.ok && d.resolved) ? d.resolved : null; if(rz && !rz.city && !rz.stateCode && !rz.zip) rz = null; return rz; });
   }
 
   // Run the discovery: returns {resolved, groups:[{slug,label,results}], center, locText}.
