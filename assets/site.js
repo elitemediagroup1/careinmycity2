@@ -1470,3 +1470,101 @@ document.addEventListener('DOMContentLoaded', () => {
   if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', init); }
   else { init(); }
 })();
+
+
+/* ===== Canonical mobile nav controller (fix/mobile-header-canonical-nav) ===== */
+(function(){
+  "use strict";
+  function ready(fn){
+    if(document.readyState!=="loading"){ fn(); }
+    else { document.addEventListener("DOMContentLoaded", fn); }
+  }
+  ready(function(){
+    var header = document.querySelector("header.site-header");
+    if(!header) return; // only the canonical global header
+    var navWrap = header.querySelector(".container.nav");
+    var navLinks = header.querySelector("nav.nav-links");
+    if(!navWrap || !navLinks) return;
+
+    // Inject hamburger toggle once
+    var toggle = header.querySelector(".nav-toggle");
+    if(!toggle){
+      toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "nav-toggle";
+      toggle.setAttribute("aria-label", "Open menu");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-controls", "primary-nav");
+      toggle.innerHTML = '<span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>';
+      if(!navLinks.id) navLinks.id = "primary-nav";
+      // place the toggle right before nav-links so CSS margin-left:auto pushes it right
+      navWrap.insertBefore(toggle, navLinks);
+    }
+
+    function setOpen(open){
+      header.classList.toggle("nav-open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      if(!open){
+        // collapse any open Guides submenu when closing the whole nav
+        var dd = navLinks.querySelectorAll(".nav-dropdown.open");
+        dd.forEach(function(d){ d.classList.remove("open"); });
+      }
+    }
+
+    toggle.addEventListener("click", function(){
+      setOpen(!header.classList.contains("nav-open"));
+    });
+
+    // Guides (and any nav-dropdown) toggle on tap when in mobile/collapsed mode
+    navLinks.querySelectorAll(".nav-dropdown").forEach(function(dd){
+      var label = dd.querySelector(".nav-dropdown-label");
+      if(!label) return;
+      label.setAttribute("role", "button");
+      label.setAttribute("tabindex", "0");
+      label.setAttribute("aria-expanded", "false");
+      function toggleDD(e){
+        // Only intercept when the mobile nav toggle is visible (collapsed mode)
+        if(getComputedStyle(toggle).display === "none") return; // desktop: let hover/native behavior work
+        e.preventDefault();
+        var isOpen = dd.classList.toggle("open");
+        label.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      }
+      label.addEventListener("click", toggleDD);
+      label.addEventListener("keydown", function(e){
+        if(e.key === "Enter" || e.key === " "){ toggleDD(e); }
+      });
+    });
+
+    // Close the menu when a real navigation link is clicked (not the Guides label)
+    navLinks.addEventListener("click", function(e){
+      var a = e.target.closest("a");
+      if(a && header.classList.contains("nav-open") && getComputedStyle(toggle).display !== "none"){
+        setOpen(false);
+      }
+    });
+
+    // Escape closes the mobile menu
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && header.classList.contains("nav-open")){
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Click outside closes the mobile menu
+    document.addEventListener("click", function(e){
+      if(!header.classList.contains("nav-open")) return;
+      if(getComputedStyle(toggle).display === "none") return;
+      if(!header.contains(e.target)){ setOpen(false); }
+    });
+
+    // If resized to desktop, ensure menu state is reset
+    window.addEventListener("resize", function(){
+      if(getComputedStyle(toggle).display === "none" && header.classList.contains("nav-open")){
+        setOpen(false);
+      }
+    });
+  });
+})();
+/* ===== end canonical mobile nav controller ===== */
