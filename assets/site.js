@@ -1507,8 +1507,8 @@ document.addEventListener('DOMContentLoaded', () => {
       toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       if(!open){
         // collapse any open Guides submenu when closing the whole nav
-        var dd = navLinks.querySelectorAll(".nav-dropdown.open");
-        dd.forEach(function(d){ d.classList.remove("open"); });
+        var dd = navLinks.querySelectorAll(".nav-dropdown.nav-dd-open");
+        dd.forEach(function(d){ d.classList.remove("nav-dd-open"); });
       }
     }
 
@@ -1528,7 +1528,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(getComputedStyle(toggle).display === "none") return; // desktop: let hover/native behavior work
         e.preventDefault();
         e.stopPropagation();
-        var isOpen = dd.classList.toggle("open");
+        var isOpen = dd.classList.toggle("nav-dd-open");
         label.setAttribute("aria-expanded", isOpen ? "true" : "false");
       }
       label.addEventListener("click", toggleDD);
