@@ -1591,6 +1591,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Words that signal the user wants actual providers/listings, not general info.
   var PROVIDER_INTENT_RE = /\b(provider|providers|agency|agencies|facility|facilities|near me|nearby|find|show me|list|options near|who can help|recommend|places?)\b/i;
   var ZIP_RE = /\b(\d{5})\b/;
+  // Definitional / informational questions should NOT trigger a provider lookup.
+  var DEFINITIONAL_RE = /^\s*(what(?:'s| is| are)|how (?:much|do|does|can)|why|when should|explain|tell me about|difference between|cost of|average cost)\b/i;
+  // Location signal: a location reference even without an explicit intent keyword.
+  var LOCATION_SIGNAL_RE = /\b(near|in|around|by|close to)\s+[A-Za-z0-9]/i;
+  var DEFAULT_SERVICE = { slug: "home-care", phrase: "home care" };
 
   function detectService(text){
     for(var i=0;i<SERVICE_PATTERNS.length;i++){ if(SERVICE_PATTERNS[i].re.test(text)) return SERVICE_PATTERNS[i]; }
@@ -1627,11 +1632,15 @@ document.addEventListener('DOMContentLoaded', () => {
   window.__carlFetchProviders = async function(userText){
     try{
       var text = String(userText || "");
+      if(DEFINITIONAL_RE.test(text)) return null; // informational question, not a provider request
       var service = detectService(text);
-      var hasIntent = PROVIDER_INTENT_RE.test(text) || !!service;
-      if(!service || !hasIntent) return null; // not a provider-search request
-
       var loc = extractLocation(text);
+      var hasLocation = !!loc || LOCATION_SIGNAL_RE.test(text);
+      var hasIntentWord = PROVIDER_INTENT_RE.test(text);
+      // Provider-search if: a specific service is named, OR a location is given together with intent.
+      var isProviderSearch = (!!service && (hasLocation || hasIntentWord)) || (hasLocation && hasIntentWord);
+      if(!isProviderSearch) return null;
+      if(!service){ service = DEFAULT_SERVICE; } // generic "care near X" -> default to home care
       var phrase = service.phrase;
       var locLabel = "";
       var nearbyQuery = "";
