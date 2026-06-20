@@ -1240,3 +1240,93 @@ h1,h2{
   #carlPanel.open{right:8px;left:8px;bottom:8px;width:auto;max-width:none;max-height:80vh;}
 }
 /* ===== end Carl live chat widget ===== */
+
+
+/* ===== Canonical mobile header / nav (fix/mobile-header-canonical-nav) ===== */
+/* Hamburger toggle button: hidden on desktop, shown on mobile */
+.nav-toggle{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:44px;height:44px;
+  margin-left:auto;
+  padding:0;
+  border:1px solid var(--line, rgba(18,104,216,.18));
+  border-radius:10px;
+  background:#fff;
+  color:var(--navy,#17324d);
+  cursor:pointer;
+}
+.nav-toggle:focus-visible{outline:3px solid var(--brand-blue,#1268d8);outline-offset:2px;}
+.nav-toggle .nav-toggle-bar{
+  display:block;width:20px;height:2px;border-radius:2px;
+  background:currentColor;transition:transform .2s ease,opacity .2s ease;
+}
+.nav-toggle .nav-toggle-bar + .nav-toggle-bar{margin-top:4px;}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){opacity:0;}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+@media(max-width:980px){
+  /* Compact header row */
+  .site-header .container.nav{flex-wrap:nowrap;align-items:center;gap:10px;}
+  .nav-toggle{display:inline-flex;}
+
+  /* Hide the nav by default on mobile, overriding the base display:flex !important.
+     Higher specificity than '.site-header .nav-links' plus !important to win the cascade. */
+  .site-header .container.nav > nav.nav-links{
+    display:none !important;
+    position:absolute;
+    top:100%;left:0;right:0;
+    width:100%;
+    flex-direction:column;
+    align-items:stretch;
+    gap:2px;
+    padding:10px 16px 16px;
+    margin:0;
+    background:#fff;
+    border-top:1px solid var(--line, rgba(18,104,216,.15));
+    box-shadow:0 12px 28px rgba(13,42,73,.14);
+    max-height:calc(100vh - 64px);
+    overflow-y:auto;
+    z-index:1200;
+  }
+  /* Open state: reveal the stacked nav */
+  .site-header.nav-open .container.nav > nav.nav-links{display:flex !important;}
+  .site-header{position:relative;}
+
+  .site-header .container.nav > nav.nav-links a{padding:11px 4px;width:100%;}
+
+  /* Guides dropdown: collapsed by default on mobile, expand only when toggled open */
+  .nav-dropdown .nav-menu{
+    display:none !important;
+    position:static !important;
+    box-shadow:none;border:0;padding:2px 0 2px 12px;
+    background:transparent;
+  }
+  .nav-dropdown.open .nav-menu{display:grid !important;}
+  .nav-dropdown-label{display:flex;align-items:center;justify-content:space-between;cursor:pointer;width:100%;padding:11px 4px;}
+  .nav-dropdown-label::after{content:"\25BE";font-size:.7em;margin-left:8px;transition:transform .2s ease;}
+  .nav-dropdown.open .nav-dropdown-label::after{transform:rotate(180deg);}
+
+  /* Keep the Find Care CTA visible and usable inside/near the menu */
+  .site-header .container.nav > .nav-cta{margin-left:8px;white-space:nowrap;}
+
+  /* Carl must not cover the open menu */
+  .site-header.nav-open ~ .carl-floating,
+  .site-header.nav-open + .carl-floating{z-index:900;}
+}
+
+@media(max-width:560px){
+  .site-header .container.nav{gap:8px;}
+  .nav-cta{padding:8px 12px;font-size:.92rem;}
+  /* Lower the Carl launcher so it never overlaps the compact header */
+  .carl-floating{bottom:16px;right:16px;}
+  .carl-launcher{font-size:.92rem;}
+}
+
+/* Prevent horizontal overflow on small screens */
+@media(max-width:980px){
+  html,body{overflow-x:hidden;}
+}
+/* ===== end canonical mobile header / nav ===== */
