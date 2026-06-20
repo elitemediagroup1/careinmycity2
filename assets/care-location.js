@@ -990,11 +990,56 @@ function wireForms() {
       + '</article>';
   }
   // Container injected right after the hero section (homepage only).
-  function resultsContainer(){
+    // Inject a scoped <style> so tiles render as a grid even if styles.css
+  // has not loaded yet (robust against asset-build/cache lag).
+  function ensureInlineStyles(){
+    if(document.getElementById('care-home-inline-style')) return;
+    var css = ''
+      + '#care-home-results{padding:2.5rem 1rem 1rem;}'
+      + '#care-home-results:empty{display:none;padding:0;}'
+      + '#care-home-results .care-home-results-inner{max-width:1080px;margin:0 auto;}'
+      + '#care-home-results .care-home-results-head{text-align:center;margin-bottom:1.5rem;}'
+      + '#care-home-results .chr-title{font-size:clamp(1.4rem,3vw,2rem);margin:0 0 .35rem;color:#1d3a37;}'
+      + '#care-home-results .chr-sub{color:#5a6b6a;margin:0;font-size:.98rem;}'
+      + '#care-home-results .chr-loading,#care-home-results .chr-msg{text-align:center;color:#5a6b6a;padding:1.5rem;font-size:1.05rem;}'
+      + '#care-home-results .chr-disclaimer{margin-top:1.5rem;font-size:.82rem;color:#7a8786;text-align:center;line-height:1.5;}'
+      + '#care-home-results .care-home-group{margin-bottom:2rem;}'
+      + '#care-home-results .chg-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.85rem;border-bottom:1px solid #e6efee;padding-bottom:.5rem;}'
+      + '#care-home-results .chg-title{font-size:1.15rem;margin:0;color:#23423f;}'
+      + '#care-home-results .chg-all{font-size:.9rem;color:#1f8f87;text-decoration:none;white-space:nowrap;}'
+      + '#care-home-results .chg-all:hover{text-decoration:underline;}'
+      + '#care-home-results .chg-empty{font-size:.9rem;color:#7a8786;margin:.25rem 0 0;}'
+      + '#care-home-results .care-home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}'
+      + '#care-home-results .care-home-provider{background:#fff;border:1px solid #e6efee;border-radius:14px;padding:1.1rem 1.15rem;box-shadow:0 1px 3px rgba(20,50,48,.05);display:flex;flex-direction:column;gap:.45rem;transition:box-shadow .15s ease,transform .15s ease;}'
+      + '#care-home-results .care-home-provider:hover{box-shadow:0 6px 18px rgba(20,50,48,.10);transform:translateY(-2px);}'
+      + '#care-home-results .chp-name{font-size:1.02rem;margin:0;color:#1d3a37;line-height:1.3;}'
+      + '#care-home-results .chp-addr{font-size:.88rem;color:#5a6b6a;line-height:1.4;}'
+      + '#care-home-results .chp-pin{margin-right:.15rem;}'
+      + '#care-home-results .chp-rating{font-size:.9rem;color:#3a4d4b;display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}'
+      + '#care-home-results .chp-stars{color:#f5a623;letter-spacing:1px;}'
+      + '#care-home-results .chp-rating-num{font-weight:600;}'
+      + '#care-home-results .chp-reviews{color:#7a8786;}'
+      + '#care-home-results .chp-open{font-size:.85rem;font-weight:600;}'
+      + '#care-home-results .chp-open-yes{color:#1f9d55;}'
+      + '#care-home-results .chp-open-no{color:#b0453a;}'
+      + '#care-home-results .chp-actions{margin-top:auto;padding-top:.5rem;display:flex;gap:.9rem;flex-wrap:wrap;}'
+      + '#care-home-results .chp-maps,#care-home-results .chp-learn{font-size:.86rem;text-decoration:none;font-weight:600;}'
+      + '#care-home-results .chp-maps{color:#1f8f87;}'
+      + '#care-home-results .chp-learn{color:#1f6f6b;}'
+      + '#care-home-results .chp-maps:hover,#care-home-results .chp-learn:hover{text-decoration:underline;}'
+      + '@media (max-width:640px){#care-home-results{padding:1.75rem .85rem .5rem;}#care-home-results .care-home-grid{grid-template-columns:1fr;}#care-home-results .chg-head{flex-direction:column;align-items:flex-start;gap:.25rem;}}';
+    var st = document.createElement('style');
+    st.id = 'care-home-inline-style';
+    st.textContent = css;
+    document.head.appendChild(st);
+  }
+
+function resultsContainer(){
     var c = document.getElementById('care-home-results');
     if(c) return c;
     c = document.createElement('section');
     c.id = 'care-home-results';
+    ensureInlineStyles();
     c.className = 'care-home-results local-section';
     c.setAttribute('aria-live','polite');
     var hero = document.querySelector('.home-hero') || document.querySelector('.care-search-form');
