@@ -793,3 +793,103 @@ function wireForms() {
     wireNearMe();
   }
 })();
+
+
+/* ===== Canonical routing + orphaned form wiring (fix/google-search-carl-tool-use) ===== */
+(function(){
+  "use strict";
+  var CL = window.CareLocation;
+  if(!CL) return;
+
+  // 1) Canonicalize routeFor output so it always emits /state/... paths.
+  if(typeof CL.routeFor === "function" && !CL.__canonicalPatched){
+    var _origRouteFor = CL.routeFor.bind(CL);
+    CL.routeFor = function(){
+      var out = _origRouteFor.apply(null, arguments);
+      if(typeof out === "string"){ out = canonicalizePath(out); }
+      return out;
+    };
+    CL.__canonicalPatched = true;
+  }
+
+  function canonicalizePath(p){
+    if(!p) return p;
+    var s = String(p).trim();
+    // absolute external or anchors: leave alone
+    if(/^https?:/i.test(s) || s.charAt(0) === "#") return s;
+    // strip leading ./ and /
+    s = s.replace(/^\.?\//, "");
+    // already canonical
+    if(/^state\//.test(s)) return "/" + s;
+    if(/^\/state\//.test(s)) return s;
+    // tools / search / other top-level known roots: keep as absolute
+    if(/^(tools|search|about|services|my-care-folder|assets|state)\b/.test(s)) return "/" + s;
+    // looks like stateSlug/citySlug/...  -> prefix with /state/
+    if(/^[a-z0-9-]+\/[a-z0-9-]+/.test(s)) return "/state/" + s;
+    return "/" + s;
+  }
+  CL.canonicalizePath = canonicalizePath;
+
+  // Build a canonical city/service path from a resolved location object.
+  CL.canonicalCityPath = function(resolved, serviceSlug){
+    if(!resolved) return "/search/";
+    var stateName = resolved.state || "";
+    var citySlug = CL.slugify(resolved.city || "");
+    var stateSlug = CL.slugify(stateName);
+    if(!stateSlug || !citySlug) return "/search/";
+    var path = "/state/" + stateSlug + "/" + citySlug + "/";
+    if(serviceSlug){ path += serviceSlug + "/"; }
+    return path;
+  };
+
+  // 2) Wire the homepage hero search form: .care-search-form[data-care-router]
+  function wireCareRouterForm(form){
+    if(!form || form.__careRouterWired) return;
+    form.__careRouterWired = true;
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var selects = form.querySelectorAll("select");
+      var serviceSel = selects[0];
+      var zipInput = form.querySelector("input[type=text], input:not([type]), input[type=search]");
+      var rawZip = zipInput ? (zipInput.value || "").trim() : "";
+      // Derive service slug from selected option value (e.g. ".../home-care/index.html").
+      var serviceSlug = "";
+      var optVal = serviceSel ? (serviceSel.value || "") : "";
+      if(/carl-care-quiz/.test(optVal)){
+        // "Not sure yet" -> open Carl if available, else go to quiz page
+        if(typeof window.openCarl === "function"){ window.openCarl(); return; }
+        window.location.href = "/tools/carl-care-quiz/"; return;
+      }
+      var mServ = optVal.match(/\/([a-z-]+)\/index\.html$/);
+      if(mServ && mServ[1] && mServ[1] !== "new-york-city"){ serviceSlug = mServ[1]; }
+      // If a city/zip is present, resolve and route canonically.
+      if(rawZip){
+        var btn = form.querySelector("button, [type=submit]");
+        var origLabel = btn ? btn.textContent : "";
+        if(btn){ btn.disabled = true; btn.textContent = "Finding\u2026"; }
+        Promise.resolve(CL.resolve(rawZip)).then(function(resolved){
+          if(resolved && resolved.city && resolved.state){
+            window.location.href = CL.canonicalCityPath(resolved, serviceSlug);
+          } else {
+            window.location.href = CL.searchFallbackUrl ? CL.canonicalizePath(CL.searchFallbackUrl(rawZip, serviceSlug)) : ("/search/?q=" + encodeURIComponent(rawZip));
+          }
+        }).catch(function(){
+          window.location.href = "/search/?q=" + encodeURIComponent(rawZip);
+        }).then(function(){ if(btn){ btn.disabled = false; btn.textContent = origLabel; } });
+        return;
+      }
+      // No location entered: fall back to the search page (optionally with service filter).
+      window.location.href = serviceSlug ? ("/search/?careType=" + encodeURIComponent(serviceSlug)) : "/search/";
+    });
+  }
+
+  function initRouterForms(){
+    var forms = document.querySelectorAll(".care-search-form[data-care-router]");
+    for(var i=0;i<forms.length;i++){ wireCareRouterForm(forms[i]); }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", initRouterForms);
+  } else { initRouterForms(); }
+})();
+/* ===== end canonical routing + form wiring ===== */
