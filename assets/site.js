@@ -1772,3 +1772,172 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 })();
 /* ===== end Carl homepage-store reuse ===== */
+
+
+/* ============================================================================
+   Carl V2 — AI Care Navigator (Lucy-inspired UX, CareInMyCity branding)
+   Self-contained enhancement layer. Does NOT change the Claude API connection,
+   model, request shape, or Google functions. Reuses the existing global
+   sendCarlMessage / __carlFetchProviders / __careHomeProviders pipeline.
+   Philosophy: Find first. Advise second. One question, then search.
+   (c) 2026 Elite Media Group. All Rights Reserved.
+   ========================================================================== */
+(function(){
+  "use strict";
+  if (window.__carlV2Init) return;
+  window.__carlV2Init = true;
+
+  var CarlMem = window.__carlMemory = window.__carlMemory || {
+    zip:null, city:null, state:null, service:null, who:null,
+    providersShown:[], topics:[], started:false, pendingService:null
+  };
+  function remember(patch){
+    if(!patch) return;
+    Object.keys(patch).forEach(function(k){
+      if(patch[k]==null||patch[k]==="") return;
+      if(k==="topics"){ if(CarlMem.topics.indexOf(patch[k])<0) CarlMem.topics.push(patch[k]); return; }
+      CarlMem[k]=patch[k];
+    });
+  }
+
+  var QUICK_ACTIONS = [
+    {icon:"\uD83C\uDFE0",title:"Find Home Care",prompt:"I need help finding home care.",service:"home-care"},
+    {icon:"\uD83E\uDDE0",title:"Memory Care",prompt:"Help me find memory care.",service:"memory-care"},
+    {icon:"\uD83C\uDFE1",title:"Assisted Living",prompt:"Find assisted living near me.",service:"assisted-living"},
+    {icon:"\u2696\uFE0F",title:"Elder Law",prompt:"I need an elder law attorney.",service:"elder-law"},
+    {icon:"\uD83D\uDCB2",title:"Care Costs",prompt:"How much does home care cost?"},
+    {icon:"\uD83D\uDCCB",title:"Questions to Ask",prompt:"Help me prepare questions before calling providers."},
+    {icon:"\uD83D\uDEA8",title:"Hospital Discharge",prompt:"My loved one is coming home from the hospital."},
+    {icon:"\u2764\uFE0F",title:"Caregiver Burnout",prompt:"I'm feeling overwhelmed caring for a loved one."},
+    {icon:"\uD83D\uDCDD",title:"My Care Folder",prompt:"Help me organize my care documents."},
+    {icon:"\uD83E\uDDED",title:"Help Me Decide",prompt:"I'm not sure what type of care we need."}
+  ];
+
+  var WELCOME_HTML =
+    "Hi! \uD83D\uDC4B I\u2019m Carl, your AI Care Advisor.<br><br>" +
+    "I can help you find local care providers, compare options, understand costs, " +
+    "prepare questions before you call, and navigate difficult family care decisions.<br><br>" +
+    "Choose a starting point below, or just type your question.";
+
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function msgEl(){ return document.getElementById("carlMessages"); }
+
+  function ensureStyles(){
+    if(document.getElementById("carl-v2-style")) return;
+    var css =
+      "#carlMessages .carl-v2-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 4px;}"+
+      "@media(max-width:760px){#carlMessages .carl-v2-quick{grid-template-columns:repeat(2,1fr);}}"+
+      "#carlMessages .carl-v2-qa{display:flex;flex-direction:column;align-items:flex-start;gap:6px;background:#fff;"+
+        "border:1px solid rgba(18,104,216,.18);border-radius:16px;padding:12px;cursor:pointer;text-align:left;"+
+        "color:#17324d;font:inherit;line-height:1.25;min-height:64px;transition:box-shadow .15s,border-color .15s,transform .1s;"+
+        "box-shadow:0 1px 2px rgba(18,104,216,.06);}"+
+      "#carlMessages .carl-v2-qa:hover{border-color:rgba(18,104,216,.5);box-shadow:0 8px 20px rgba(18,104,216,.14);transform:translateY(-1px);}"+
+      "#carlMessages .carl-v2-qa .ic{font-size:20px;line-height:1;}"+
+      "#carlMessages .carl-v2-qa .tt{font-weight:600;font-size:13px;}"+
+      "#carlMessages .carl-v2-cards{display:grid;grid-template-columns:1fr;gap:10px;margin:10px 0 2px;}"+
+      "#carlMessages .carl-v2-card{background:#fff;border:1px solid rgba(18,104,216,.16);border-radius:16px;padding:14px 16px;box-shadow:0 1px 2px rgba(18,104,216,.06);}"+
+      "#carlMessages .carl-v2-card .nm{font-weight:700;color:#17324d;font-size:15px;margin:0 0 4px;}"+
+      "#carlMessages .carl-v2-card .meta{color:#46627d;font-size:13px;margin:2px 0;display:flex;gap:6px;align-items:flex-start;}"+
+      "#carlMessages .carl-v2-card .rating{color:#b8860b;font-weight:600;}"+
+      "#carlMessages .carl-v2-card .open{color:#16a052;font-weight:600;}"+
+      "#carlMessages .carl-v2-card .closed{color:#c0392b;font-weight:600;}"+
+      "#carlMessages .carl-v2-card .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}"+
+      "#carlMessages .carl-v2-card a.maps{display:inline-block;background:linear-gradient(135deg,#1268d8,#03778e);color:#fff;"+
+        "text-decoration:none;font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:999px;}"+
+      "#carlMessages .carl-v2-group-title{font-weight:700;color:#17324d;font-size:14px;margin:12px 0 2px;}"+
+      "#carlMessages .carl-v2-disclaimer{color:#6b7c8f;font-size:11.5px;line-height:1.4;margin:10px 2px 2px;}";
+    var st=document.createElement("style"); st.id="carl-v2-style"; st.textContent=css; document.head.appendChild(st);
+  }
+
+  function renderWelcome(){
+    var m=msgEl(); if(!m) return;
+    ensureStyles(); m.innerHTML="";
+    var w=document.createElement("div"); w.className="carl-message carl"; w.innerHTML=WELCOME_HTML; m.appendChild(w);
+    var grid=document.createElement("div"); grid.className="carl-v2-quick"; grid.setAttribute("data-carl-quick","1");
+    QUICK_ACTIONS.forEach(function(a){
+      var b=document.createElement("button"); b.type="button"; b.className="carl-v2-qa";
+      b.innerHTML='<span class="ic">'+esc(a.icon)+'</span><span class="tt">'+esc(a.title)+'</span>';
+      b.addEventListener("click",function(){
+        if(a.service) remember({pendingService:a.service, service:a.service});
+        hideQuickActions();
+        if(typeof window.sendCarlMessage==="function") window.sendCarlMessage(a.prompt);
+      });
+      grid.appendChild(b);
+    });
+    m.appendChild(grid); m.scrollTop=m.scrollHeight; CarlMem.started=false;
+  }
+  function hideQuickActions(){
+    var m=msgEl(); if(!m) return;
+    var g=m.querySelector('[data-carl-quick]'); if(g&&g.parentNode) g.parentNode.removeChild(g);
+    CarlMem.started=true;
+  }
+  window.__carlRenderWelcome=renderWelcome;
+
+  function ratingStars(r){ var n=Math.round(Number(r)||0),s=""; for(var i=0;i<5;i++) s+=(i<n?"\u2605":"\u2606"); return s; }
+  function cardHTML(p){
+    var name=p.name||p.title||"Provider";
+    var addr=p.address||p.formatted_address||p.vicinity||"";
+    var rating=(p.rating!=null)?p.rating:null;
+    var reviews=(p.userRatingsTotal!=null)?p.userRatingsTotal:(p.user_ratings_total!=null?p.user_ratings_total:null);
+    var openState=(typeof p.openNow!=="undefined")?p.openNow:(typeof p.open_now!=="undefined"?p.open_now:null);
+    var maps=p.mapsUrl||p.maps_url||p.url||("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(name+" "+addr));
+    var h='<div class="nm">'+esc(name)+'</div>';
+    if(addr) h+='<div class="meta"><span>\uD83D\uDCCD</span><span>'+esc(addr)+'</span></div>';
+    if(rating!=null) h+='<div class="meta"><span class="rating">'+ratingStars(rating)+' '+esc(rating)+'</span>'+(reviews!=null?'<span>('+esc(reviews)+' reviews)</span>':'')+'</div>';
+    if(openState===true) h+='<div class="meta"><span class="open">\u25CF Open now</span></div>';
+    else if(openState===false) h+='<div class="meta"><span class="closed">\u25CF Closed</span></div>';
+    h+='<div class="acts"><a class="maps" target="_blank" rel="noopener" href="'+esc(maps)+'">View on Google Maps \u2192</a></div>';
+    return h;
+  }
+  function titleCase(s){ return String(s||"").replace(/[-_]/g," ").replace(/\b\w/g,function(c){return c.toUpperCase();}); }
+
+  function renderProviders(payload, introText){
+    var m=msgEl(); if(!m||!payload) return false;
+    ensureStyles();
+    var list = payload.results||payload.providers||[];
+    if(!Array.isArray(list)||!list.length) return false;
+    if(introText){ var iw=document.createElement("div"); iw.className="carl-message carl"; iw.textContent=introText; m.appendChild(iw); }
+    var wrap=document.createElement("div"); wrap.className="carl-message carl";
+    if(payload.phrase){ var gt=document.createElement("div"); gt.className="carl-v2-group-title"; gt.textContent=titleCase(payload.phrase)+(payload.location?(" near "+payload.location):""); wrap.appendChild(gt); }
+    var cw=document.createElement("div"); cw.className="carl-v2-cards";
+    list.slice(0,8).forEach(function(p){ var c=document.createElement("div"); c.className="carl-v2-card"; c.innerHTML=cardHTML(p); cw.appendChild(c); CarlMem.providersShown.push(p.name||p.title); });
+    wrap.appendChild(cw);
+    var disc=document.createElement("div"); disc.className="carl-v2-disclaimer";
+    disc.textContent="These listings come from live local search. CareInMyCity does not endorse, verify, or guarantee individual providers \u2014 please confirm details directly with each one.";
+    wrap.appendChild(disc);
+    m.appendChild(wrap); m.scrollTop=m.scrollHeight;
+    return true;
+  }
+  window.__carlRenderProviders=renderProviders;
+
+  function takeover(){
+    var m=msgEl(); if(!m) return;
+    if(m.querySelector('[data-carl-quick]')) return;
+    if(CarlMem.started) return;
+    renderWelcome();
+  }
+  var _open=window.openCarl;
+  window.openCarl=function(){
+    try{ if(typeof _open==="function") _open.apply(this,arguments); }catch(e){}
+    try{ takeover(); }catch(e){}
+  };
+
+  function rewire(){
+    document.querySelectorAll(".carl-launcher,[data-carl-open]").forEach(function(b){
+      if(b.__carlV2Wired) return; b.__carlV2Wired=true;
+      b.addEventListener("click",function(){ setTimeout(function(){ try{ takeover(); }catch(e){} },0); });
+    });
+  }
+
+  var _send=window.sendCarlMessage;
+  window.sendCarlMessage=function(text){
+    try{ hideQuickActions(); }catch(e){}
+    try{ remember({topics:String(text||"").slice(0,60)}); }catch(e){}
+    if(typeof _send==="function") return _send.apply(this,arguments);
+  };
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded", rewire);
+  } else { rewire(); }
+})();
