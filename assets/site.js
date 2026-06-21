@@ -1941,3 +1941,325 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener("DOMContentLoaded", rewire);
   } else { rewire(); }
 })();
+
+
+
+/* ============================================================================
+   CareInMyCity — Local Authority Engine (Phase 1)
+   Reusable local-resource components for city / service pages.
+   Self-contained IIFE. Reuses the EXISTING provider search + shared store.
+   Does NOT modify Carl backend, Claude connection, Google backend functions,
+   homepage search, provider-search logic, sitemap, robots, footer, or analytics.
+   All components render client-side using the existing design language and are
+   data-driven so new categories/pages can reuse them without a redesign.
+   © 2026 Elite Media Group. All Rights Reserved.
+   ========================================================================== */
+(function(){
+  if (window.__laeInit) { return; }
+  window.__laeInit = true;
+
+  /* ---------- dom utils ---------- */
+  function el(tag, cls, html){ var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+  function txt(tag, cls, text){ var e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+  function num(n){ return (typeof n==='number' && isFinite(n)); }
+  function link(cls, label, href){ var a=txt('a',cls,label); a.setAttribute('href',href); a.setAttribute('target','_blank'); a.setAttribute('rel','noopener noreferrer'); return a; }
+  function gmaps(q){ return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q); }
+
+  /* ---------- one-time scoped styles (no global redesign) ---------- */
+  function ensureStyles(){
+    if (document.getElementById('lae-styles')) return;
+    var css = [
+      '.lae-section{padding:48px 0}',
+      '.lae-grid{display:grid;gap:18px;grid-template-columns:repeat(3,1fr)}',
+      '@media(max-width:980px){.lae-grid{grid-template-columns:repeat(2,1fr)}}',
+      '@media(max-width:620px){.lae-grid{grid-template-columns:1fr}}',
+      '.lae-card{display:flex;flex-direction:column;gap:8px}',
+      '.lae-badge-closed{opacity:.75}',
+      '.lae-maps-link{margin-top:auto}',
+      '.lae-resource-grid{display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}',
+      '@media(max-width:980px){.lae-resource-grid{grid-template-columns:repeat(2,1fr)}}',
+      '@media(max-width:620px){.lae-resource-grid{grid-template-columns:1fr}}',
+      '.lae-steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}',
+      '@media(max-width:620px){.lae-steps{grid-template-columns:1fr}}',
+      '.lae-step{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border:1px solid rgba(18,104,216,.14);border-radius:12px;background:#fff}',
+      '.lae-step .lae-check{color:#16a052;font-weight:700;line-height:1.4}',
+      '.lae-step a{color:#1268d8;text-decoration:none;font-weight:600}',
+      '.lae-disclaimer{font-size:.9rem;color:#5b6b7d;line-height:1.6;border-left:3px solid #16a052;padding:10px 16px;background:rgba(22,160,82,.05);border-radius:0 8px 8px 0}',
+      '.lae-carl-box{display:flex;flex-direction:column;gap:10px;padding:20px 22px;border-radius:14px;background:linear-gradient(135deg,#1268d8,#03778e);color:#fff}',
+      '.lae-carl-box h3{color:#fff;margin:0}',
+      '.lae-carl-btn{align-self:flex-start;background:#fff;color:#1268d8;border:0;border-radius:999px;padding:10px 20px;font-weight:700;cursor:pointer}',
+      '.lae-empty{color:#5b6b7d;font-size:.95rem}'
+    ].join('');
+    var s=document.createElement('style'); s.id='lae-styles'; s.textContent=css; document.head.appendChild(s);
+  }
+
+  /* ---------- section scaffold (matches existing markup) ---------- */
+  function sectionShell(sectionCls, label, h2, sub){
+    var sec=el('section', sectionCls + ' lae-section');
+    var c=el('div','container');
+    var head=el('div','section-heading fade-up');
+    if (label) head.appendChild(txt('div','label',label));
+    head.appendChild(txt('h2', null, h2));
+    if (sub) head.appendChild(txt('p', null, sub));
+    c.appendChild(head);
+    sec.appendChild(c);
+    sec._body=c;
+    return sec;
+  }
+
+  /* ======================================================================
+     SHARED PROVIDER ACCESS — one search, one dataset, no duplicates.
+     ====================================================================== */
+  function readStore(){
+    var s=window.__careHomeProviders;
+    if(!s||typeof s!=='object') return null;
+    var out=[];
+    if(Array.isArray(s.results)) out=s.results.slice();
+    else if(Array.isArray(s.groups)){ s.groups.forEach(function(g){ if(g&&Array.isArray(g.results)) out=out.concat(g.results); }); }
+    if(!out.length) return null;
+    return { results:out, locText:s.locText||s.location||'', serviceSlug:s.serviceSlug||'', source:'store' };
+  }
+  function normalizePayload(p){
+    if(!p) return null;
+    var out=[];
+    if(Array.isArray(p.results)) out=p.results.slice();
+    else if(Array.isArray(p.groups)) p.groups.forEach(function(g){ if(g&&Array.isArray(g.results)) out=out.concat(g.results); });
+    if(!out.length) return null;
+    return { results:out, locText:p.location||'', serviceSlug:'', source:'fetch' };
+  }
+  function getProviders(opts){
+    opts=opts||{};
+    return new Promise(function(resolve){
+      if(Array.isArray(opts.results)&&opts.results.length){ resolve({results:opts.results.slice(),locText:opts.locText||'',serviceSlug:opts.serviceSlug||'',source:'explicit'}); return; }
+      var st=readStore(); if(st){ resolve(st); return; }
+      if(opts.allowFetch && typeof window.__carlFetchProviders==='function' && opts.query){
+        try{ var pr=window.__carlFetchProviders(opts.query);
+          if(pr&&typeof pr.then==='function'){ pr.then(function(p){ resolve(normalizePayload(p)); }).catch(function(){ resolve(null); }); }
+          else { resolve(normalizePayload(pr)); }
+        }catch(e){ resolve(null); }
+      } else { resolve(null); }
+    });
+  }
+
+  /* ======================================================================
+     COMPONENT 1 — Local Provider Cards (reuses provider-card design)
+     ====================================================================== */
+  function providerCard(p){
+    var card=el('article','provider-card lae-card');
+    var open=p.openNow;
+    var badge=txt('div','provider-badge',(open===true?'Open now':(open===false?'Closed':'Hours vary')));
+    if(open===false) badge.classList.add('lae-badge-closed');
+    card.appendChild(badge);
+    card.appendChild(txt('h3', null, p.name||'Local provider'));
+    if(p.address) card.appendChild(txt('p', null, '📍 ' + p.address));
+    var ul=el('ul', null, '');
+    if(num(p.rating)){ var rc=(num(p.userRatingsTotal)?' ('+p.userRatingsTotal+' reviews)':''); ul.appendChild(txt('li', null, '⭐ '+p.rating.toFixed(1)+rc)); }
+    ul.appendChild(txt('li', null, (open===true?'🟢 Open now':(open===false?'🔴 Closed':'🕒 Call to confirm hours'))));
+    card.appendChild(ul);
+    var href=p.mapsUrl||gmaps((p.name||'')+' '+(p.address||''));
+    card.appendChild(link('btn-primary lae-maps-link','View on Google Maps',href));
+    return card;
+  }
+  function renderProviders(host, opts){
+    ensureStyles();
+    return getProviders(opts||{}).then(function(data){
+      if(!data||!data.results.length) return null;
+      var sec=sectionShell('provider-section lae-providers','Local Providers','Care Providers'+(data.locText?' Near '+data.locText:' Near You'),'Live results from local search. Verify availability and services directly with each provider.');
+      var grid=el('div','provider-grid lae-grid');
+      data.results.slice(0,6).forEach(function(p){ grid.appendChild(providerCard(p)); });
+      sec._body.appendChild(grid);
+      host.appendChild(sec);
+      return sec;
+    });
+  }
+
+  /* ======================================================================
+     COMPONENT 2 — Local Community Resources (data-driven; hides empty)
+     Each item: {category, title, desc, href}. Categories with no data
+     are simply not added. Pages supply real data later; defaults are
+     national authoritative resources (no fabricated local orgs).
+     ====================================================================== */
+  var DEFAULT_RESOURCES = [
+    { key:'aaa', category:'Area Agency on Aging', title:'Eldercare Locator', desc:'Find your local Area Agency on Aging and nearby services.', href:'https://eldercare.acl.gov/' },
+    { key:'medicare', category:'Medicare', title:'Medicare.gov', desc:'Official Medicare coverage, plans, and provider tools.', href:'https://www.medicare.gov/' },
+    { key:'medicaid', category:'Medicaid', title:'Medicaid.gov', desc:'State Medicaid programs and long-term care eligibility.', href:'https://www.medicaid.gov/' },
+    { key:'mealsonwheels', category:'Meals on Wheels', title:'Meals on Wheels America', desc:'Locate home-delivered meal programs for older adults.', href:'https://www.mealsonwheelsamerica.org/find-meals' },
+    { key:'transport', category:'Transportation', title:'Rides in Sight', desc:'Senior transportation options by area.', href:'https://eldercare.acl.gov/' },
+    { key:'veterans', category:'Veterans', title:'VA Caregiver Support', desc:'Benefits and caregiver support for veterans.', href:'https://www.va.gov/geriatrics/' },
+    { key:'alz', category:"Alzheimer's Association", title:'24/7 Helpline', desc:'Memory-care guidance and support at 800-272-3900.', href:'https://www.alz.org/' },
+    { key:'caregiver', category:'Caregiver Support', title:'Family Caregiver Alliance', desc:'Tools and respite support for family caregivers.', href:'https://www.caregiver.org/' }
+  ];
+  function resourceCard(item){
+    var card=el('article','public-resource-card lae-resource-card');
+    card.appendChild(txt('div','public-resource-type', item.category));
+    card.appendChild(txt('h3', null, item.title));
+    if(item.desc) card.appendChild(txt('p', null, item.desc));
+    if(item.href) card.appendChild(link('inline-link', 'Visit resource →', item.href));
+    return card;
+  }
+  function renderCommunityResources(host, opts){
+    ensureStyles();
+    opts=opts||{};
+    var items=(Array.isArray(opts.items)&&opts.items.length)?opts.items:DEFAULT_RESOURCES;
+    items=items.filter(function(it){ return it && (it.title||it.category); });
+    if(!items.length) return null;
+    var sec=sectionShell('public-resource-listings-section lae-community','Local Community Resources','Trusted Local & National Care Resources','Government and nonprofit organizations that can help. Availability varies by area — contact each directly.');
+    var grid=el('div','public-resource-grid lae-resource-grid');
+    items.forEach(function(it){ grid.appendChild(resourceCard(it)); });
+    sec._body.appendChild(grid);
+    host.appendChild(sec);
+    return sec;
+  }
+
+  /* ======================================================================
+     COMPONENT 3 — Local Hospitals (reusable; distance future-ready)
+     Pulls hospitals from opts.hospitals. Never fabricates.
+     ====================================================================== */
+  function hospitalCard(h){
+    var card=el('article','public-resource-card lae-hospital-card');
+    card.appendChild(txt('div','public-resource-type','Hospital'));
+    card.appendChild(txt('h3', null, h.name||'Local hospital'));
+    if(h.address) card.appendChild(txt('p', null, '📍 ' + h.address));
+    if(num(h.distanceMi)) card.appendChild(txt('p','lae-dist', '~' + h.distanceMi.toFixed(1) + ' mi'));
+    var href=h.mapsUrl||gmaps((h.name||'')+' '+(h.address||''));
+    card.appendChild(link('inline-link','View on Google Maps →',href));
+    return card;
+  }
+  function renderHospitals(host, opts){
+    ensureStyles();
+    opts=opts||{};
+    var list=(Array.isArray(opts.hospitals)&&opts.hospitals.length)?opts.hospitals:[];
+    if(!list.length) return Promise.resolve(null);
+    var sec=sectionShell('public-resource-listings-section lae-hospitals','Nearby Hospitals','Hospitals Near You','Verify emergency and admission details directly with each facility.');
+    var grid=el('div','public-resource-grid lae-resource-grid');
+    list.slice(0,6).forEach(function(h){ grid.appendChild(hospitalCard(h)); });
+    sec._body.appendChild(grid);
+    host.appendChild(sec);
+    return Promise.resolve(sec);
+  }
+
+  /* ======================================================================
+     COMPONENT 4 — Helpful Next Steps (reusable checklist, data-driven)
+     ====================================================================== */
+  var DEFAULT_STEPS = [
+    { label:'Questions to ask providers', href:'/tools/' },
+    { label:'Download the Care Checklist', href:'/tools/' },
+    { label:'Open My Care Folder', href:'/tools/' },
+    { label:'Talk to Carl, your AI Care Advisor', action:'carl' },
+    { label:'Compare care options', href:'/tools/' }
+  ];
+  function stepItem(s){
+    var li=el('li','lae-step');
+    li.appendChild(txt('span','lae-check','✓'));
+    if(s.action==='carl'){
+      var b=txt('a',null,s.label); b.setAttribute('href','#');
+      b.addEventListener('click',function(ev){ ev.preventDefault(); if(typeof window.openCarl==='function'){ window.openCarl(); } });
+      li.appendChild(b);
+    } else if(s.href){
+      var a=txt('a',null,s.label); a.setAttribute('href',s.href); li.appendChild(a);
+    } else {
+      li.appendChild(txt('span',null,s.label));
+    }
+    return li;
+  }
+  function renderNextSteps(host, opts){
+    ensureStyles();
+    opts=opts||{};
+    var steps=(Array.isArray(opts.steps)&&opts.steps.length)?opts.steps:DEFAULT_STEPS;
+    var sec=sectionShell('public-resource-section lae-steps-section','Next Steps','Helpful Next Steps','A short checklist to move forward with confidence.');
+    var ul=el('ul','lae-steps');
+    steps.forEach(function(s){ ul.appendChild(stepItem(s)); });
+    sec._body.appendChild(ul);
+    host.appendChild(sec);
+    return sec;
+  }
+
+  /* ======================================================================
+     COMPONENT 5 — Local Resource Disclaimer (EEAT block)
+     ====================================================================== */
+  function renderDisclaimer(host, opts){
+    ensureStyles();
+    var sec=el('section','trust-eat-strip lae-section lae-disclaimer-section');
+    var c=el('div','container');
+    var box=el('div','lae-disclaimer');
+    box.appendChild(txt('p', null, 'Provider information comes from live local search and may change at any time. Community resources are listed for convenience and may vary by area. CareInMyCity does not endorse, license, or verify individual providers. Always confirm services, availability, and credentials directly before making a decision.'));
+    c.appendChild(box);
+    sec.appendChild(c);
+    host.appendChild(sec);
+    return sec;
+  }
+
+  /* ======================================================================
+     COMPONENT 6 — Carl Recommendation Box (future-ready, no duplicate search)
+     Only renders when Carl/homepage has already searched this area.
+     ====================================================================== */
+  function renderCarlBox(host, opts){
+    ensureStyles();
+    var st=readStore();
+    if(!st){ return null; }
+    var loc=st.locText||'your area';
+    var sec=el('section','final-cta lae-section lae-carl-box-section');
+    var c=el('div','container');
+    var box=el('div','lae-carl-box');
+    box.appendChild(txt('h3', null, 'Based on what Carl found near ' + loc));
+    box.appendChild(txt('p', null, 'Carl can compare these options, estimate costs, and help you prepare questions before you call.'));
+    var btn=txt('button','lae-carl-btn','Continue with Carl');
+    btn.addEventListener('click',function(){ if(typeof window.openCarl==='function'){ window.openCarl(); } });
+    box.appendChild(btn);
+    c.appendChild(box);
+    sec.appendChild(c);
+    host.appendChild(sec);
+    return sec;
+  }
+
+  /* ======================================================================
+     PUBLIC API — reusable, embeddable anywhere (state/city/service/search/
+     My Care Folder). Pages call LAE.mount(host, config).
+     ====================================================================== */
+  var LAE = {
+    version: 1,
+    getProviders: getProviders,
+    renderProviders: renderProviders,
+    renderCommunityResources: renderCommunityResources,
+    renderHospitals: renderHospitals,
+    renderNextSteps: renderNextSteps,
+    renderDisclaimer: renderDisclaimer,
+    renderCarlBox: renderCarlBox,
+    mount: function(host, cfg){
+      cfg = cfg || {};
+      if (typeof host === 'string') host = document.querySelector(host);
+      if (!host) return null;
+      ensureStyles();
+      var jobs = [];
+      if (cfg.providers !== false) jobs.push(renderProviders(host, cfg.providersOpts||{}));
+      return Promise.all(jobs).then(function(){
+        renderCarlBox(host, cfg.carlOpts||{});
+        if (cfg.community !== false) renderCommunityResources(host, cfg.communityOpts||{});
+        if (cfg.hospitals) renderHospitals(host, cfg.hospitalsOpts||{});
+        if (cfg.nextSteps !== false) renderNextSteps(host, cfg.stepsOpts||{});
+        renderDisclaimer(host, cfg.disclaimerOpts||{});
+        return host;
+      });
+    }
+  };
+  window.LocalAuthorityEngine = LAE;
+  window.LAE = window.LAE || LAE;
+
+  /* No auto-injection into the 6,102 live pages in Phase 1.
+     Mounting is opt-in via a host element <div data-lae-mount></div> or
+     window.LAE.mount(...). Pages without the hook are untouched. */
+  function autoMountHooks(){
+    var hosts = document.querySelectorAll('[data-lae-mount]');
+    if (!hosts.length) return;
+    hosts.forEach(function(h){
+      var cfg = {};
+      try { if (h.getAttribute('data-lae-config')) cfg = JSON.parse(h.getAttribute('data-lae-config')); } catch(e){}
+      LAE.mount(h, cfg);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoMountHooks);
+  } else {
+    autoMountHooks();
+  }
+})();
