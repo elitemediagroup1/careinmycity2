@@ -1,0 +1,368 @@
+{
+  "schema": "county-intelligence/v1",
+  "version": "v1",
+  "lastReviewed": "2026-06-21",
+  "counties": {
+    "new-jersey:ocean": {
+      "county": "Ocean County",
+      "state": "New Jersey",
+      "stateCode": "NJ",
+      "cities": [
+        "toms-river"
+      ],
+      "aaa": {
+        "name": "Ocean County Office of Senior Services",
+        "phone": "732-929-2091",
+        "website": "https://co.ocean.nj.us/OC/SeniorServices/frmHomeSS.aspx",
+        "address": "County of Ocean, 101 Hooper Avenue, Toms River, NJ 08753",
+        "designation": "government",
+        "source": "Ocean County Government",
+        "note": "County Area Agency on Aging — information and assistance for older adults and caregivers."
+      },
+      "officeOnAging": {
+        "name": "Ocean County Office of Senior Services",
+        "phone": "732-929-2091",
+        "website": "https://co.ocean.nj.us/OC/SeniorServices/frmHomeSS.aspx",
+        "designation": "government",
+        "source": "Ocean County Government"
+      },
+      "alzheimers": {
+        "name": "Alzheimer's Association 24/7 Helpline",
+        "phone": "1-800-272-3900",
+        "website": "https://www.alz.org/help-support/resources/helpline",
+        "designation": "nonprofit",
+        "source": "Alzheimer's Association",
+        "note": "Free 24/7 helpline for dementia, caregiving, and safety questions."
+      },
+      "veterans": {
+        "name": "U.S. Department of Veterans Affairs",
+        "phone": "1-800-827-1000",
+        "website": "https://www.va.gov/",
+        "designation": "federal",
+        "source": "U.S. Department of Veterans Affairs",
+        "note": "Benefits and health care for veterans and survivors."
+      },
+      "medicareResources": {
+        "name": "Medicare",
+        "phone": "1-800-633-4227",
+        "website": "https://www.medicare.gov/",
+        "designation": "federal",
+        "source": "U.S. Centers for Medicare & Medicaid Services"
+      },
+      "twoOneOne": {
+        "name": "211",
+        "phone": "211",
+        "website": "https://www.211.org/",
+        "designation": "nonprofit",
+        "source": "United Way / 211",
+        "note": "Free, confidential referral line for local health and human services."
+      },
+      "mealsOnWheels": {
+        "name": "Meals on Wheels America",
+        "website": "https://www.mealsonwheelsamerica.org/find-meals",
+        "designation": "nonprofit",
+        "source": "Meals on Wheels America",
+        "note": "Find a local Meals on Wheels program by ZIP code."
+      },
+      "caregiverSupport": {
+        "name": "Ocean County Office of Senior Services — Caregiver Support",
+        "phone": "732-929-2091",
+        "website": "https://co.ocean.nj.us/OC/SeniorServices/frmHomeSS.aspx",
+        "designation": "government",
+        "source": "Ocean County Government",
+        "note": "Supports family caregivers through the county aging network."
+      },
+      "sources": [
+        {
+          "label": "Ocean County Office of Senior Services",
+          "url": "https://co.ocean.nj.us/OC/SeniorServices/frmHomeSS.aspx"
+        },
+        {
+          "label": "NJ statewide / federal program directories",
+          "url": "https://eldercare.acl.gov/"
+        }
+      ],
+      "lastReviewed": "2026-06-21",
+      "schema": "county-intelligence/v1"
+    },
+    "new-jersey:essex": {
+      "county": "Essex County",
+      "state": "New Jersey",
+      "stateCode": "NJ",
+      "cities": [
+        "newark"
+      ],
+      "aaa": {
+        "name": "Essex County Office of Senior Services",
+        "phone": "973-395-8392",
+        "website": "https://www.essexcountynj.org/senior-services/",
+        "designation": "government",
+        "source": "Essex County Government",
+        "note": "County Office on Aging — caregiver assistance, senior meals, special transportation, and housing services."
+      },
+      "officeOnAging": {
+        "name": "Essex County Office of Senior Services",
+        "phone": "973-395-8392",
+        "website": "https://www.essexcountynj.org/senior-services/",
+        "designation": "government",
+        "source": "Essex County Government"
+      },
+      "transportation": {
+        "name": "Essex County Special Transportation",
+        "website": "https://www.essexcountynj.org/senior-services/",
+        "designation": "government",
+        "source": "Essex County Government",
+        "note": "County transportation assistance for older adults (via Office of Senior Services)."
+      },
+      "foodPrograms": {
+        "name": "Essex County Senior Meal Programs",
+        "phone": "973-395-8392",
+        "website": "https://www.essexcountynj.org/senior-services/",
+        "designation": "government",
+        "source": "Essex County Government",
+        "note": "Senior nutrition / meal programs offered through the county."
+      },
+      "caregiverSupport": {
+        "name": "Essex County Caregiver Assistance",
+        "phone": "973-395-8392",
+        "website": "https://www.essexcountynj.org/senior-services/",
+        "designation": "government",
+        "source": "Essex County Government"
+      },
+      "alzheimers": {
+        "name": "Alzheimer's Association 24/7 Helpline",
+        "phone": "1-800-272-3900",
+        "website": "https://www.alz.org/help-support/resources/helpline",
+        "designation": "nonprofit",
+        "source": "Alzheimer's Association",
+        "note": "Free 24/7 helpline for dementia, caregiving, and safety questions."
+      },
+      "veterans": {
+        "name": "U.S. Department of Veterans Affairs",
+        "phone": "1-800-827-1000",
+        "website": "https://www.va.gov/",
+        "designation": "federal",
+        "source": "U.S. Department of Veterans Affairs",
+        "note": "Benefits and health care for veterans and survivors."
+      },
+      "medicareResources": {
+        "name": "Medicare",
+        "phone": "1-800-633-4227",
+        "website": "https://www.medicare.gov/",
+        "designation": "federal",
+        "source": "U.S. Centers for Medicare & Medicaid Services"
+      },
+      "twoOneOne": {
+        "name": "211",
+        "phone": "211",
+        "website": "https://www.211.org/",
+        "designation": "nonprofit",
+        "source": "United Way / 211",
+        "note": "Free, confidential referral line for local health and human services."
+      },
+      "mealsOnWheels": {
+        "name": "Meals on Wheels America",
+        "website": "https://www.mealsonwheelsamerica.org/find-meals",
+        "designation": "nonprofit",
+        "source": "Meals on Wheels America",
+        "note": "Find a local Meals on Wheels program by ZIP code."
+      },
+      "sources": [
+        {
+          "label": "Essex County Office of Senior Services",
+          "url": "https://www.essexcountynj.org/senior-services/"
+        },
+        {
+          "label": "Federal program directories",
+          "url": "https://eldercare.acl.gov/"
+        }
+      ],
+      "lastReviewed": "2026-06-21",
+      "schema": "county-intelligence/v1"
+    },
+    "florida:hillsborough": {
+      "county": "Hillsborough County",
+      "state": "Florida",
+      "stateCode": "FL",
+      "cities": [
+        "tampa"
+      ],
+      "aaa": {
+        "name": "Senior Connection Center (Area Agency on Aging)",
+        "phone": "813-740-3888",
+        "website": "https://seniorconnectioncenter.org/",
+        "address": "8928 Brittany Way, Tampa, FL 33619",
+        "designation": "nonprofit",
+        "source": "Florida Department of Elder Affairs",
+        "note": "State-designated Area Agency on Aging serving Hillsborough County."
+      },
+      "ship": {
+        "name": "Florida SHINE (Serving Health Insurance Needs of Elders)",
+        "phone": "1-800-963-5337",
+        "website": "https://www.floridashine.org/",
+        "designation": "state",
+        "source": "Florida Department of Elder Affairs",
+        "note": "Free Medicare/health insurance counseling (Florida's SHIP), via the Elder Helpline."
+      },
+      "elderHelpline": {
+        "name": "Hillsborough County Elder Helpline",
+        "phone": "1-800-963-5337",
+        "website": "https://elderaffairs.org/",
+        "designation": "state",
+        "source": "Florida Department of Elder Affairs",
+        "note": "Statewide Elder Helpline (1-800-96-ELDER) and county hotline 800-336-2226."
+      },
+      "medicaidOffice": {
+        "name": "Florida Department of Elder Affairs",
+        "website": "https://elderaffairs.org/",
+        "designation": "state",
+        "source": "Florida Department of Elder Affairs"
+      },
+      "alzheimers": {
+        "name": "Alzheimer's Association 24/7 Helpline",
+        "phone": "1-800-272-3900",
+        "website": "https://www.alz.org/help-support/resources/helpline",
+        "designation": "nonprofit",
+        "source": "Alzheimer's Association",
+        "note": "Free 24/7 helpline for dementia, caregiving, and safety questions."
+      },
+      "veterans": {
+        "name": "U.S. Department of Veterans Affairs",
+        "phone": "1-800-827-1000",
+        "website": "https://www.va.gov/",
+        "designation": "federal",
+        "source": "U.S. Department of Veterans Affairs",
+        "note": "Benefits and health care for veterans and survivors."
+      },
+      "medicareResources": {
+        "name": "Medicare",
+        "phone": "1-800-633-4227",
+        "website": "https://www.medicare.gov/",
+        "designation": "federal",
+        "source": "U.S. Centers for Medicare & Medicaid Services"
+      },
+      "twoOneOne": {
+        "name": "211",
+        "phone": "211",
+        "website": "https://www.211.org/",
+        "designation": "nonprofit",
+        "source": "United Way / 211",
+        "note": "Free, confidential referral line for local health and human services."
+      },
+      "mealsOnWheels": {
+        "name": "Meals on Wheels America",
+        "website": "https://www.mealsonwheelsamerica.org/find-meals",
+        "designation": "nonprofit",
+        "source": "Meals on Wheels America",
+        "note": "Find a local Meals on Wheels program by ZIP code."
+      },
+      "caregiverSupport": {
+        "name": "Senior Connection Center — Caregiver Support",
+        "phone": "813-740-3888",
+        "website": "https://seniorconnectioncenter.org/",
+        "designation": "nonprofit",
+        "source": "Senior Connection Center"
+      },
+      "sources": [
+        {
+          "label": "Florida Department of Elder Affairs (Hillsborough listing)",
+          "url": "https://elderaffairs.org/"
+        },
+        {
+          "label": "Senior Connection Center (AAA)",
+          "url": "https://seniorconnectioncenter.org/"
+        }
+      ],
+      "lastReviewed": "2026-06-21",
+      "schema": "county-intelligence/v1"
+    },
+    "new-york:richmond": {
+      "county": "Richmond County (Staten Island)",
+      "state": "New York",
+      "stateCode": "NY",
+      "cities": [
+        "staten-island"
+      ],
+      "aaa": {
+        "name": "NYC Aging (Department for the Aging)",
+        "phone": "212-244-6469",
+        "website": "https://www.nyc.gov/site/dfta/index.page",
+        "designation": "government",
+        "source": "City of New York",
+        "note": "NYC's Area Agency on Aging for all five boroughs, including Staten Island. Aging Connect: 212-AGING-NYC."
+      },
+      "officeOnAging": {
+        "name": "NYC Aging — Aging Connect",
+        "phone": "212-244-6469",
+        "website": "https://www.nyc.gov/site/dfta/aging-connect.page",
+        "designation": "government",
+        "source": "City of New York",
+        "note": "Information and referral line for older New Yorkers (or call 311)."
+      },
+      "seniorCenters": {
+        "name": "NYC Older Adult Centers",
+        "website": "https://www.nyc.gov/site/dfta/services/find-help.page",
+        "designation": "government",
+        "source": "City of New York",
+        "note": "300+ centers citywide offering meals, fitness, and activities."
+      },
+      "caregiverSupport": {
+        "name": "NYC Aging — Caregiver Support",
+        "phone": "212-244-6469",
+        "website": "https://www.nyc.gov/site/dfta/services/caregiver-support.page",
+        "designation": "government",
+        "source": "City of New York"
+      },
+      "alzheimers": {
+        "name": "Alzheimer's Association 24/7 Helpline",
+        "phone": "1-800-272-3900",
+        "website": "https://www.alz.org/help-support/resources/helpline",
+        "designation": "nonprofit",
+        "source": "Alzheimer's Association",
+        "note": "Free 24/7 helpline for dementia, caregiving, and safety questions."
+      },
+      "veterans": {
+        "name": "U.S. Department of Veterans Affairs",
+        "phone": "1-800-827-1000",
+        "website": "https://www.va.gov/",
+        "designation": "federal",
+        "source": "U.S. Department of Veterans Affairs",
+        "note": "Benefits and health care for veterans and survivors."
+      },
+      "medicareResources": {
+        "name": "Medicare",
+        "phone": "1-800-633-4227",
+        "website": "https://www.medicare.gov/",
+        "designation": "federal",
+        "source": "U.S. Centers for Medicare & Medicaid Services"
+      },
+      "twoOneOne": {
+        "name": "211",
+        "phone": "211",
+        "website": "https://www.211.org/",
+        "designation": "nonprofit",
+        "source": "United Way / 211",
+        "note": "Free, confidential referral line for local health and human services."
+      },
+      "mealsOnWheels": {
+        "name": "Meals on Wheels America",
+        "website": "https://www.mealsonwheelsamerica.org/find-meals",
+        "designation": "nonprofit",
+        "source": "Meals on Wheels America",
+        "note": "Find a local Meals on Wheels program by ZIP code."
+      },
+      "sources": [
+        {
+          "label": "NYC Department for the Aging (NYC Aging)",
+          "url": "https://www.nyc.gov/site/dfta/index.page"
+        },
+        {
+          "label": "Federal program directories",
+          "url": "https://eldercare.acl.gov/"
+        }
+      ],
+      "lastReviewed": "2026-06-21",
+      "schema": "county-intelligence/v1"
+    }
+  }
+}
