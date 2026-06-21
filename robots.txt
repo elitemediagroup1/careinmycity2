@@ -1,6 +1,9 @@
 User-agent: *
 Disallow:
 
+# Internal admin / operations dashboard (not public)
+Disallow: /admin/
+
 # Internal build/QA files (also return 404 via _redirects)
 Disallow: /*_NOTES.txt$
 Disallow: /*_QA.json$
