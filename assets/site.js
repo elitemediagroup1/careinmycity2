@@ -2263,3 +2263,200 @@ document.addEventListener('DOMContentLoaded', () => {
     autoMountHooks();
   }
 })();
+
+
+
+/* ============================================================================
+   CareInMyCity — Local Authority Engine (Phase 2): pilot mount
+   Activates the Phase 1 engine on a small, path-gated PILOT allowlist of
+   city/service pages. Designed to scale to all city/service pages by flipping
+   one gate (PILOT_ONLY -> false) with no per-page edits.
+   Reuses the shared provider search + store. Exactly ONE provider lookup per
+   page (the page's own search), then writes the shared store so Carl reuses it
+   with zero additional Google calls.
+   Does NOT modify Carl backend, Claude, Google backend functions, homepage
+   search, provider-search logic, sitemap, robots, footer, analytics, AdSense.
+   © 2026 Elite Media Group. All Rights Reserved.
+   ========================================================================== */
+(function(){
+  if (window.__laeP2Init) { return; }
+  window.__laeP2Init = true;
+
+  /* ---- gating ---- */
+  var PILOT_ONLY = true; // Phase 2: only the pilot set. Phase 3+: set false to roll out to all.
+  var PILOT = {
+    '/state/new-york/staten-island/home-care/': 1,
+    '/state/new-jersey/newark/assisted-living/': 1,
+    '/state/florida/tampa/home-care/': 1,
+    '/state/new-jersey/toms-river/memory-care/': 1
+  };
+
+  function norm(p){ return ('/' + String(p||'').replace(/^\/+|\/+$/g,'') + '/').toLowerCase(); }
+
+  /* ---- page context from canonical path ---- */
+  function detectContext(){
+    var path = norm(location.pathname);
+    var parts = path.replace(/^\/+|\/+$/g,'').split('/');
+    if (parts[0] !== 'state' || parts.length < 4) return null; // only city/service pages
+    return { path: path, stateSlug: parts[1], citySlug: parts[2], serviceSlug: parts[3] };
+  }
+
+  function titleCase(slug){
+    return String(slug||'').split('-').map(function(w){ return w ? w.charAt(0).toUpperCase()+w.slice(1) : w; }).join(' ');
+  }
+  function serviceLabel(slug){
+    var map = { 'home-care':'home care', 'assisted-living':'assisted living', 'memory-care':'memory care', 'nursing-home':'nursing home', 'elder-law':'elder law', 'hospice':'hospice', 'independent-living':'independent living' };
+    return map[slug] || titleCase(slug).toLowerCase();
+  }
+
+  /* ---- shared store population (so Carl reuses; no duplicate searches) ---- */
+  function writeStore(payload, ctx, locText){
+    try {
+      window.__careHomeProviders = {
+        results: (payload && payload.results) || [],
+        phrase: (payload && payload.phrase) || '',
+        location: (payload && payload.location) || locText || '',
+        locText: locText || (payload && payload.location) || '',
+        serviceSlug: ctx.serviceSlug,
+        center: (payload && payload.center) || null,
+        ts: Date.now(),
+        source: 'lae-page'
+      };
+    } catch(e){}
+  }
+
+  /* ---- real community resources (state-aware where data exists) ----
+     National authoritative defaults + state-specific SHIP / Area Agency links
+     where we have verified .gov/official URLs. Categories with no data are
+     simply omitted (engine hides empty). No placeholders, ever. */
+  var NATIONAL = [
+    { category:'Area Agency on Aging', title:'Eldercare Locator', desc:'Find your local Area Agency on Aging and nearby services.', href:'https://eldercare.acl.gov/' },
+    { category:'Medicare', title:'Medicare.gov', desc:'Official Medicare coverage, plans, and provider tools.', href:'https://www.medicare.gov/' },
+    { category:'Medicaid', title:'Medicaid.gov', desc:'State Medicaid programs and long-term care eligibility.', href:'https://www.medicaid.gov/' },
+    { category:'SHIP Counseling', title:'Find Your Local SHIP', desc:'Free, unbiased Medicare counseling from State Health Insurance Assistance Programs.', href:'https://www.shiphelp.org/' },
+    { category:"Alzheimer's Association", title:'24/7 Helpline', desc:'Memory-care guidance and support at 800-272-3900.', href:'https://www.alz.org/' },
+    { category:'Meals on Wheels', title:'Meals on Wheels America', desc:'Locate home-delivered meal programs for older adults.', href:'https://www.mealsonwheelsamerica.org/find-meals' },
+    { category:'Transportation', title:'Eldercare Locator: Transportation', desc:'Senior transportation options by area.', href:'https://eldercare.acl.gov/Public/Resources/Topic/Transportation.aspx' },
+    { category:'Veterans', title:'VA Geriatrics & Caregiver Support', desc:'Benefits and caregiver support for veterans.', href:'https://www.va.gov/geriatrics/' },
+    { category:'Caregiver Support', title:'Family Caregiver Alliance', desc:'Tools and respite support for family caregivers.', href:'https://www.caregiver.org/' }
+  ];
+  // State-specific verified official resources (Area Agency / county aging / state SHIP).
+  var STATE_RES = {
+    'new-york': [
+      { category:'State Office for the Aging', title:'NY State Office for the Aging', desc:'New York programs and local AAA directory for older adults.', href:'https://aging.ny.gov/' },
+      { category:'SHIP Counseling', title:'New York HIICAP', desc:'Free Medicare counseling through New York\u2019s HIICAP program.', href:'https://aging.ny.gov/health-insurance-information-counseling-and-assistance-program-hiicap' }
+    ],
+    'new-jersey': [
+      { category:'State Office on Aging', title:'NJ Division of Aging Services', desc:'New Jersey aging services and county Area Agency on Aging directory.', href:'https://www.nj.gov/humanservices/doas/' },
+      { category:'SHIP Counseling', title:'NJ SHIP', desc:'Free Medicare counseling through New Jersey\u2019s State Health Insurance Assistance Program.', href:'https://www.state.nj.us/humanservices/doas/services/ship/' }
+    ],
+    'florida': [
+      { category:'State Office on Aging', title:'Florida Dept. of Elder Affairs', desc:'Florida elder services and local Area Agency on Aging directory.', href:'https://elderaffairs.org/' },
+      { category:'SHIP Counseling', title:'Florida SHINE', desc:'Free Medicare counseling through Florida\u2019s SHINE program.', href:'https://www.floridashine.org/' }
+    ]
+  };
+  function communityFor(ctx){
+    var list = [];
+    var st = STATE_RES[ctx.stateSlug];
+    if (st) { list = list.concat(st); }
+    list = list.concat(NATIONAL);
+    // de-dupe by CATEGORY (state-specific entries appear first and win)
+    var seen = {}, out = [];
+    list.forEach(function(it){ var k=(it.category||'').toLowerCase(); if(!seen[k]){ seen[k]=1; out.push(it); } });
+    return out;
+  }
+
+  var NEXT_STEPS = [
+    { label:'Questions to ask providers', href:'/tools/' },
+    { label:'Open My Care Folder', href:'/tools/' },
+    { label:'Talk to Carl, your AI Care Advisor', action:'carl' },
+    { label:'Compare care options', href:'/tools/' },
+    { label:'Download care checklists', href:'/tools/' }
+  ];
+
+  /* ---- insertion anchor (template-agnostic; scales to all variants) ---- */
+  function findAnchor(){
+    var fc = document.querySelector('.final-cta');
+    if (fc && fc.parentNode) return { node: fc, mode: 'before' };
+    var lc = document.querySelector('#lead-capture, .lead-capture-section');
+    if (lc && lc.parentNode) return { node: lc, mode: 'before' };
+    var main = document.querySelector('main');
+    if (main) return { node: main, mode: 'append' };
+    return { node: document.body, mode: 'append' };
+  }
+
+  function makeHost(){
+    var host = document.createElement('div');
+    host.id = 'lae-engine';
+    host.setAttribute('data-lae-engine','1');
+    var a = findAnchor();
+    if (a.mode === 'before') a.node.parentNode.insertBefore(host, a.node);
+    else a.node.appendChild(host);
+    return host;
+  }
+
+  /* ---- one-time mount ---- */
+  function mountEngine(){
+    if (!window.LAE || typeof window.LAE.mount !== 'function') return; // engine not present
+    if (document.getElementById('lae-engine')) return; // already mounted
+    var ctx = detectContext();
+    if (!ctx) return;
+    if (PILOT_ONLY && !PILOT[ctx.path]) return; // pilot gate
+
+    var host = makeHost();
+    var cityState = (function(){
+      var h1 = document.querySelector('h1');
+      var t = h1 ? h1.textContent.replace(/\s+/g,' ').trim() : '';
+      var m = t.match(/in\s+(.+)$/i);
+      return m ? m[1].trim() : (titleCase(ctx.citySlug));
+    })();
+
+    var query = serviceLabel(ctx.serviceSlug) + ' in ' + cityState;
+
+    function gotProviders(data){
+      var cfg = {
+        providersOpts: data ? { results: data.results, locText: cityState, serviceSlug: ctx.serviceSlug } : { allowFetch: false },
+        communityOpts: { items: communityFor(ctx) },
+        stepsOpts: { steps: NEXT_STEPS },
+        hospitals: false
+      };
+      window.LAE.mount(host, cfg);
+    }
+
+    var store = window.__careHomeProviders;
+    var haveStore = store && typeof store === 'object' && ((store.results && store.results.length) || (store.groups && store.groups.length));
+    if (haveStore) {
+      var results = store.results || [];
+      if (!results.length && store.groups) { store.groups.forEach(function(g){ if(g&&g.results) results=results.concat(g.results); }); }
+      gotProviders({ results: results });
+      return;
+    }
+    if (typeof window.__carlFetchProviders === 'function') {
+      try {
+        var pr = window.__carlFetchProviders(query);
+        if (pr && typeof pr.then === 'function') {
+          pr.then(function(payload){
+            if (payload && payload.results && payload.results.length) {
+              writeStore(payload, ctx, cityState);
+              gotProviders({ results: payload.results });
+            } else {
+              gotProviders(null);
+            }
+          }).catch(function(){ gotProviders(null); });
+        } else {
+          if (pr && pr.results) { writeStore(pr, ctx, cityState); gotProviders({results:pr.results}); }
+          else gotProviders(null);
+        }
+      } catch(e){ gotProviders(null); }
+    } else {
+      gotProviders(null);
+    }
+  }
+
+  function start(){ try { mountEngine(); } catch(e){} }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
