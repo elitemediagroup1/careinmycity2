@@ -41,6 +41,14 @@
 const GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 const TEXTSEARCH_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
+// Operations Dashboard (Phase 1): best-effort, fire-and-forget metrics.
+// Wrapped so a missing module or any error can never affect the lookup.
+var __opsMetrics = null;
+try { __opsMetrics = require("./lib/ops-metrics-store"); } catch (e) { __opsMetrics = null; }
+function __recordOps(ev) {
+  try { if (__opsMetrics && __opsMetrics.recordEvent) { Promise.resolve(__opsMetrics.recordEvent(ev)).catch(function(){}); } } catch (e) {}
+}
+
 // Edge cache config (Phase 2.5). 24h served TTL + 6h stale-while-revalidate.
 const CACHE_MAX_AGE = 86400;   // 24 hours, in seconds
 const CACHE_SWR = 21600;       // 6 hours stale-while-revalidate window
@@ -219,6 +227,7 @@ async function textSearch(phrase, center, apiKey) {
 }
 
 exports.handler = async function (event) {
+  var __t0 = Date.now();
   var query = getParam(event, "q");
   var type = getParam(event, "type");
   if (!query) {
@@ -256,10 +265,13 @@ exports.handler = async function (event) {
     // Only cache successful, non-empty results. Empty results stay no-store so
     // a transient ZERO_RESULTS is never pinned for 24h.
     if (results.length > 0) {
+      __recordOps({ cache: "miss", ok: true, error: false, latency: Date.now() - __t0, type: type });
       return cachedResponse(payload, buildCacheKey(query, type, phrase));
     }
+    __recordOps({ cache: "miss", ok: false, error: false, latency: Date.now() - __t0, type: type });
     return jsonResponse(200, payload);
   } catch (err) {
+    __recordOps({ cache: "miss", ok: false, error: true, latency: Date.now() - __t0, type: type });
     return jsonResponse(200, { ok: false, query: query, type: type, results: [], reason: "lookup_error" });
   }
 };
