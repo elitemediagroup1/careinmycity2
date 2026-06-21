@@ -1,18 +1,24 @@
 // Netlify Edge Function: inject-integrations
 //
-// Ensures the Carl widget (site.js) and the location/search client
-// (care-location.js) are present on EVERY HTML page, sitewide, without
-// editing thousands of pre-generated static HTML files.
+// Ensures the Carl widget (site.js), the location/search client
+// (care-location.js), and the County Intelligence Engine (county-engine.js)
+// are present on EVERY HTML page, sitewide, without editing thousands of
+// pre-generated static HTML files.
 //
 // It is idempotent and PATH-AGNOSTIC: if a page already references a script
 // by filename (via /assets/site.js, assets/site.js, ./assets/site.js,
 // ../assets/site.js, etc.) it is NOT added again. Only text/html responses
 // are modified. Non-HTML assets and the Netlify functions are excluded.
 // No API keys are involved here (keys stay server-side in the functions).
+//
+// NOTE: county-engine.js is itself PILOT-GATED — it only renders the County
+// Resource Center on the allowlisted pilot pages and no-ops everywhere else,
+// so injecting it sitewide is safe and does not widen the pilot footprint.
 
 const SCRIPTS = [
   { file: 'site.js', src: '/assets/site.js' },
-  { file: 'care-location.js', src: '/assets/care-location.js' }
+  { file: 'care-location.js', src: '/assets/care-location.js' },
+  { file: 'county-engine.js', src: '/assets/county-engine.js' }
 ];
 
 export default async (request, context) => {
