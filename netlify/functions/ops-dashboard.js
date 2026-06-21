@@ -142,6 +142,7 @@ var CLIENT = String.raw`
   function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
   function soon(v){ return (v==null)?'<span class="pill soon">Coming Soon</span>':esc(v); }
   function kpi(label,val,hint){ return '<div class="card kpi"><div class="label">'+esc(label)+'</div><div class="val">'+esc(val)+'</div>'+(hint?'<div class="hint">'+esc(hint)+'</div>':'')+'</div>'; }
+  function kpiHtml(label,htmlVal,hint){ return '<div class="card kpi"><div class="label">'+esc(label)+'</div><div class="val" style="font-size:1rem;margin-top:8px">'+(htmlVal||'')+'</div>'+(hint?'<div class="hint">'+esc(hint)+'</div>':'')+'</div>'; }
   function kpiSoon(label){ return '<div class="card kpi pending soonbox"><div class="label">'+esc(label)+'</div><div class="val">Coming Soon</div></div>'; }
   function rows(pairs){ return '<div class="card">'+pairs.map(function(p){return '<div class="row"><span class="k">'+esc(p[0])+'</span><span class="v">'+(p[1]==null?'<span class="pill soon">Coming Soon</span>':esc(p[1]))+'</span></div>';}).join('')+'</div>'; }
   function section(t,sub){ return '<h2 class="section">'+esc(t)+'</h2>'+(sub?'<div class="soonlabel">'+esc(sub)+'</div>':''); }
@@ -169,7 +170,7 @@ var CLIENT = String.raw`
       kpi('Google API Requests',fmt(ex.googleApiRequests)),
       kpi('Cache Hit Rate',pct(ex.cacheHitRatePct)),
       kpi('Est. Infra Cost',usd(ex.estimatedInfrastructureCostUsd),'projected / mo'),
-      kpi('Platform Health',statusPill(ex.platformHealth))
+      kpiHtml('Platform Health',statusPill(ex.platformHealth))
     ],'grid-4'));
 
     // ===== EMG Portfolio =====
