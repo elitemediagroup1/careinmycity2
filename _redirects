@@ -1,6 +1,14 @@
 # CareInMyCity redirects & access control
 # Block internal/build files (404) and enforce extensionless tool URLs (301)
 
+# --- Internal Operations Dashboard (admin only; noindex; not in sitemap) ---
+# Served by Netlify Functions; access gated by OPS_DASHBOARD_TOKEN env var.
+/admin/operations    /.netlify/functions/ops-dashboard    200
+/admin/operations/   /.netlify/functions/ops-dashboard    200
+/admin/dashboard     /.netlify/functions/ops-dashboard    200
+/admin/dashboard/    /.netlify/functions/ops-dashboard    200
+/admin/metrics       /.netlify/functions/ops-metrics      200
+
 # --- Tool pages: 301 .html -> extensionless (canonical) ---
 /tools/caregiver-burnout-checker.html   /tools/caregiver-burnout-checker   301!
 /tools/carl-care-quiz.html   /tools/carl-care-quiz   301!
