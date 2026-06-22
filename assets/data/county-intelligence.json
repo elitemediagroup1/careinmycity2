@@ -17,14 +17,7 @@
         "address": "County of Ocean, 101 Hooper Avenue, Toms River, NJ 08753",
         "designation": "government",
         "source": "Ocean County Government",
-        "note": "County Area Agency on Aging — information and assistance for older adults and caregivers."
-      },
-      "officeOnAging": {
-        "name": "Ocean County Office of Senior Services",
-        "phone": "732-929-2091",
-        "website": "https://co.ocean.nj.us/OC/SeniorServices/frmHomeSS.aspx",
-        "designation": "government",
-        "source": "Ocean County Government"
+        "note": "County Area Agency on Aging and County Office on Aging (same office) — information and assistance for older adults and caregivers, including caregiver support, senior meals, and transportation."
       },
       "alzheimers": {
         "name": "Alzheimer's Association 24/7 Helpline",
@@ -98,14 +91,7 @@
         "website": "https://www.essexcountynj.org/senior-services/",
         "designation": "government",
         "source": "Essex County Government",
-        "note": "County Office on Aging — caregiver assistance, senior meals, special transportation, and housing services."
-      },
-      "officeOnAging": {
-        "name": "Essex County Office of Senior Services",
-        "phone": "973-395-8392",
-        "website": "https://www.essexcountynj.org/senior-services/",
-        "designation": "government",
-        "source": "Essex County Government"
+        "note": "County Area Agency on Aging and County Office on Aging (same office) — caregiver assistance, senior meals, special transportation, and housing services."
       },
       "transportation": {
         "name": "Essex County Special Transportation",
