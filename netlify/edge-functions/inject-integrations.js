@@ -26,7 +26,6 @@ export default async (request, context) => {
   }
 
   let html = await response.text();
-
   const tags = [];
 
   if (!html.includes(LOOP_SRC)) {
@@ -34,11 +33,7 @@ export default async (request, context) => {
   }
 
   for (const { file, src } of SCRIPTS) {
-    // Match the filename regardless of the path prefix used in the page.
-    const alreadyPresent = new RegExp('["\\'/]' + file.replace('.', '\\\\.') + '["\\']').test(html)
-      || html.includes('/' + file)
-      || html.includes(file);
-    if (!alreadyPresent) {
+    if (!html.includes(file)) {
       tags.push('<script src="' + src + '" defer></script>');
     }
   }
