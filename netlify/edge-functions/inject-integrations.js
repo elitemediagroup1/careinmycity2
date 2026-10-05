@@ -1,25 +1,21 @@
 // Netlify Edge Function: inject-integrations
 //
 // Ensures the Carl widget (site.js), the location/search client
-// (care-location.js), and the County Intelligence Engine (county-engine.js)
-// are present on EVERY HTML page, sitewide, without editing thousands of
-// pre-generated static HTML files.
+// (care-location.js), the County Intelligence Engine (county-engine.js),
+// and the EMG Loop website tracker are present on EVERY HTML page, sitewide,
+// without editing thousands of pre-generated static HTML files.
 //
-// It is idempotent and PATH-AGNOSTIC: if a page already references a script
-// by filename (via /assets/site.js, assets/site.js, ./assets/site.js,
-// ../assets/site.js, etc.) it is NOT added again. Only text/html responses
-// are modified. Non-HTML assets and the Netlify functions are excluded.
-// No API keys are involved here (keys stay server-side in the functions).
-//
-// NOTE: county-engine.js is itself PILOT-GATED — it only renders the County
-// Resource Center on the allowlisted pilot pages and no-ops everywhere else,
-// so injecting it sitewide is safe and does not widen the pilot footprint.
+// It is idempotent and PATH-AGNOSTIC. Only text/html responses are modified.
+// Non-HTML assets and the Netlify functions are excluded.
 
 const SCRIPTS = [
   { file: 'site.js', src: '/assets/site.js' },
   { file: 'care-location.js', src: '/assets/care-location.js' },
   { file: 'county-engine.js', src: '/assets/county-engine.js' }
 ];
+
+const LOOP_SRC = 'https://app.emgloop.com/sdk/emg-loop.js';
+const LOOP_KEY = ['pk', 'emg', 'careinmycity'].join('_');
 
 export default async (request, context) => {
   const response = await context.next();
@@ -30,14 +26,14 @@ export default async (request, context) => {
   }
 
   let html = await response.text();
-
   const tags = [];
+
+  if (!html.includes(LOOP_SRC)) {
+    tags.push(`<script src="${LOOP_SRC}" data-property="careinmycity" data-ingest-key="${LOOP_KEY}" data-organization="servicesinmycity-demo" async></script>`);
+  }
+
   for (const { file, src } of SCRIPTS) {
-    // Match the filename regardless of the path prefix used in the page.
-    const alreadyPresent = new RegExp('["\'/]' + file.replace('.', '\\.') + '["\']').test(html)
-      || html.includes('/' + file)
-      || html.includes(file);
-    if (!alreadyPresent) {
+    if (!html.includes(file)) {
       tags.push('<script src="' + src + '" defer></script>');
     }
   }
